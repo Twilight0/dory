@@ -31,8 +31,8 @@
 
 #include <gtk/gtk.h>
 #include <eel/eel-glib-extensions.h>
-#include <libnemo-private/nemo-bookmark.h>
-#include <libnemo-private/nemo-search-directory.h>
+#include <libdory-private/nemo-bookmark.h>
+#include <libdory-private/nemo-search-directory.h>
 
 #include "nemo-navigation-state.h"
 #include "nemo-view.h"

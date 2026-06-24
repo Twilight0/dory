@@ -30,7 +30,7 @@
 
 #include "nemo-application.h"
 #include "nemo-list-model.h"
-#include <libnemo-private/nemo-fzy-utils.h>
+#include <libdory-private/nemo-fzy-utils.h>
 #include "nemo-error-reporting.h"
 #include "nemo-view-dnd.h"
 #include "nemo-view-factory.h"
@@ -48,24 +48,24 @@
 #include <libegg/eggtreemultidnd.h>
 #include <glib/gi18n.h>
 #include <glib-object.h>
-#include <libnemo-extension/nemo-column-provider.h>
-#include <libnemo-private/nemo-clipboard-monitor.h>
-#include <libnemo-private/nemo-column-chooser.h>
-#include <libnemo-private/nemo-column-utilities.h>
-#include <libnemo-private/nemo-dnd.h>
-#include <libnemo-private/nemo-file-dnd.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-ui-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-icon-dnd.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-thumbnails.h>
-#include <libnemo-private/nemo-tree-view-drag-dest.h>
-#include <libnemo-private/nemo-clipboard.h>
+#include <libdory-extension/nemo-column-provider.h>
+#include <libdory-private/nemo-clipboard-monitor.h>
+#include <libdory-private/nemo-column-chooser.h>
+#include <libdory-private/nemo-column-utilities.h>
+#include <libdory-private/nemo-dnd.h>
+#include <libdory-private/nemo-file-dnd.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-icon-dnd.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-thumbnails.h>
+#include <libdory-private/nemo-tree-view-drag-dest.h>
+#include <libdory-private/nemo-clipboard.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_LIST_VIEW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 struct NemoListViewDetails {
 	GtkTreeView *tree_view;
@@ -3703,7 +3703,7 @@ nemo_list_view_merge_menus (NemoView *view)
   g_object_unref (action_group); /* owned by ui manager */
 
   list_view->details->list_merge_id =
-    gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/nemo/nemo-list-view-ui.xml", NULL);
+    gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/dory/nemo-list-view-ui.xml", NULL);
 
   list_view->details->menus_ready = TRUE;
 }

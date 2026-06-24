@@ -53,18 +53,18 @@
 #include <eel/eel-gtk-extensions.h>
 #include <eel/eel-stock-dialogs.h>
 
-#include <libnemo-extension/nemo-menu-provider.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-icon-names.h>
-#include <libnemo-private/nemo-ui-utilities.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-undo-manager.h>
-#include <libnemo-private/nemo-program-choosing.h>
-#include <libnemo-private/nemo-search-directory.h>
-#include <libnemo-private/nemo-search-engine.h>
-#include <libnemo-private/nemo-signaller.h>
-#include <libnemo-private/nemo-trash-monitor.h>
+#include <libdory-extension/nemo-menu-provider.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-icon-names.h>
+#include <libdory-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-undo-manager.h>
+#include <libdory-private/nemo-program-choosing.h>
+#include <libdory-private/nemo-search-directory.h>
+#include <libdory-private/nemo-search-engine.h>
+#include <libdory-private/nemo-signaller.h>
+#include <libdory-private/nemo-trash-monitor.h>
 #include <string.h>
 
 #define MENU_PATH_EXTENSION_ACTIONS                     "/MenuBar/File/Extension Actions"
@@ -418,7 +418,7 @@ action_show_shortcuts_window (GtkAction *action,
     {
         GtkBuilder *builder;
 
-        builder = gtk_builder_new_from_resource ("/org/nemo/nemo-shortcuts.ui");
+        builder = gtk_builder_new_from_resource ("/org/dory/nemo-shortcuts.ui");
         shortcuts_window = GTK_WIDGET (gtk_builder_get_object (builder, "keyboard_shortcuts"));
 
         gtk_window_set_position (GTK_WINDOW (shortcuts_window), GTK_WIN_POS_CENTER);
@@ -2010,7 +2010,7 @@ nemo_window_initialize_menus (NemoWindow *window)
 			  G_CALLBACK (disconnect_proxy_cb), window);
 
 	/* add the UI */
-	gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/nemo/nemo-shell-ui.xml", NULL);
+	gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/dory/nemo-shell-ui.xml", NULL);
 
     GtkWidget *menuitem, *submenu;
     menuitem = gtk_ui_manager_get_widget (nemo_window_get_ui_manager (window), NEMO_VIEW_MENUBAR_FILE_PATH);

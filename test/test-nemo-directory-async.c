@@ -1,7 +1,7 @@
 #include <gtk/gtk.h>
-#include <libnemo-private/nemo-directory.h>
-#include <libnemo-private/nemo-search-directory.h>
-#include <libnemo-private/nemo-file.h>
+#include <libdory-private/nemo-directory.h>
+#include <libdory-private/nemo-search-directory.h>
+#include <libdory-private/nemo-file.h>
 #include <unistd.h>
 
 void *client1, *client2;

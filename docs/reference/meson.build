@@ -1,1 +1,1 @@
-subdir('libnemo-extension')
+subdir('libdory-extension')

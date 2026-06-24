@@ -29,12 +29,12 @@
 
 #include <string.h>
 #include <glib/gi18n.h>
-#include <libnemo-private/nemo-file.h>
+#include <libdory-private/nemo-file.h>
 #include <eel/eel-string.h>
 #include <eel/eel-stock-dialogs.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_DIRECTORY_VIEW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #define NEW_NAME_TAG "Nemo: new name"
 #define MAXIMUM_DISPLAYED_FILE_NAME_LENGTH	50

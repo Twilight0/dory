@@ -28,7 +28,7 @@
 #ifndef NEMO_BOOKMARK_LIST_H
 #define NEMO_BOOKMARK_LIST_H
 
-#include <libnemo-private/nemo-bookmark.h>
+#include <libdory-private/nemo-bookmark.h>
 #include <gio/gio.h>
 
 typedef struct NemoBookmarkList NemoBookmarkList;

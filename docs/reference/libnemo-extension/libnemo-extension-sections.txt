@@ -150,7 +150,7 @@ NEMO_PROPERTY_PAGE_GET_CLASS
 </SECTION>
 
 <SECTION>
-<FILE>nemo-extension-types</FILE>
+<FILE>dory-extension-types</FILE>
 NemoOperationHandle
 NemoOperationResult
 nemo_module_initialize

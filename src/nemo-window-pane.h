@@ -29,7 +29,7 @@
 
 #include "nemo-window.h"
 
-#include <libnemo-private/nemo-icon-info.h>
+#include <libdory-private/nemo-icon-info.h>
 
 #define NEMO_TYPE_WINDOW_PANE	 (nemo_window_pane_get_type())
 #define NEMO_WINDOW_PANE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), NEMO_TYPE_WINDOW_PANE, NemoWindowPaneClass))

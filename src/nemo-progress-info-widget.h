@@ -29,7 +29,7 @@
 
 #include <gtk/gtk.h>
 
-#include <libnemo-private/nemo-progress-info.h>
+#include <libdory-private/nemo-progress-info.h>
 
 #define NEMO_TYPE_PROGRESS_INFO_WIDGET nemo_progress_info_widget_get_type()
 #define NEMO_PROGRESS_INFO_WIDGET(obj) \

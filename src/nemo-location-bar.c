@@ -43,8 +43,8 @@
 #include <eel/eel-vfs-extensions.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <libnemo-private/nemo-icon-dnd.h>
-#include <libnemo-private/nemo-clipboard.h>
+#include <libdory-private/nemo-icon-dnd.h>
+#include <libdory-private/nemo-clipboard.h>
 #include <stdio.h>
 #include <string.h>
 

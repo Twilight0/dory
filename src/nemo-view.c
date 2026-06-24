@@ -60,44 +60,44 @@
 #include <eel/eel-string.h>
 #include <eel/eel-vfs-extensions.h>
 
-#include <libnemo-extension/nemo-menu-provider.h>
-#include <libnemo-private/nemo-bookmark.h>
-#include <libnemo-private/nemo-clipboard.h>
-#include <libnemo-private/nemo-clipboard-monitor.h>
-#include <libnemo-private/nemo-desktop-icon-file.h>
-#include <libnemo-private/nemo-desktop-directory.h>
-#include <libnemo-private/nemo-search-directory.h>
-#include <libnemo-private/nemo-directory.h>
-#include <libnemo-private/nemo-dnd.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-file-attributes.h>
-#include <libnemo-private/nemo-file-changes-queue.h>
-#include <libnemo-private/nemo-file-dnd.h>
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-malloc-utils.h>
-#include <libnemo-private/fzy-match.h>
-#include <libnemo-private/nemo-fzy-utils.h>
-#include <libnemo-private/nemo-file-private.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-link.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-recent.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-program-choosing.h>
-#include <libnemo-private/nemo-trash-monitor.h>
-#include <libnemo-private/nemo-ui-utilities.h>
-#include <libnemo-private/nemo-signaller.h>
-#include <libnemo-private/nemo-icon-names.h>
-#include <libnemo-private/nemo-file-undo-manager.h>
-#include <libnemo-private/nemo-action.h>
-#include <libnemo-private/nemo-widget-action.h>
-#include <libnemo-private/nemo-separator-action.h>
-#include <libnemo-private/nemo-action-manager.h>
-#include <libnemo-private/nemo-mime-application-chooser.h>
+#include <libdory-extension/nemo-menu-provider.h>
+#include <libdory-private/nemo-bookmark.h>
+#include <libdory-private/nemo-clipboard.h>
+#include <libdory-private/nemo-clipboard-monitor.h>
+#include <libdory-private/nemo-desktop-icon-file.h>
+#include <libdory-private/nemo-desktop-directory.h>
+#include <libdory-private/nemo-search-directory.h>
+#include <libdory-private/nemo-directory.h>
+#include <libdory-private/nemo-dnd.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-file-attributes.h>
+#include <libdory-private/nemo-file-changes-queue.h>
+#include <libdory-private/nemo-file-dnd.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-malloc-utils.h>
+#include <libdory-private/fzy-match.h>
+#include <libdory-private/nemo-fzy-utils.h>
+#include <libdory-private/nemo-file-private.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-link.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-recent.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-program-choosing.h>
+#include <libdory-private/nemo-trash-monitor.h>
+#include <libdory-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-signaller.h>
+#include <libdory-private/nemo-icon-names.h>
+#include <libdory-private/nemo-file-undo-manager.h>
+#include <libdory-private/nemo-action.h>
+#include <libdory-private/nemo-widget-action.h>
+#include <libdory-private/nemo-separator-action.h>
+#include <libdory-private/nemo-action-manager.h>
+#include <libdory-private/nemo-mime-application-chooser.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_DIRECTORY_VIEW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 /* Minimum starting update interval for progressive display */
 #define UPDATE_INTERVAL_MIN 100
@@ -8707,7 +8707,7 @@ real_merge_menus (NemoView *view)
 	gtk_ui_manager_insert_action_group (ui_manager, action_group, -1);
 	g_object_unref (action_group); /* owned by ui manager */
 
-    view->details->dir_merge_id = gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/nemo/nemo-directory-view-ui.xml", NULL);
+    view->details->dir_merge_id = gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/dory/nemo-directory-view-ui.xml", NULL);
 
 	view->details->scripts_invalid = TRUE;
 	view->details->templates_invalid = TRUE;

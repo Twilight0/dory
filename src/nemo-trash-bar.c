@@ -28,10 +28,10 @@
 #include "nemo-trash-bar.h"
 
 #include "nemo-view.h"
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-trash-monitor.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-trash-monitor.h>
 
 #define NEMO_TRASH_BAR_GET_PRIVATE(o)\
 	(G_TYPE_INSTANCE_GET_PRIVATE ((o), NEMO_TYPE_TRASH_BAR, NemoTrashBarPrivate))

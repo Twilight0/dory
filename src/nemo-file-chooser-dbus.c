@@ -1,5 +1,5 @@
 /*
- * nemo-file-chooser-dbus: D-Bus service provider for org.Nemo.FileChooser
+ * nemo-file-chooser-dbus: D-Bus service provider for org.Dory.FileChooser
  */
 
 #include <config.h>

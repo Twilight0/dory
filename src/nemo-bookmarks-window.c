@@ -29,9 +29,9 @@
 #include "nemo-bookmarks-window.h"
 #include "nemo-window.h"
 
-#include <libnemo-private/nemo-undo.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-undo-signal-handlers.h>
+#include <libdory-private/nemo-undo.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-undo-signal-handlers.h>
 
 #include <eel/eel-gtk-extensions.h>
 #include <eel/eel-gnome-extensions.h>
@@ -241,7 +241,7 @@ create_bookmarks_window (NemoBookmarkList *list, GObject *undo_manager_source)
 	builder = gtk_builder_new ();
     gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
 	if (!gtk_builder_add_from_resource (builder,
-					    "/org/nemo/nemo-bookmarks-window.glade",
+					    "/org/dory/nemo-bookmarks-window.glade",
 					    NULL)) {
 		return NULL;
 	}

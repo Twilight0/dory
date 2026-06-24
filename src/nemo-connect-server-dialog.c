@@ -35,8 +35,8 @@
 #include "nemo-connect-server-operation.h"
 #include "nemo-window.h"
 
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-icon-names.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-icon-names.h>
 
 /* TODO:
  * - name entry + pre-fill

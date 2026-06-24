@@ -30,7 +30,7 @@
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 
-#include <libnemo-private/nemo-dnd.h>
+#include <libdory-private/nemo-dnd.h>
 
 #include "nemo-window-slot.h"
 

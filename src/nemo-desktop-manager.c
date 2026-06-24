@@ -3,7 +3,7 @@
 #include <config.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_DESKTOP
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include "nemo-desktop-manager.h"
 #include "nemo-blank-desktop-window.h"
@@ -15,9 +15,9 @@
 #include <gdk/gdkx.h>
 #include <stdio.h>
 
-#include "libnemo-private/nemo-action-manager.h"
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-desktop-utils.h>
+#include "libdory-private/nemo-action-manager.h"
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-desktop-utils.h>
 #include <eel/eel-gtk-extensions.h>
 
 static gboolean layout_changed (NemoDesktopManager *manager);

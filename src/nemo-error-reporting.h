@@ -27,7 +27,7 @@
 #define NEMO_ERROR_REPORTING_H
 
 #include <gtk/gtk.h>
-#include <libnemo-private/nemo-file.h>
+#include <libdory-private/nemo-file.h>
 
 void nemo_report_error_loading_directory	 (NemoFile   *file,
 						  GError         *error,

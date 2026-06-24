@@ -32,7 +32,7 @@ install_data(
     'mso-ppt.nemo_search_helper',
     'mso-xls.nemo_search_helper',
     'odf.nemo_search_helper',
-    install_dir: join_paths(nemoDataPath, 'search-helpers')
+    install_dir: join_paths(doryDataPath, 'search-helpers')
 )
 
 install_data(

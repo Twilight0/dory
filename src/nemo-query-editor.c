@@ -30,8 +30,8 @@
 #include <gio/gio.h>
 
 #include <eel/eel-glib-extensions.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-search-engine.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-search-engine.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
@@ -346,7 +346,7 @@ nemo_query_editor_init (NemoQueryEditor *editor)
 
     builder = gtk_builder_new ();
     gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-    if (!gtk_builder_add_from_resource (builder, "/org/nemo/nemo-search-bar.glade", NULL)) {
+    if (!gtk_builder_add_from_resource (builder, "/org/dory/nemo-search-bar.glade", NULL)) {
         g_object_unref (builder);
         return;
     }

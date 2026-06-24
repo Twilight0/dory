@@ -27,7 +27,7 @@
 #define NEMO_PROPERTIES_WINDOW_H
 
 #include <gtk/gtk.h>
-#include <libnemo-private/nemo-file.h>
+#include <libdory-private/nemo-file.h>
 
 typedef struct NemoPropertiesWindow NemoPropertiesWindow;
 

@@ -46,22 +46,22 @@
 #include "nemo-statusbar.h"
 #include "nemo-notebook.h"
 
-#include <libnemo-private/nemo-dbus-manager.h>
-#include <libnemo-private/nemo-directory-private.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-lib-self-check-functions.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-signaller.h>
-#include <libnemo-private/nemo-ui-utilities.h>
-#include <libnemo-private/nemo-undo-manager.h>
-#include <libnemo-private/nemo-thumbnails.h>
-#include <libnemo-private/nemo-search-engine-advanced.h>
-#include <libnemo-extension/nemo-menu-provider.h>
+#include <libdory-private/nemo-dbus-manager.h>
+#include <libdory-private/nemo-directory-private.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-lib-self-check-functions.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-signaller.h>
+#include <libdory-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-undo-manager.h>
+#include <libdory-private/nemo-thumbnails.h>
+#include <libdory-private/nemo-search-engine-advanced.h>
+#include <libdory-extension/nemo-menu-provider.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_APPLICATION
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -106,8 +106,8 @@ G_DEFINE_TYPE (NemoMainApplication, nemo_main_application, NEMO_TYPE_APPLICATION
 struct _NemoMainApplicationPriv {
 	GVolumeMonitor *volume_monitor;
 
-	NemoDBusManager *dbus_manager;
-	NemoFreedesktopDBus *fdb_manager;
+	DoryDBusManager *dbus_manager;
+	DoryFreedesktopDBus *fdb_manager;
 	NemoFileChooserDBus *file_chooser_dbus;
 
 	gchar *geometry;
@@ -841,7 +841,7 @@ static void
 do_perform_self_checks (gint *exit_status)
 {
 #ifndef NEMO_OMIT_SELF_CHECK
-	/* Run the checks (each twice) for nemo and libnemo-private. */
+	/* Run the checks (each twice) for nemo and libdory-private. */
 
 	nemo_run_self_checks ();
 	nemo_run_lib_self_checks ();

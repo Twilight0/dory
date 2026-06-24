@@ -1,6 +1,6 @@
 
 docConf = configuration_data()
-docConf.set('NEMO_EXTENSION_VERSION_INFO', NEMO_EXTENSION_VERSION_INFO)
+docConf.set('DORY_EXTENSION_VERSION_INFO', DORY_EXTENSION_VERSION_INFO)
 
 configure_file(
   input : 'version.xml.in',
@@ -8,13 +8,13 @@ configure_file(
   configuration: docConf
 )
 
-gnome.gtkdoc('libnemo-extension',
-  main_xml: 'libnemo-extension-docs.xml',
-  src_dir: join_paths(meson.project_source_root(), 'libnemo-extension'),
-  dependencies: nemo_extension,
+gnome.gtkdoc('libdory-extension',
+  main_xml: 'libdory-extension-docs.xml',
+  src_dir: join_paths(meson.project_source_root(), 'libdory-extension'),
+  dependencies: dory_extension,
   install: true,
-  gobject_typesfile: 'libnemo-extension.types',
-  install_dir: 'libnemo-extension',
+  gobject_typesfile: 'libdory-extension.types',
+  install_dir: 'libdory-extension',
   scan_args: [
     '--rebuild-types',
     '--ignore-headers="config.h"' ]

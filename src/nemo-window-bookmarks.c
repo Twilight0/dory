@@ -33,8 +33,8 @@
 #include "nemo-bookmarks-window.h"
 #include "nemo-window-bookmarks.h"
 #include "nemo-window-private.h"
-#include <libnemo-private/nemo-undo-manager.h>
-#include <libnemo-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-undo-manager.h>
+#include <libdory-private/nemo-ui-utilities.h>
 #include <eel/eel-debug.h>
 #include <eel/eel-stock-dialogs.h>
 #include <eel/eel-vfs-extensions.h>

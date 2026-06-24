@@ -45,19 +45,19 @@
 #include <fcntl.h>
 #include <gdk/gdkx.h>
 #include <glib/gi18n.h>
-#include <libnemo-private/nemo-desktop-icon-file.h>
-#include <libnemo-private/nemo-directory-notify.h>
-#include <libnemo-private/nemo-file-changes-queue.h>
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-ui-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-link.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-monitor.h>
-#include <libnemo-private/nemo-program-choosing.h>
-#include <libnemo-private/nemo-trash-monitor.h>
-#include <libnemo-private/nemo-desktop-utils.h>
+#include <libdory-private/nemo-desktop-icon-file.h>
+#include <libdory-private/nemo-directory-notify.h>
+#include <libdory-private/nemo-file-changes-queue.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-link.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-monitor.h>
+#include <libdory-private/nemo-program-choosing.h>
+#include <libdory-private/nemo-trash-monitor.h>
+#include <libdory-private/nemo-desktop-utils.h>
 #include <limits.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -1166,7 +1166,7 @@ real_merge_menus (NemoView *view)
     g_object_unref (action_group); /* owned by ui manager */
 
 	desktop_view->details->desktop_merge_id =
-		gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/nemo/nemo-desktop-icon-grid-view-ui.xml", NULL);
+		gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/dory/nemo-desktop-icon-grid-view-ui.xml", NULL);
 }
 
 static NemoView *

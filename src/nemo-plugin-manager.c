@@ -42,7 +42,7 @@ nemo_plugin_manager_init (NemoPluginManager *self)
     widget = nemo_action_config_widget_new ();
     gtk_grid_attach (GTK_GRID (grid), widget, 0, 0, 2, 1);
 
-    widget = nemo_extension_config_widget_new ();
+    widget = dory_extension_config_widget_new ();
     gtk_grid_attach (GTK_GRID (grid), widget, 0, 1, 2, 1);
 
     gtk_container_add (GTK_CONTAINER (self), grid);

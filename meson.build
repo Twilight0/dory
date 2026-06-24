@@ -6,13 +6,13 @@ project('nemo', 'c', version : '6.7.3', meson_version : '>=0.64.0')
 # 1. If the library code has changed at all since last release, then increment revision.
 # 2. If any interfaces have been added, then increment current and set revision to 0.
 # Interface break is not allowed.
-nemo_extension_current  = 5
-nemo_extension_revision = 0
+dory_extension_current  = 5
+dory_extension_revision = 0
 
 # We need to decrement current by one in the calculation of the age because
 # the library was started with version "1:0:0" instead of "0:0:0"
-NEMO_EXTENSION_VERSION_INFO = '@0@:@1@:@2@'.format(
-  nemo_extension_current, nemo_extension_revision, nemo_extension_current - 1
+DORY_EXTENSION_VERSION_INFO = '@0@:@1@:@2@'.format(
+  dory_extension_current, dory_extension_revision, dory_extension_current - 1
 )
 
 ################################################################################
@@ -152,7 +152,7 @@ pango = dependency('pango', version: '>=1.44.0')
 enableEmptyView = get_option('empty_view')
 conf.set10('ENABLE_EMPTY_VIEW', enableEmptyView)
 
-conf.set_quoted('GETTEXT_PACKAGE', 'nemo')
+conf.set_quoted('GETTEXT_PACKAGE', 'dory')
 conf.set_quoted('LOCALE_DIR',  join_paths(get_option('prefix'), get_option('localedir')))
 conf.set_quoted('LOCALEDIR',   join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('ENABLE_NLS', cc.has_header('libintl.h'))
@@ -168,16 +168,16 @@ configure_file(
 ################################################################################
 
 rootInclude = include_directories('.')
-nemoDataPath      = join_paths(get_option('prefix'), get_option('datadir'), 'nemo')
+doryDataPath      = join_paths(get_option('prefix'), get_option('datadir'), 'nemo')
 libExecPath       = join_paths(get_option('prefix'), get_option('libexecdir'))
 # Keep this constant, in case some extensions are behind in being updated...
-nemoExtensionPath = join_paths(get_option('prefix'), get_option('libdir'), 'nemo', 'extensions-3.0')
+doryExtensionPath = join_paths(get_option('prefix'), get_option('libdir'), 'nemo', 'extensions-3.0')
 
-nemo_definitions =  [
-  '-DNEMO_DATADIR="@0@"'.format(nemoDataPath),
-  '-DNEMO_EXTENSIONDIR="@0@"'.format(nemoExtensionPath),
+dory_definitions =  [
+  '-DNEMO_DATADIR="@0@"'.format(doryDataPath),
+  '-DDORY_EXTENSIONDIR="@0@"'.format(doryExtensionPath),
   '-DLIBEXECDIR="@0@"'.format(libExecPath),
-  '-DG_LOG_DOMAIN="Nemo"'
+  '-DG_LOG_DOMAIN="Dory"'
 ]
 
 po_subdir = join_paths(meson.project_source_root(), 'po')
@@ -187,14 +187,14 @@ subdir('data')
 subdir('eel')
 subdir('files')
 subdir('gresources')
-subdir('libnemo-extension')
-subdir('libnemo-private')
+subdir('libdory-extension')
+subdir('libdory-private')
 # subdir('po')
 subdir('src')
-subdir('search-helpers')
-subdir('test')
-subdir('docs')
-subdir('action-layout-editor')
+# subdir('search-helpers')
+# subdir('test')
+# subdir('docs')
+# subdir('action-layout-editor')
 
 # Post-installation actions. Skipped automatically when DESTDIR is set
 # (debian builds, etc.), since the package manager handles them.
@@ -216,8 +216,8 @@ message('\n'.join(['',
 '    Wayland support:        @0@'.format(cc.has_header('gdk/gdkwayland.h', dependencies: gtk)),
 '    gtk-layer-shell:        @0@'.format(gtk_layer_shell_enabled),
 '',
-'    nemo-extension documentation: @0@'.format(gtkdoc_enabled),
-'    nemo-extension introspection: @0@'.format(true),
+'    dory-extension documentation: @0@'.format(gtkdoc_enabled),
+'    dory-extension introspection: @0@'.format(true),
 '',
 '    debugging support:      @0@'.format(buildtype),
 '    perf profiling support: @0@'.format(buildtype == 'debug'),

@@ -10,7 +10,7 @@
 #include "nemo-desktop-overlay.h"
 #include "nemo-desktop-manager.h"
 
-#include <libnemo-extension/nemo-desktop-preferences.h>
+#include <libdory-extension/nemo-desktop-preferences.h>
 
 typedef struct
 {
@@ -443,7 +443,7 @@ nemo_desktop_overlay_init (NemoDesktopOverlay *overlay)
 
     priv->builder = gtk_builder_new ();
     gtk_builder_set_translation_domain (priv->builder, GETTEXT_PACKAGE);
-    gtk_builder_add_from_resource (priv->builder, "/org/nemo/nemo-desktop-overlay.glade", NULL);
+    gtk_builder_add_from_resource (priv->builder, "/org/dory/nemo-desktop-overlay.glade", NULL);
 
     window = GTK_WINDOW (gtk_builder_get_object (priv->builder, "overlay_window"));
     priv->window = window;

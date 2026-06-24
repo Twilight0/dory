@@ -37,11 +37,11 @@
 #include <eel/eel-stock-dialogs.h>
 #include <eel/eel-string.h>
 
-#include <libnemo-private/nemo-icon-names.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-mime-application-chooser.h>
-#include <libnemo-private/nemo-program-choosing.h>
-#include <libnemo-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-icon-names.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-mime-application-chooser.h>
+#include <libdory-private/nemo-program-choosing.h>
+#include <libdory-private/nemo-file-utilities.h>
 
 static void
 main_dialog_destroyed (GtkWidget *widget,

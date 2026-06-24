@@ -42,12 +42,12 @@
 
 #include <glib/gi18n.h>
 
-#include <libnemo-private/nemo-clipboard.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-entry.h>
+#include <libdory-private/nemo-clipboard.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-entry.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_WINDOW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 // For: NEMO_IS_DESKTOP_WINDOW
 #include "nemo-desktop-window.h"

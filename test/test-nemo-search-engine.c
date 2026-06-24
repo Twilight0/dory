@@ -1,4 +1,4 @@
-#include <libnemo-private/nemo-search-engine.h>
+#include <libdory-private/nemo-search-engine.h>
 #include <gtk/gtk.h>
 
 static void

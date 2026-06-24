@@ -24,15 +24,15 @@
 #include "nemo-previewer.h"
 
 #define DEBUG_FLAG NEMO_DEBUG_PREVIEWER
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include <gio/gio.h>
 
 G_DEFINE_TYPE (NemoPreviewer, nemo_previewer, G_TYPE_OBJECT);
 
-#define PREVIEWER_DBUS_NAME "org.nemo.Preview"
-#define PREVIEWER_DBUS_IFACE "org.nemo.Preview"
-#define PREVIEWER_DBUS_PATH "/org/nemo/Preview"
+#define PREVIEWER_DBUS_NAME "org.dory.Preview"
+#define PREVIEWER_DBUS_IFACE "org.dory.Preview"
+#define PREVIEWER_DBUS_PATH "/org/dory/Preview"
 
 static NemoPreviewer *singleton = NULL;
 

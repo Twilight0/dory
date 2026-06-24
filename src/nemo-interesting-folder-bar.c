@@ -25,11 +25,11 @@
 #include "nemo-application.h"
 
 #include "nemo-view.h"
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-trash-monitor.h>
-#include <libnemo-private/nemo-action-manager.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-trash-monitor.h>
+#include <libdory-private/nemo-action-manager.h>
 
 #define NEMO_INTERESTING_FOLDER_BAR_GET_PRIVATE(o)\
 	(G_TYPE_INSTANCE_GET_PRIVATE ((o), NEMO_TYPE_INTERESTING_FOLDER_BAR, NemoInterestingFolderBarPrivate))

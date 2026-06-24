@@ -28,7 +28,7 @@
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 
-#include <libnemo-private/nemo-undo-manager.h>
+#include <libdory-private/nemo-undo-manager.h>
 
 #include "nemo-window.h"
 

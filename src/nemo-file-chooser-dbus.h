@@ -1,5 +1,5 @@
 /*
- * nemo-file-chooser-dbus: Implementation for the org.Nemo FileChooser D-Bus interface
+ * nemo-file-chooser-dbus: Implementation for the org.Dory FileChooser D-Bus interface
  */
 
 #ifndef __NEMO_FILE_CHOOSER_DBUS_H__

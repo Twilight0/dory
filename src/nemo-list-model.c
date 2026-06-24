@@ -36,8 +36,8 @@
 
 #include <libegg/eggtreemultidnd.h>
 #include <eel/eel-graphic-effects.h>
-#include <libnemo-private/nemo-dnd.h>
-#include <libnemo-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-dnd.h>
+#include <libdory-private/nemo-file-utilities.h>
 
 enum {
 	SUBDIRECTORY_UNLOADED,

@@ -27,7 +27,7 @@
 
 #include "nemo-icon-view.h"
 
-#include <libnemo-private/nemo-icon-private.h>
+#include <libdory-private/nemo-icon-private.h>
 
 typedef struct NemoIconViewGridContainer NemoIconViewGridContainer;
 typedef struct NemoIconViewGridContainerClass NemoIconViewGridContainerClass;

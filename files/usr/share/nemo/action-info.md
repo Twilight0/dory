@@ -36,10 +36,10 @@ NEMO_DEBUG=Actions nemo --debug
 
 With debugging enabled, you should get output that looks something like this when testing your action:
 ```bash
-Nemo-DEBUG: nemo_action_update_display_state: ../libnemo-private/nemo-action.c:2011: Action 'new-sample' determined VISIBLE
-Nemo-DEBUG: get_final_label: ../libnemo-private/nemo-action.c:1538: Action Label: Test action on file Documents
-Nemo-DEBUG: get_final_tt: ../libnemo-private/nemo-action.c:1563: Action Tooltip: If you click this menu entry, /home/mtwebster/Documents will be acted upon!
-Nemo-DEBUG: nemo_action_activate: ../libnemo-private/nemo-action.c:1462: Action Spawning: notify-send "Hey there" "This is the result of an action you ran on the file '/home/mtwebster/Documents' - well done"
+Nemo-DEBUG: nemo_action_update_display_state: ../libdory-private/nemo-action.c:2011: Action 'new-sample' determined VISIBLE
+Nemo-DEBUG: get_final_label: ../libdory-private/nemo-action.c:1538: Action Label: Test action on file Documents
+Nemo-DEBUG: get_final_tt: ../libdory-private/nemo-action.c:1563: Action Tooltip: If you click this menu entry, /home/mtwebster/Documents will be acted upon!
+Nemo-DEBUG: nemo_action_activate: ../libdory-private/nemo-action.c:1462: Action Spawning: notify-send "Hey there" "This is the result of an action you ran on the file '/home/mtwebster/Documents' - well done"
 ```
 
 ---

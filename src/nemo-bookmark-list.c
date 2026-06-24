@@ -28,9 +28,9 @@
 #include <config.h>
 #include "nemo-bookmark-list.h"
 
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-icon-names.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-icon-names.h>
 #define GNOME_DESKTOP_USE_UNSTABLE_API
 #include <libcinnamon-desktop/gnome-desktop-utils.h>
 

@@ -25,7 +25,7 @@
 #ifndef NEMO_WINDOW_BOOKMARKS_H
 #define NEMO_WINDOW_BOOKMARKS_H
 
-#include <libnemo-private/nemo-bookmark.h>
+#include <libdory-private/nemo-bookmark.h>
 #include <nemo-window.h>
 #include "nemo-bookmark-list.h"
 

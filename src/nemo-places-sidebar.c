@@ -32,20 +32,20 @@
 #include <cairo-gobject.h>
 #include <libxapp/xapp-favorites.h>
 
-#include <libnemo-private/nemo-dnd.h>
-#include <libnemo-private/nemo-bookmark.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-trash-monitor.h>
-#include <libnemo-private/nemo-icon-names.h>
-#include <libnemo-private/nemo-cell-renderer-disk.h>
-#include <libnemo-private/nemo-places-tree-view.h>
-#include <libnemo-private/nemo-action-manager.h>
-#include <libnemo-private/nemo-action.h>
-#include <libnemo-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-dnd.h>
+#include <libdory-private/nemo-bookmark.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-trash-monitor.h>
+#include <libdory-private/nemo-icon-names.h>
+#include <libdory-private/nemo-cell-renderer-disk.h>
+#include <libdory-private/nemo-places-tree-view.h>
+#include <libdory-private/nemo-action-manager.h>
+#include <libdory-private/nemo-action.h>
+#include <libdory-private/nemo-ui-utilities.h>
 
 #include <eel/eel-debug.h>
 #include <eel/eel-gtk-extensions.h>
@@ -64,7 +64,7 @@
 #include "nemo-window-slot.h"
 
 #define DEBUG_FLAG NEMO_DEBUG_PLACES
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #define EXPANDER_PAD_COLUMN_WIDTH 4
 #define EJECT_COLUMN_MIN_WIDTH 22
@@ -3551,7 +3551,7 @@ rebuild_menu (NemoPlacesSidebar *sidebar)
                               &sidebar->action_action_group);
 
     sidebar->bookmark_action_group_merge_id =
-            gtk_ui_manager_add_ui_from_resource (sidebar->ui_manager, "/org/nemo/nemo-places-sidebar-ui.xml", NULL);
+            gtk_ui_manager_add_ui_from_resource (sidebar->ui_manager, "/org/dory/nemo-places-sidebar-ui.xml", NULL);
 
     gtk_action_group_add_actions (sidebar->bookmark_action_group,
                                   bookmark_action_entries,

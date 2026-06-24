@@ -28,8 +28,8 @@
 #include <config.h>
 
 #include <gmodule.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-extension/nemo-name-and-desc-provider.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-extension/nemo-name-and-desc-provider.h>
 
 #include <stdlib.h>
 #include <glib/gprintf.h>
@@ -129,7 +129,7 @@ module_get_extensions_for_type (GType type)
 int
 main (int argc, char *argv[])
 {
-    populate_from_directory (NEMO_EXTENSIONDIR);
+    populate_from_directory (DORY_EXTENSIONDIR);
 
     GList *nd_providers;
     GList *l;
@@ -138,7 +138,7 @@ main (int argc, char *argv[])
 
     for (l = module_objects; l != NULL; l = l->next) {
         GObject *obj = G_OBJECT (l->data);
-        g_printf ("NEMO_EXTENSION:::%s", G_OBJECT_TYPE_NAME (obj));
+        g_printf ("DORY_EXTENSION:::%s", G_OBJECT_TYPE_NAME (obj));
 
         if (g_list_index (nd_providers, obj) > -1) {
             GList *nd_list = nemo_name_and_desc_provider_get_name_and_desc (NEMO_NAME_AND_DESC_PROVIDER (obj));
@@ -150,7 +150,7 @@ main (int argc, char *argv[])
             // a few of our own) that don't use a copy, if we tried to use g_list_free_full(g_free) it would
             // segfault on those.
             //
-            // Since this is just a helper for nemo-extension-config-widget.c, and not part of the nemo process,
+            // Since this is just a helper for dory-extension-config-widget.c, and not part of the nemo process,
             // ignore the leak here.
             g_list_free (nd_list);
         } else {

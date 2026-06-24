@@ -161,7 +161,7 @@ class NemoActionsOrganizer(Gtk.Box):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
 
         if builder is None:
-            self.builder = Gtk.Builder.new_from_resource("/org/nemo/action-layout-editor/nemo-action-layout-editor.glade")
+            self.builder = Gtk.Builder.new_from_resource("/org/dory/action-layout-editor/nemo-action-layout-editor.glade")
         else:
             self.builder = builder
 
@@ -192,7 +192,7 @@ class NemoActionsOrganizer(Gtk.Box):
         self.down_button = self.builder.get_object("down_button")
         self.down_button.connect("clicked", self.down_button_clicked)
 
-        self.nemo_plugin_settings = Gio.Settings(schema_id="org.nemo.plugins")
+        self.nemo_plugin_settings = Gio.Settings(schema_id="org.dory.plugins")
         # Disabled/Enabled may be toggled in nemo preferences directly, keep us in sync.
         self.nemo_plugin_settings.connect("changed", self.on_disabled_settings_list_changed)
 
@@ -329,7 +329,7 @@ class NemoActionsOrganizer(Gtk.Box):
     def load_nemo_shortcuts(self):
         source = Xmlb.BuilderSource()
         try:
-            xml = Gio.resources_lookup_data("/org/nemo/action-layout-editor/nemo-shortcuts.ui", Gio.ResourceLookupFlags.NONE)
+            xml = Gio.resources_lookup_data("/org/dory/action-layout-editor/nemo-shortcuts.ui", Gio.ResourceLookupFlags.NONE)
             ret = source.load_bytes(xml, Xmlb.BuilderSourceFlags.NONE)
             builder = Xmlb.Builder()
             builder.import_source(source)
@@ -1527,7 +1527,7 @@ class NemoActionsOrganizer(Gtk.Box):
 
 class EditorWindow():
     def __init__(self):
-        self.builder = Gtk.Builder.new_from_resource("/org/nemo/action-layout-editor/nemo-action-layout-editor.glade")
+        self.builder = Gtk.Builder.new_from_resource("/org/dory/action-layout-editor/nemo-action-layout-editor.glade")
         self.main_window = self.builder.get_object("main_window")
         self.hamburger_button = self.builder.get_object("hamburger_button")
         self.editor = NemoActionsOrganizer(self.main_window, self.builder)

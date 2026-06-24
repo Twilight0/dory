@@ -30,7 +30,7 @@
 #ifndef NEMO_LOCATION_BAR_H
 #define NEMO_LOCATION_BAR_H
 
-#include <libnemo-private/nemo-entry.h>
+#include <libdory-private/nemo-entry.h>
 #include <gtk/gtk.h>
 
 #define NEMO_TYPE_LOCATION_BAR nemo_location_bar_get_type()

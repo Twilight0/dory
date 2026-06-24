@@ -34,8 +34,8 @@
 
 #include <glib/gi18n.h>
 
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-icon-info.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-icon-info.h>
 
 typedef struct
 {

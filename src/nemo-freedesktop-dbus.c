@@ -27,13 +27,13 @@
 
 /* We share the same debug domain as nemo-dbus-manager */
 #define DEBUG_FLAG NEMO_DEBUG_DBUS
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include "nemo-properties-window.h"
 
 #include <gio/gio.h>
 
-struct _NemoFreedesktopDBus {
+struct _DoryFreedesktopDBus {
 	GObject parent;
 
 	/* Id from g_dbus_own_name() */
@@ -43,17 +43,17 @@ struct _NemoFreedesktopDBus {
 	GDBusObjectManagerServer *object_manager;
 
 	/* Our DBus implementation skeleton */
-	NemoFreedesktopFileManager1 *skeleton;
+	DoryFreedesktopFileManager1 *skeleton;
 };
 
-struct _NemoFreedesktopDBusClass {
+struct _DoryFreedesktopDBusClass {
 	GObjectClass parent_class;
 };
 
-G_DEFINE_TYPE (NemoFreedesktopDBus, nemo_freedesktop_dbus, G_TYPE_OBJECT);
+G_DEFINE_TYPE (DoryFreedesktopDBus, nemo_freedesktop_dbus, G_TYPE_OBJECT);
 
 static gboolean
-skeleton_handle_show_items_cb (NemoFreedesktopFileManager1 *object,
+skeleton_handle_show_items_cb (DoryFreedesktopFileManager1 *object,
 			       GDBusMethodInvocation *invocation,
 			       const gchar *const *uris,
 			       const gchar *startup_id,
@@ -77,12 +77,12 @@ skeleton_handle_show_items_cb (NemoFreedesktopFileManager1 *object,
 
 	g_ptr_array_unref (files);
 
-	nemo_freedesktop_file_manager1_complete_show_items (object, invocation);
+	dory_freedesktop_file_manager1_complete_show_items (object, invocation);
 	return TRUE;
 }
 
 static gboolean
-skeleton_handle_show_folders_cb (NemoFreedesktopFileManager1 *object,
+skeleton_handle_show_folders_cb (DoryFreedesktopFileManager1 *object,
 				 GDBusMethodInvocation *invocation,
 				 const gchar *const *uris,
 				 const gchar *startup_id,
@@ -103,12 +103,12 @@ skeleton_handle_show_folders_cb (NemoFreedesktopFileManager1 *object,
 		g_object_unref (file);
 	}
 
-	nemo_freedesktop_file_manager1_complete_show_folders (object, invocation);
+	dory_freedesktop_file_manager1_complete_show_folders (object, invocation);
 	return TRUE;
 }
 
 static gboolean
-skeleton_handle_show_item_properties_cb (NemoFreedesktopFileManager1 *object,
+skeleton_handle_show_item_properties_cb (DoryFreedesktopFileManager1 *object,
 					 GDBusMethodInvocation *invocation,
 					 const gchar *const *uris,
 					 const gchar *startup_id,
@@ -129,7 +129,7 @@ skeleton_handle_show_item_properties_cb (NemoFreedesktopFileManager1 *object,
 
 	nemo_file_list_free (files);
 
-	nemo_freedesktop_file_manager1_complete_show_item_properties (object, invocation);
+	dory_freedesktop_file_manager1_complete_show_item_properties (object, invocation);
 	return TRUE;
 }
 
@@ -138,13 +138,13 @@ bus_acquired_cb (GDBusConnection *conn,
 		 const gchar     *name,
 		 gpointer         user_data)
 {
-	NemoFreedesktopDBus *fdb = user_data;
+	DoryFreedesktopDBus *fdb = user_data;
 
 	DEBUG ("Bus acquired at %s", name);
 
 	fdb->object_manager = g_dbus_object_manager_server_new ("/org/freedesktop/FileManager1");
 
-	fdb->skeleton = nemo_freedesktop_file_manager1_skeleton_new ();
+	fdb->skeleton = dory_freedesktop_file_manager1_skeleton_new ();
 
 	g_signal_connect (fdb->skeleton, "handle-show-items",
 			  G_CALLBACK (skeleton_handle_show_items_cb), fdb);
@@ -177,7 +177,7 @@ name_lost_cb (GDBusConnection *connection,
 static void
 nemo_freedesktop_dbus_dispose (GObject *object)
 {
-	NemoFreedesktopDBus *fdb = (NemoFreedesktopDBus *) object;
+	DoryFreedesktopDBus *fdb = (DoryFreedesktopDBus *) object;
 
 	if (fdb->owner_id != 0) {
 		g_bus_unown_name (fdb->owner_id);
@@ -196,7 +196,7 @@ nemo_freedesktop_dbus_dispose (GObject *object)
 }
 
 static void
-nemo_freedesktop_dbus_class_init (NemoFreedesktopDBusClass *klass)
+nemo_freedesktop_dbus_class_init (DoryFreedesktopDBusClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
@@ -204,7 +204,7 @@ nemo_freedesktop_dbus_class_init (NemoFreedesktopDBusClass *klass)
 }
 
 static void
-nemo_freedesktop_dbus_init (NemoFreedesktopDBus *fdb)
+nemo_freedesktop_dbus_init (DoryFreedesktopDBus *fdb)
 {
 	fdb->owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
 					"org.freedesktop.FileManager1",
@@ -217,16 +217,16 @@ nemo_freedesktop_dbus_init (NemoFreedesktopDBus *fdb)
 }
 
 void
-nemo_freedesktop_dbus_set_open_locations (NemoFreedesktopDBus *fdb,
+nemo_freedesktop_dbus_set_open_locations (DoryFreedesktopDBus *fdb,
 					      const gchar **locations)
 {
 	g_return_if_fail (NEMO_IS_FREEDESKTOP_DBUS (fdb));
 
-	nemo_freedesktop_file_manager1_set_open_locations (fdb->skeleton, locations);
+	dory_freedesktop_file_manager1_set_open_locations (fdb->skeleton, locations);
 }
 
 /* Tries to own the org.freedesktop.FileManager1 service name */
-NemoFreedesktopDBus *
+DoryFreedesktopDBus *
 nemo_freedesktop_dbus_new (void)
 {	
 	return g_object_new (nemo_freedesktop_dbus_get_type (),

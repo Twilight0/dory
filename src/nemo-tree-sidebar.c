@@ -38,20 +38,20 @@
 #include "nemo-properties-window.h"
 #include "nemo-window-slot.h"
 
-#include <libnemo-private/nemo-clipboard.h>
-#include <libnemo-private/nemo-clipboard-monitor.h>
-#include <libnemo-private/nemo-desktop-icon-file.h>
-#include <libnemo-private/nemo-file-attributes.h>
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-icon-names.h>
-#include <libnemo-private/nemo-program-choosing.h>
-#include <libnemo-private/nemo-tree-view-drag-dest.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-action-manager.h>
-#include <libnemo-private/nemo-action.h>
-#include <libnemo-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-clipboard.h>
+#include <libdory-private/nemo-clipboard-monitor.h>
+#include <libdory-private/nemo-desktop-icon-file.h>
+#include <libdory-private/nemo-file-attributes.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-icon-names.h>
+#include <libdory-private/nemo-program-choosing.h>
+#include <libdory-private/nemo-tree-view-drag-dest.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-action-manager.h>
+#include <libdory-private/nemo-action.h>
+#include <libdory-private/nemo-ui-utilities.h>
 
 #include <string.h>
 #include <eel/eel-gtk-extensions.h>
@@ -60,7 +60,7 @@
 #include <gio/gio.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_LIST_VIEW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 typedef struct {
         GObject parent;
@@ -1384,7 +1384,7 @@ rebuild_menu (FMTreeView *view)
                               &view->details->action_action_group);
 
     view->details->tv_action_group_merge_id =
-            gtk_ui_manager_add_ui_from_resource (view->details->ui_manager, "/org/nemo/nemo-tree-sidebar-ui.xml", NULL);
+            gtk_ui_manager_add_ui_from_resource (view->details->ui_manager, "/org/dory/nemo-tree-sidebar-ui.xml", NULL);
 
     nemo_action_manager_iterate_actions (view->details->action_manager,
                                          (NemoActionManagerIterFunc) add_action_to_ui,

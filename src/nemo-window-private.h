@@ -34,7 +34,7 @@
 #include "nemo-navigation-state.h"
 #include "nemo-bookmark-list.h"
 
-#include <libnemo-private/nemo-directory.h>
+#include <libdory-private/nemo-directory.h>
 
 /* FIXME bugzilla.gnome.org 42575: Migrate more fields into here. */
 struct NemoWindowDetails

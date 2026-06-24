@@ -2,11 +2,11 @@ dbusBuiltSources = gnome.gdbus_codegen(
   'nemo-freedesktop-generated',
   join_paths(meson.project_source_root(), 'data', 'freedesktop-dbus-interfaces.xml'),
   interface_prefix: 'org.freedesktop.',
-  namespace: 'NemoFreedesktop',
+  namespace: 'DoryFreedesktop',
   object_manager: true
 )
 
-nemoBuiltSources = gnome.gdbus_codegen(
+doryBuiltSources = gnome.gdbus_codegen(
   'nemo-cinnamon-dbus',
   join_paths(meson.project_source_root(), 'data', 'org.Cinnamon.xml'),
   interface_prefix: 'org.',
@@ -22,9 +22,9 @@ nemoFileChooserBuiltSources = gnome.gdbus_codegen(
   object_manager: false
 )
 
-nemoCommon_sources = [
+doryCommon_sources = [
   dbusBuiltSources,
-  nemoBuiltSources,
+  doryBuiltSources,
   nemoFileChooserBuiltSources,
   'nemo-action-config-widget.c',
   'nemo-application.c',
@@ -90,11 +90,11 @@ nemoCommon_sources = [
   'nemo-x-content-bar.c',
 ]
 
-nemoWindow_sources = [
+doryWindow_sources = [
   'nemo-main-application.c',
   'nemo-main.c',
 ]
-nemoWindow_headers = [
+doryWindow_headers = [
   'nemo-main-application.h',
 ]
 
@@ -111,76 +111,76 @@ nemoDesktop_headers = [
 
 
 if enableEmptyView
-  nemoCommon_sources += 'nemo-empty-view.c'
+  doryCommon_sources += 'nemo-empty-view.c'
 endif
 
-nemo_deps = [ cinnamon, gail, glib, gtk, math,
-  egg, nemo_extension, nemo_private, xapp ]
+dory_deps = [ cinnamon, gail, glib, gtk, math,
+  egg, dory_extension, dory_private, xapp ]
 
 if exempi_enabled
-  nemo_deps += exempi
+  dory_deps += exempi
 endif
 
 if libexif_enabled
-  nemo_deps += libexif
+  dory_deps += libexif
 endif
 
 if gtk_layer_shell_enabled
-  nemo_deps += gtk_layer_shell
-  nemo_deps += wayland_client
+  dory_deps += gtk_layer_shell
+  dory_deps += wayland_client
 endif
 
 nemo = executable('dory',
-  nemoCommon_sources + nemoWindow_sources,
+  doryCommon_sources + doryWindow_sources,
   include_directories: [ rootInclude ],
-  c_args: nemo_definitions,
-  dependencies: nemo_deps,
+  c_args: dory_definitions,
+  dependencies: dory_deps,
   install: true
 )
 
-nemoDesktop = executable('nemo-desktop',
-  nemoCommon_sources + nemoDesktop_sources,
-  include_directories: [ rootInclude],
-  c_args: nemo_definitions,
-  dependencies: nemo_deps,
-  install: true
-)
-
-nemo_autorun_software = executable('nemo-autorun-software',
-  [ 'nemo-autorun-software.c' ],
-  include_directories: [ rootInclude, ],
-  c_args: nemo_definitions,
-  dependencies: nemo_deps,
-  install: true
-)
-
-nemo_connect_server = executable('nemo-connect-server',
-  [
-    'nemo-bookmark-list.c',
-    'nemo-connect-server-dialog.c',
-    'nemo-connect-server-dialog-main.c',
-    'nemo-connect-server-operation.c'
-  ],
-  include_directories: [ rootInclude, ],
-  c_args: nemo_definitions,
-  dependencies: nemo_deps,
-  install: true
-)
-
-nemo_open_with = executable('nemo-open-with',
-  [ 'nemo-open-with-main.c' ],
-  include_directories: [ rootInclude, ],
-  c_args: nemo_definitions,
-  dependencies: nemo_deps,
-  install: true
-)
-
-# LibExecs
-nemo_extensions_list = executable('nemo-extensions-list',
-  [ 'nemo-extensions-list.c' ],
-  include_directories: [ rootInclude, ],
-  c_args: nemo_definitions,
-  dependencies: [ nemo_deps ],
-  install: true,
-  install_dir: libExecPath,
-)
+# nemoDesktop = executable('nemo-desktop',
+#   doryCommon_sources + nemoDesktop_sources,
+#   include_directories: [ rootInclude],
+#   c_args: dory_definitions,
+#   dependencies: dory_deps,
+#   install: true
+# )
+# 
+# nemo_autorun_software = executable('nemo-autorun-software',
+#   [ 'nemo-autorun-software.c' ],
+#   include_directories: [ rootInclude, ],
+#   c_args: dory_definitions,
+#   dependencies: dory_deps,
+#   install: true
+# )
+# 
+# nemo_connect_server = executable('nemo-connect-server',
+#   [
+#     'nemo-bookmark-list.c',
+#     'nemo-connect-server-dialog.c',
+#     'nemo-connect-server-dialog-main.c',
+#     'nemo-connect-server-operation.c'
+#   ],
+#   include_directories: [ rootInclude, ],
+#   c_args: dory_definitions,
+#   dependencies: dory_deps,
+#   install: true
+# )
+# 
+# nemo_open_with = executable('nemo-open-with',
+#   [ 'nemo-open-with-main.c' ],
+#   include_directories: [ rootInclude, ],
+#   c_args: dory_definitions,
+#   dependencies: dory_deps,
+#   install: true
+# )
+# 
+# # LibExecs
+# dory_extensions_list = executable('dory-extensions-list',
+#   [ 'dory-extensions-list.c' ],
+#   include_directories: [ rootInclude, ],
+#   c_args: dory_definitions,
+#   dependencies: [ dory_deps ],
+#   install: true,
+#   install_dir: libExecPath,
+# )

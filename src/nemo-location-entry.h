@@ -27,7 +27,7 @@
 #ifndef NEMO_LOCATION_ENTRY_H
 #define NEMO_LOCATION_ENTRY_H
 
-#include <libnemo-private/nemo-entry.h>
+#include <libdory-private/nemo-entry.h>
 
 #define NEMO_TYPE_LOCATION_ENTRY nemo_location_entry_get_type()
 #define NEMO_LOCATION_ENTRY(obj) \

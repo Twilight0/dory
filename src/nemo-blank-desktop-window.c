@@ -34,19 +34,19 @@
 #include <gtk-layer-shell/gtk-layer-shell.h>
 #endif
 
-#include <libnemo-private/nemo-desktop-utils.h>
-#include <libnemo-private/nemo-action.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-desktop-utils.h>
+#include <libdory-private/nemo-action.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-ui-utilities.h>
 
 #include <eel/eel-gtk-extensions.h>
 
 #include "nemo-plugin-manager.h"
 
 #define DEBUG_FLAG NEMO_DEBUG_DESKTOP
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 enum {
     PROP_MONITOR = 1,
@@ -214,7 +214,7 @@ update_actions_menu (NemoBlankDesktopWindow *window)
     gtk_ui_manager_insert_action_group (window->details->ui_manager, window->details->action_group, 0);
 
     window->details->actions_merge_id =
-            gtk_ui_manager_add_ui_from_resource (window->details->ui_manager, "/org/nemo/nemo-blank-desktop-window-ui.xml", NULL);
+            gtk_ui_manager_add_ui_from_resource (window->details->ui_manager, "/org/dory/nemo-blank-desktop-window-ui.xml", NULL);
 
     nemo_action_manager_iterate_actions (window->details->action_manager,
                                          (NemoActionManagerIterFunc) add_action_to_ui,

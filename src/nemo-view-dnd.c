@@ -40,8 +40,8 @@
 
 #include <glib/gi18n.h>
 
-#include <libnemo-private/nemo-clipboard.h>
-#include <libnemo-private/nemo-dnd.h>
+#include <libdory-private/nemo-clipboard.h>
+#include <libdory-private/nemo-dnd.h>
 
 #define GET_ANCESTOR(obj) \
 	GTK_WINDOW (gtk_widget_get_ancestor (GTK_WIDGET (obj), GTK_TYPE_WINDOW))

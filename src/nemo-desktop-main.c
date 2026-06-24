@@ -32,8 +32,8 @@
 
 #include "nemo-desktop-application.h"
 
-#include <libnemo-private/nemo-debug.h>
-#include <libnemo-private/nemo-malloc-utils.h>
+#include <libdory-private/nemo-debug.h>
+#include <libdory-private/nemo-malloc-utils.h>
 #include <eel/eel-debug.h>
 
 #include <glib/gi18n.h>

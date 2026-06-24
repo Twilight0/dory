@@ -24,7 +24,7 @@
 #include <config.h>
 #include <gio/gio.h>
 #include "nemo-connect-server-dialog.h"
-#include <libnemo-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-global-preferences.h>
 
 /* This file contains the glue for the calls from the connect to server dialog
  * to the main nemo binary. A different version of this glue is in

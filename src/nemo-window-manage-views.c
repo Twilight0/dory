@@ -49,19 +49,19 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <glib/gi18n.h>
-#include <libnemo-extension/nemo-location-widget-provider.h>
-#include <libnemo-private/nemo-desktop-directory.h>
-#include <libnemo-private/nemo-file-attributes.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-monitor.h>
-#include <libnemo-private/nemo-search-directory.h>
+#include <libdory-extension/nemo-location-widget-provider.h>
+#include <libdory-private/nemo-desktop-directory.h>
+#include <libdory-private/nemo-file-attributes.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-monitor.h>
+#include <libdory-private/nemo-search-directory.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_WINDOW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 /* FIXME bugzilla.gnome.org 41243:
  * We should use inheritance instead of these special cases

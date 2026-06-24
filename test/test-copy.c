@@ -1,8 +1,8 @@
 #include "test.h"
 
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-progress-info.h>
-#include <libnemo-private/nemo-progress-info-manager.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-progress-info.h>
+#include <libdory-private/nemo-progress-info-manager.h>
 
 static void
 copy_done (GHashTable *debuting_uris, 

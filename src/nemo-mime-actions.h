@@ -27,7 +27,7 @@
 
 #include <gio/gio.h>
 
-#include <libnemo-private/nemo-file.h>
+#include <libdory-private/nemo-file.h>
 
 #include "nemo-window.h"
 

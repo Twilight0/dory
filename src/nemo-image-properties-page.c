@@ -30,8 +30,8 @@
 #include <glib/gi18n.h>
 #include <gio/gio.h>
 #include <eel/eel-vfs-extensions.h>
-#include <libnemo-extension/nemo-property-page-provider.h>
-#include <libnemo-private/nemo-module.h>
+#include <libdory-extension/nemo-property-page-provider.h>
+#include <libdory-private/nemo-module.h>
 #include <string.h>
 
 #ifdef HAVE_EXIF

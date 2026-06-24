@@ -10,8 +10,8 @@
 #include "nemo-view.h"
 #include "nemo-file.h"
 #include <glib.h>
-#include <libnemo-private/nemo-action-manager.h>
-#include <libnemo-private/nemo-action-symbols.h>
+#include <libdory-private/nemo-action-manager.h>
+#include <libdory-private/nemo-action-symbols.h>
 #include "nemo-global-preferences.h"
 
 G_DEFINE_TYPE (NemoActionConfigWidget, nemo_action_config_widget, NEMO_TYPE_CONFIG_BASE_WIDGET);

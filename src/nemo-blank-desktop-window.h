@@ -27,7 +27,7 @@
 
 #include <gtk/gtk.h>
 
-#include <libnemo-private/nemo-action-manager.h>
+#include <libdory-private/nemo-action-manager.h>
 
 #define NEMO_TYPE_BLANK_DESKTOP_WINDOW nemo_blank_desktop_window_get_type()
 #define NEMO_BLANK_DESKTOP_WINDOW(obj) \

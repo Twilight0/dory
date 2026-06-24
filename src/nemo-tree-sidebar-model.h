@@ -30,7 +30,7 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 #include <gio/gio.h>
-#include <libnemo-private/nemo-file.h>
+#include <libdory-private/nemo-file.h>
 
 #define FM_TYPE_TREE_MODEL fm_tree_model_get_type()
 #define FM_TREE_MODEL(obj) \

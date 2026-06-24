@@ -36,8 +36,8 @@
 
 #include <eel/eel-string.h>
 
-#include <libnemo-private/nemo-progress-info.h>
-#include <libnemo-private/nemo-progress-info-manager.h>
+#include <libdory-private/nemo-progress-info.h>
+#include <libdory-private/nemo-progress-info-manager.h>
 
 #include <libxapp/xapp-gtk-window.h>
 #include <libxapp/xapp-status-icon.h>
@@ -81,7 +81,7 @@ progress_ui_handler_ensure_status_icon (NemoProgressUIHandler *self)
 	}
 
     status_icon = xapp_status_icon_new ();
-    xapp_status_icon_set_icon_name (status_icon, "nemo-progress-0-symbolic");
+    xapp_status_icon_set_icon_name (status_icon, "dory-progress-0-symbolic");
     g_signal_connect (status_icon, "activate",
                       (GCallback) status_icon_activate_cb,
                       self);
@@ -103,7 +103,7 @@ get_icon_name_from_percent (guint pct)
     else
         rounded = pct + (10 - ones);
 
-    icon_name = g_strdup_printf ("nemo-progress-%d-symbolic", rounded);
+    icon_name = g_strdup_printf ("dory-progress-%d-symbolic", rounded);
 
     return icon_name;
 }

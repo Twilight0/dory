@@ -6,7 +6,7 @@
 
 #include <eel/eel-debug.h>
 #include <eel/eel.h>
-#include <libnemo-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file-utilities.h>
 
 void       test_init                            (int                         *argc,
 						 char                      ***argv);

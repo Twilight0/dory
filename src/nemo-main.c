@@ -32,8 +32,8 @@
 
 #include "nemo-main-application.h"
 
-#include <libnemo-private/nemo-debug.h>
-#include <libnemo-private/nemo-malloc-utils.h>
+#include <libdory-private/nemo-debug.h>
+#include <libdory-private/nemo-malloc-utils.h>
 #include <eel/eel-debug.h>
 
 #include <glib/gi18n.h>
@@ -71,7 +71,7 @@ main (int argc, char *argv[])
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
-	g_set_prgname ("nemo");
+	g_set_prgname ("dory");
 
 #ifdef HAVE_EXEMPI
 	xmp_init();

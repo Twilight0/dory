@@ -42,13 +42,13 @@
 
 #include <eel/eel-vfs-extensions.h>
 #include <eel/eel-gtk-extensions.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-icon-names.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-desktop-utils.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-icon-names.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-desktop-utils.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_DESKTOP
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 enum {
     PROP_MONITOR = 1,

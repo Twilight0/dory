@@ -30,11 +30,11 @@
 
 #include <eel/eel-vfs-extensions.h>
 
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-icon-names.h>
-#include <libnemo-private/nemo-icon-dnd.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-icon-names.h>
+#include <libdory-private/nemo-icon-dnd.h>
 
 #include "nemo-window.h"
 #include "nemo-window-private.h"

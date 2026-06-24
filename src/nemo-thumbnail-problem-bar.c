@@ -25,7 +25,7 @@
 #include "nemo-application.h"
 
 #include "nemo-view.h"
-#include <libnemo-private/nemo-file.h>
+#include <libdory-private/nemo-file.h>
 
 #define NEMO_THUMBNAIL_PROBLEM_BAR_GET_PRIVATE(o)\
 	(G_TYPE_INSTANCE_GET_PRIVATE ((o), NEMO_TYPE_THUMBNAIL_PROBLEM_BAR, NemoThumbnailProblemBarPrivate))

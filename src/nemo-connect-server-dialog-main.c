@@ -36,8 +36,8 @@
 
 #include <eel/eel-stock-dialogs.h>
 
-#include <libnemo-private/nemo-icon-names.h>
-#include <libnemo-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-icon-names.h>
+#include <libdory-private/nemo-global-preferences.h>
 
 #include "nemo-connect-server-dialog.h"
 

@@ -1,4 +1,4 @@
-/* nemo-extension-config-widget.h */
+/* dory-extension-config-widget.h */
 
 /*  A widget that displays a list of extensions to enable or disable.
  *  This is usually part of a NemoPluginManagerWidget
@@ -11,7 +11,7 @@
 
 #include <glib.h>
 
-G_DEFINE_TYPE (NemoExtensionConfigWidget, nemo_extension_config_widget, NEMO_TYPE_CONFIG_BASE_WIDGET);
+G_DEFINE_TYPE (NemoExtensionConfigWidget, dory_extension_config_widget, NEMO_TYPE_CONFIG_BASE_WIDGET);
 
 
 typedef struct {
@@ -139,7 +139,7 @@ on_config_clicked (GtkLinkButton *button,
     return GDK_EVENT_STOP;
 }
 
-#define LINE_PREFIX "NEMO_EXTENSION:::"
+#define LINE_PREFIX "DORY_EXTENSION:::"
 #define LINE_PREFIX_LEN 17
 
 static void
@@ -147,7 +147,7 @@ detect_extensions (NemoExtensionConfigWidget *widget)
 {
     gchar *out = NULL;
 
-    if (g_spawn_command_line_sync (LIBEXECDIR "/nemo-extensions-list",
+    if (g_spawn_command_line_sync (LIBEXECDIR "/dory-extensions-list",
                                    &out,
                                    NULL,
                                    NULL,
@@ -190,7 +190,7 @@ detect_extensions (NemoExtensionConfigWidget *widget)
             g_strfreev (lines);
         }
     } else {
-        g_printerr ("oops could not run nemo-extensions-list\n");
+        g_printerr ("oops could not run dory-extensions-list\n");
     }
 }
 
@@ -314,7 +314,7 @@ refresh_widget (NemoExtensionConfigWidget *widget)
 static void
 on_settings_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    NemoExtensionConfigWidget *w = NEMO_EXTENSION_CONFIG_WIDGET (user_data);
+    NemoExtensionConfigWidget *w = DORY_EXTENSION_CONFIG_WIDGET (user_data);
 
     update_restart_visiblity (w);
     refresh_widget (w);
@@ -361,9 +361,9 @@ on_restart_clicked (GtkWidget *button, NemoExtensionConfigWidget *widget)
 }
 
 static void
-nemo_extension_config_widget_finalize (GObject *object)
+dory_extension_config_widget_finalize (GObject *object)
 {
-    NemoExtensionConfigWidget *widget = NEMO_EXTENSION_CONFIG_WIDGET (object);
+    NemoExtensionConfigWidget *widget = DORY_EXTENSION_CONFIG_WIDGET (object);
 
     if (widget->current_extensions != NULL) {
         g_list_free_full (widget->current_extensions, (GDestroyNotify) extension_proxy_free);
@@ -374,20 +374,20 @@ nemo_extension_config_widget_finalize (GObject *object)
 
     g_signal_handler_disconnect (nemo_plugin_preferences, widget->bl_handler);
 
-    G_OBJECT_CLASS (nemo_extension_config_widget_parent_class)->finalize (object);
+    G_OBJECT_CLASS (dory_extension_config_widget_parent_class)->finalize (object);
 }
 
 static void
-nemo_extension_config_widget_class_init (NemoExtensionConfigWidgetClass *klass)
+dory_extension_config_widget_class_init (NemoExtensionConfigWidgetClass *klass)
 {
     GObjectClass *oclass;
     oclass = G_OBJECT_CLASS (klass);
 
-    oclass->finalize = nemo_extension_config_widget_finalize;
+    oclass->finalize = dory_extension_config_widget_finalize;
 }
 
 static void
-nemo_extension_config_widget_init (NemoExtensionConfigWidget *self)
+dory_extension_config_widget_init (NemoExtensionConfigWidget *self)
 {
     self->current_extensions = NULL;
     self->initial_extension_ids = NULL;
@@ -437,7 +437,7 @@ nemo_extension_config_widget_init (NemoExtensionConfigWidget *self)
 }
 
 GtkWidget *
-nemo_extension_config_widget_new (void)
+dory_extension_config_widget_new (void)
 {
   return g_object_new (NEMO_TYPE_EXTENSION_CONFIG_WIDGET, NULL);
 }

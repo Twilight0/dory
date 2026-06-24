@@ -29,7 +29,7 @@
 #include <string.h>
 
 #include "nemo-x-content-bar.h"
-#include <libnemo-private/nemo-program-choosing.h>
+#include <libdory-private/nemo-program-choosing.h>
 
 #define NEMO_X_CONTENT_BAR_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), NEMO_TYPE_X_CONTENT_BAR, NemoXContentBarPrivate))
 

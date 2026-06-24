@@ -33,10 +33,10 @@
 
 #define NEMO_FILTER_NO_MATCH G_MAXINT
 
-#include <libnemo-private/nemo-directory.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-icon-container.h>
-#include <libnemo-private/nemo-link.h>
+#include <libdory-private/nemo-directory.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-icon-container.h>
+#include <libdory-private/nemo-link.h>
 
 typedef struct NemoView NemoView;
 typedef struct NemoViewClass NemoViewClass;

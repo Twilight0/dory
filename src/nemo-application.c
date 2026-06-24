@@ -50,21 +50,21 @@
 #include "nemo-window-slot.h"
 #include "nemo-statusbar.h"
 
-#include <libnemo-private/nemo-dbus-manager.h>
-#include <libnemo-private/nemo-directory-private.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-lib-self-check-functions.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-signaller.h>
-#include <libnemo-private/nemo-ui-utilities.h>
-#include <libnemo-private/nemo-undo-manager.h>
-#include <libnemo-private/nemo-thumbnails.h>
-#include <libnemo-extension/nemo-menu-provider.h>
+#include <libdory-private/nemo-dbus-manager.h>
+#include <libdory-private/nemo-directory-private.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-lib-self-check-functions.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-signaller.h>
+#include <libdory-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-undo-manager.h>
+#include <libdory-private/nemo-thumbnails.h>
+#include <libdory-extension/nemo-menu-provider.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_APPLICATION
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -185,7 +185,7 @@ add_fallback_mandatory_css_provider (const gchar *theme_name)
     if (!g_strstr_len (css, -1, "nemo")) {
         g_warning ("The theme appears to have no nemo support.  Adding some...");
 
-        init_fallback_css = load_file_contents_from_resource ("/org/nemo/nemo-style-fallback-mandatory.css",
+        init_fallback_css = load_file_contents_from_resource ("/org/dory/nemo-style-fallback-mandatory.css",
                                                               &error);
 
         if (!init_fallback_css) {
@@ -314,10 +314,10 @@ init_icons_and_styles (void)
                             NEMO_STATUSBAR_ICON_SIZE,
                             NEMO_STATUSBAR_ICON_SIZE);
 
-    add_css_provider_at_priority ("/org/nemo/nemo-style-fallback.css",
+    add_css_provider_at_priority ("/org/dory/nemo-style-fallback.css",
                                   GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
 
-    add_css_provider_at_priority ("/org/nemo/nemo-style-application.css",
+    add_css_provider_at_priority ("/org/dory/nemo-style-application.css",
                                   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     GtkSettings *gtk_settings = gtk_settings_get_default ();

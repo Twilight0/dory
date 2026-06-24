@@ -33,7 +33,7 @@
       <xi:include href="xml/nemo-simple-button.xml" />
     </chapter>
 
-    <xi:include href="xml/nemo-extension-types.xml" />
+    <xi:include href="xml/dory-extension-types.xml" />
 
 
   </part>

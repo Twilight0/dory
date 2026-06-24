@@ -49,18 +49,18 @@
 #include <eel/eel-string.h>
 #include <eel/eel-vfs-extensions.h>
 
-#include <libnemo-extension/nemo-property-page-provider.h>
-#include <libnemo-private/nemo-entry.h>
-#include <libnemo-private/nemo-file-attributes.h>
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-desktop-icon-file.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-link.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-mime-application-chooser.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-undo-signal-handlers.h>
-#include <libnemo-private/nemo-undo.h>
+#include <libdory-extension/nemo-property-page-provider.h>
+#include <libdory-private/nemo-entry.h>
+#include <libdory-private/nemo-file-attributes.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-desktop-icon-file.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-link.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-mime-application-chooser.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-undo-signal-handlers.h>
+#include <libdory-private/nemo-undo.h>
 
 #if HAVE_SYS_VFS_H
 #include <sys/vfs.h>

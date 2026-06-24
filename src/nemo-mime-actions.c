@@ -39,15 +39,15 @@
 #include <gdk/gdkx.h>
 #include <libxapp/xapp-favorites.h>
 
-#include <libnemo-private/nemo-file-attributes.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-file-operations.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-program-choosing.h>
-#include <libnemo-private/nemo-desktop-icon-file.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-signaller.h>
-#include <libnemo-private/nemo-mime-application-chooser.h>
+#include <libdory-private/nemo-file-attributes.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-file-operations.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-program-choosing.h>
+#include <libdory-private/nemo-desktop-icon-file.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-signaller.h>
+#include <libdory-private/nemo-mime-application-chooser.h>
 #include <sys/stat.h>
 
 enum {
@@ -57,7 +57,7 @@ enum {
 };
 
 #define DEBUG_FLAG NEMO_DEBUG_MIME
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 typedef enum {
 	ACTIVATION_ACTION_LAUNCH_DESKTOP_FILE,

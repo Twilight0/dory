@@ -33,12 +33,12 @@
 #include <gio/gio.h>
 #include <eel/eel-glib-extensions.h>
 #include "nemo-icon-private.h"
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-file-attributes.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-thumbnails.h>
-#include <libnemo-private/nemo-desktop-icon-file.h>
-#include <libnemo-private/nemo-desktop-utils.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-file-attributes.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-thumbnails.h>
+#include <libdory-private/nemo-desktop-icon-file.h>
+#include <libdory-private/nemo-desktop-utils.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_ICON_CONTAINER
 #include "nemo-debug.h"

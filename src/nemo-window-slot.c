@@ -37,12 +37,12 @@
 
 #include <glib/gi18n.h>
 
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_WINDOW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include <eel/eel-string.h>
 

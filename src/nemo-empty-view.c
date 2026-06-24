@@ -30,7 +30,7 @@
 #include "nemo-view-factory.h"
 
 #include <string.h>
-#include <libnemo-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file-utilities.h>
 #include <eel/eel-vfs-extensions.h>
 
 struct NemoEmptyViewDetails {

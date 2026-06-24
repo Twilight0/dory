@@ -44,25 +44,25 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <gio/gio.h>
-#include <libnemo-private/nemo-clipboard-monitor.h>
-#include <libnemo-private/nemo-directory.h>
-#include <libnemo-private/nemo-dnd.h>
-#include <libnemo-private/nemo-file-dnd.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-ui-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-icon-container.h>
-#include <libnemo-private/nemo-icon-dnd.h>
-#include <libnemo-private/nemo-icon.h>
-#include <libnemo-private/nemo-link.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-clipboard.h>
-#include <libnemo-private/nemo-desktop-icon-file.h>
-#include <libnemo-private/nemo-desktop-utils.h>
-#include <libnemo-private/nemo-desktop-directory.h>
+#include <libdory-private/nemo-clipboard-monitor.h>
+#include <libdory-private/nemo-directory.h>
+#include <libdory-private/nemo-dnd.h>
+#include <libdory-private/nemo-file-dnd.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-icon-container.h>
+#include <libdory-private/nemo-icon-dnd.h>
+#include <libdory-private/nemo-icon.h>
+#include <libdory-private/nemo-link.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-clipboard.h>
+#include <libdory-private/nemo-desktop-icon-file.h>
+#include <libdory-private/nemo-desktop-utils.h>
+#include <libdory-private/nemo-desktop-directory.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_ICON_VIEW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include <locale.h>
 #include <signal.h>
@@ -1497,7 +1497,7 @@ nemo_icon_view_merge_menus (NemoView *view)
 	g_object_unref (action_group); /* owned by ui manager */
 
 	icon_view->details->icon_merge_id =
-		gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/nemo/nemo-icon-view-ui.xml", NULL);
+		gtk_ui_manager_add_ui_from_resource (ui_manager, "/org/dory/nemo-icon-view-ui.xml", NULL);
 
 	/* Do one-time state-setting here; context-dependent state-setting
 	 * is done in update_menus.

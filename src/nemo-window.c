@@ -62,17 +62,17 @@
 #ifdef HAVE_X11_XF86KEYSYM_H
 #include <X11/XF86keysym.h>
 #endif
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-file-attributes.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-metadata.h>
-#include <libnemo-private/nemo-clipboard.h>
-#include <libnemo-private/nemo-undo.h>
-#include <libnemo-private/nemo-search-directory.h>
-#include <libnemo-private/nemo-signaller.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file-attributes.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-metadata.h>
+#include <libdory-private/nemo-clipboard.h>
+#include <libdory-private/nemo-undo.h>
+#include <libdory-private/nemo-search-directory.h>
+#include <libdory-private/nemo-signaller.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_WINDOW
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include <math.h>
 #include <sys/time.h>

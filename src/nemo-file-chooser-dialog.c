@@ -1130,7 +1130,7 @@ nemo_file_chooser_dialog_new (const gchar *title,
     gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
     
     GError *error = NULL;
-    if (!gtk_builder_add_from_resource (builder, "/org/nemo/nemo-file-chooser-dialog.glade", &error)) {
+    if (!gtk_builder_add_from_resource (builder, "/org/dory/nemo-file-chooser-dialog.glade", &error)) {
         g_warning ("Failed to load file chooser UI resource: %s", error->message);
         g_object_unref (builder);
         return NULL;

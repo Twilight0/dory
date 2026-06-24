@@ -35,10 +35,10 @@
 
 #include <eel/eel-glib-extensions.h>
 
-#include <libnemo-private/nemo-column-chooser.h>
-#include <libnemo-private/nemo-column-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-module.h>
+#include <libdory-private/nemo-column-chooser.h>
+#include <libdory-private/nemo-column-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-module.h>
 
 #include "nemo-plugin-manager.h"
 #include "nemo-template-config-widget.h"
@@ -1195,7 +1195,7 @@ nemo_file_management_properties_dialog_show (GtkWindow   *window,
 	builder = gtk_builder_new ();
     gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
 	gtk_builder_add_from_resource (builder,
-				       "/org/nemo/nemo-file-management-properties.glade",
+				       "/org/dory/nemo-file-management-properties.glade",
 				       NULL);
 
 	nemo_file_management_properties_dialog_setup (builder, window, initial_page);

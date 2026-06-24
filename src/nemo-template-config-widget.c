@@ -9,7 +9,7 @@
 #include "nemo-view.h"
 #include "nemo-file.h"
 #include "nemo-global-preferences.h"
-#include <libnemo-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-file-utilities.h>
 
 #include <glib.h>
 

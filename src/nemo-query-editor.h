@@ -26,7 +26,7 @@
 
 #include <gtk/gtk.h>
 
-#include <libnemo-private/nemo-query.h>
+#include <libdory-private/nemo-query.h>
 
 G_BEGIN_DECLS
 

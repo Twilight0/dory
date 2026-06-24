@@ -30,10 +30,10 @@
 #include <eel/eel-glib-extensions.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <libnemo-extension/nemo-extension-types.h>
-#include <libnemo-extension/nemo-file-info.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-file-attributes.h>
+#include <libdory-extension/dory-extension-types.h>
+#include <libdory-extension/nemo-file-info.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-file-attributes.h>
 
 #define MAIN_GROUP "Desktop Entry"
 

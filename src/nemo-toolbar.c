@@ -33,8 +33,8 @@
 #include "nemo-actions.h"
 #include "nemo-file-utilities.h"
 #include <glib/gi18n.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-ui-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-ui-utilities.h>
 
 struct _NemoToolbarPriv {
 	GtkWidget *toolbar;

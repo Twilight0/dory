@@ -24,9 +24,9 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
-#include <libnemo-private/nemo-file.h>
-#include <libnemo-private/nemo-directory.h>
-#include <libnemo-extension/nemo-column.h>
+#include <libdory-private/nemo-file.h>
+#include <libdory-private/nemo-directory.h>
+#include <libdory-extension/nemo-column.h>
 
 #ifndef NEMO_LIST_MODEL_H
 #define NEMO_LIST_MODEL_H

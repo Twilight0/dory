@@ -44,17 +44,17 @@
 #include "nemo-window-private.h"
 
 #include <eel/eel-vfs-extensions.h>
-#include <libnemo-private/nemo-desktop-link-monitor.h>
-#include <libnemo-private/nemo-desktop-metadata.h>
-#include <libnemo-private/nemo-file-utilities.h>
-#include <libnemo-private/nemo-global-preferences.h>
-#include <libnemo-private/nemo-module.h>
-#include <libnemo-private/nemo-signaller.h>
-#include <libnemo-private/nemo-undo-manager.h>
-#include <libnemo-extension/nemo-menu-provider.h>
+#include <libdory-private/nemo-desktop-link-monitor.h>
+#include <libdory-private/nemo-desktop-metadata.h>
+#include <libdory-private/nemo-file-utilities.h>
+#include <libdory-private/nemo-global-preferences.h>
+#include <libdory-private/nemo-module.h>
+#include <libdory-private/nemo-signaller.h>
+#include <libdory-private/nemo-undo-manager.h>
+#include <libdory-extension/nemo-menu-provider.h>
 
 #define DEBUG_FLAG NEMO_DEBUG_APPLICATION
-#include <libnemo-private/nemo-debug.h>
+#include <libdory-private/nemo-debug.h>
 
 #include <sys/types.h>
 #include <fcntl.h>
@@ -69,7 +69,7 @@ G_DEFINE_TYPE (NemoDesktopApplication, nemo_desktop_application, NEMO_TYPE_APPLI
 
 struct _NemoDesktopApplicationPriv {
     NemoDesktopManager *desktop_manager;
-    NemoFreedesktopDBus *fdb_manager;
+    DoryFreedesktopDBus *fdb_manager;
 };
 
 static void
@@ -218,7 +218,7 @@ desktop_already_managed (void)
         GdkWindow *window = GDK_WINDOW (iter->data);
 
         if (gdk_window_get_type_hint (window) == GDK_WINDOW_TYPE_HINT_DESKTOP) {
-            GSettings *desktop_preferences = g_settings_new("org.nemo.desktop");
+            GSettings *desktop_preferences = g_settings_new("org.dory.desktop");
 
             gchar **ignored = g_settings_get_strv (desktop_preferences, NEMO_PREFERENCES_DESKTOP_IGNORED_DESKTOP_HANDLERS);
             if (!desktop_handler_is_ignored (window, ignored)) {
@@ -235,7 +235,7 @@ desktop_already_managed (void)
 
     if (ret) {
         g_warning ("Desktop already managed by another application, skipping desktop setup.\n"
-                   "To change this, modify org.nemo.desktop 'ignored-desktop-handlers'.\n");
+                   "To change this, modify org.dory.desktop 'ignored-desktop-handlers'.\n");
     }
 
     return ret;
@@ -555,7 +555,7 @@ NemoApplication *
 nemo_desktop_application_get_singleton (void)
 {
     return nemo_application_initialize_singleton (NEMO_TYPE_DESKTOP_APPLICATION,
-                                                  "application-id", "org.NemoDesktop",
+                                                  "application-id", "org.DoryDesktop",
                                                   "flags", G_APPLICATION_HANDLES_OPEN,
                                                   "register-session", TRUE,
                                                   NULL);
