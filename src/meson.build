@@ -15,10 +15,10 @@ nemoBuiltSources = gnome.gdbus_codegen(
 )
 
 nemoFileChooserBuiltSources = gnome.gdbus_codegen(
-  'nemo-file-chooser-generated',
-  join_paths(meson.project_source_root(), 'data', 'org.Nemo.FileChooser.xml'),
-  interface_prefix: 'org.Nemo.',
-  namespace: 'Nemo',
+  'dory-file-chooser-generated',
+  join_paths(meson.project_source_root(), 'data', 'org.Dory.FileChooser.xml'),
+  interface_prefix: 'org.Dory.',
+  namespace: 'Dory',
   object_manager: false
 )
 
@@ -130,7 +130,7 @@ if gtk_layer_shell_enabled
   nemo_deps += wayland_client
 endif
 
-nemo = executable('nemo',
+nemo = executable('dory',
   nemoCommon_sources + nemoWindow_sources,
   include_directories: [ rootInclude ],
   c_args: nemo_definitions,

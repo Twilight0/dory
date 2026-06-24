@@ -45,8 +45,8 @@ dbusFiles = [
   ),
 
   configure_file(
-    input : 'org.Nemo.FileChooser.service.in',
-    output: 'org.Nemo.FileChooser.service',
+    input : 'org.Dory.FileChooser.service.in',
+    output: 'org.Dory.FileChooser.service',
     configuration: dataConf,
   ),
 ]

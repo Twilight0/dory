@@ -10,12 +10,12 @@
 #include "nemo-application.h"
 #include "nemo-file-chooser-dbus.h"
 #include "nemo-file-chooser-dialog.h"
-#include "nemo-file-chooser-generated.h"
+#include "dory-file-chooser-generated.h"
 
 struct _NemoFileChooserDBus {
     GObject parent;
     guint owner_id;
-    NemoFileChooser *skeleton;
+    DoryFileChooser *skeleton;
 };
 
 struct _NemoFileChooserDBusClass {
@@ -27,7 +27,7 @@ G_DEFINE_TYPE (NemoFileChooserDBus, nemo_file_chooser_dbus, G_TYPE_OBJECT);
 typedef struct {
     GDBusMethodInvocation *invocation;
     GtkWidget *dialog;
-    NemoFileChooser *skeleton;
+    DoryFileChooser *skeleton;
 } ResponseData;
 
 static void
@@ -50,7 +50,7 @@ on_open_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data
 
     g_ptr_array_add (results, NULL); // NULL terminator for const gchar *const * parameter
 
-    nemo_file_chooser_complete_open_file (data->skeleton, data->invocation, (const gchar *const *)results->pdata);
+    dory_file_chooser_complete_open_file (data->skeleton, data->invocation, (const gchar *const *)results->pdata);
     
     g_ptr_array_unref (results);
     gtk_widget_destroy (GTK_WIDGET (dialog));
@@ -59,7 +59,7 @@ on_open_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data
 }
 
 static gboolean
-handle_open_file_cb (NemoFileChooser *object,
+handle_open_file_cb (DoryFileChooser *object,
                      GDBusMethodInvocation *invocation,
                      const gchar *title,
                      const gchar *const *filters,
@@ -121,7 +121,7 @@ on_save_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data
         }
     }
 
-    nemo_file_chooser_complete_save_file (data->skeleton, data->invocation, result ? result : "");
+    dory_file_chooser_complete_save_file (data->skeleton, data->invocation, result ? result : "");
     
     g_free (result);
     gtk_widget_destroy (GTK_WIDGET (dialog));
@@ -130,7 +130,7 @@ on_save_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data
 }
 
 static gboolean
-handle_save_file_cb (NemoFileChooser *object,
+handle_save_file_cb (DoryFileChooser *object,
                      GDBusMethodInvocation *invocation,
                      const gchar *title,
                      const gchar *initial_folder,
@@ -164,14 +164,14 @@ bus_acquired_cb (GDBusConnection *conn,
 {
     NemoFileChooserDBus *self = user_data;
 
-    self->skeleton = nemo_file_chooser_skeleton_new ();
+    self->skeleton = dory_file_chooser_skeleton_new ();
 
     g_signal_connect (self->skeleton, "handle-open-file",
                       G_CALLBACK (handle_open_file_cb), self);
     g_signal_connect (self->skeleton, "handle-save-file",
                       G_CALLBACK (handle_save_file_cb), self);
 
-    g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (self->skeleton), conn, "/org/Nemo/FileChooser", NULL);
+    g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (self->skeleton), conn, "/org/Dory/FileChooser", NULL);
 }
 
 static void
@@ -218,7 +218,7 @@ static void
 nemo_file_chooser_dbus_init (NemoFileChooserDBus *self)
 {
     self->owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
-                                    "org.Nemo.FileChooser",
+                                    "org.Dory.FileChooser",
                                     G_BUS_NAME_OWNER_FLAGS_NONE,
                                     bus_acquired_cb,
                                     name_acquired_cb,
