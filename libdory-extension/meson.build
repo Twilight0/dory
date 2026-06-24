@@ -52,7 +52,7 @@ dory_extension_lib = shared_library('dory-extension',
 )
 
 install_headers(dory_extension_headers,
-  subdir: join_paths('nemo', 'libdory-extension')
+  subdir: join_paths('dory', 'libdory-extension')
 )
 
 dory_extension = declare_dependency(
@@ -65,24 +65,24 @@ typelibdir = go_intr.get_variable(pkgconfig: 'typelibdir',
   pkgconfig_define: ['libdir', join_paths(get_option('prefix'), get_option('libdir'))]
 )
 
-gnome.generate_gir(dory_extension_lib,
-  sources: dory_extension_sources + dory_extension_headers,
-  nsversion: '3.0',
-  namespace: 'Nemo',
-  export_packages: 'libdory-extension',
-  includes: [ 'Gtk-3.0', 'Gio-2.0', 'GLib-2.0', ],
-  include_directories: [ rootInclude, ],
-  install_dir_typelib: typelibdir,
-  install: true,
-)
+# gnome.generate_gir(dory_extension_lib,
+#   sources: dory_extension_sources + dory_extension_headers,
+#   nsversion: '3.0',
+#   namespace: 'Dory',
+#   export_packages: 'libdory-extension',
+#   includes: [ 'Gtk-3.0', 'Gio-2.0', 'GLib-2.0', ],
+#   include_directories: [ rootInclude, ],
+#   install_dir_typelib: typelibdir,
+#   install: true,
+# )
 
 pkgconfig.generate(filebase: 'libdory-extension',
   name: 'libdory-extension',
-  description: 'A library to create Nemo view extensions',
+  description: 'A library to create Dory view extensions',
   version: meson.project_version(),
   requires: [ 'gio-2.0', 'glib-2.0', 'gtk+-3.0' ],
   libraries: dory_extension_lib,
-  subdirs: 'nemo',
-  variables: 'extensiondir=${libdir}/@0@/@1@'.format('nemo', 'extensions-3.0'),
+  subdirs: 'dory',
+  variables: 'extensiondir=${libdir}/@0@/@1@'.format('dory', 'extensions-3.0'),
 )
 
