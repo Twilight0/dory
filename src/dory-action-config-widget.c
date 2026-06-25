@@ -170,7 +170,7 @@ populate_from_directory (DoryActionConfigWidget *widget, const gchar *path)
         const char *name;
 
         while ((name = g_dir_read_name (dir))) {
-            if (g_str_has_suffix (name, ".dory_action")) {
+            if (g_str_has_suffix (name, ".dory_action") || g_str_has_suffix (name, ".nemo_action")) {
                 char *filename;
 
                 filename = g_build_filename (path, name, NULL);
@@ -235,9 +235,19 @@ refresh_widget (DoryActionConfigWidget *widget)
         path = dory_action_manager_get_system_directory_path (data_dirs[i]);
         populate_from_directory (widget, path);
         g_clear_pointer (&path, g_free);
+
+        // Populate from Nemo system actions
+        path = g_build_filename (data_dirs[i], "nemo", "actions", NULL);
+        populate_from_directory (widget, path);
+        g_clear_pointer (&path, g_free);
     }
 
     path = dory_action_manager_get_user_directory_path ();
+    populate_from_directory (widget, path);
+    g_clear_pointer (&path, g_free);
+
+    // Populate from Nemo user actions
+    path = g_build_filename (g_get_user_data_dir (), "nemo", "actions", NULL);
     populate_from_directory (widget, path);
     g_clear_pointer (&path, g_free);
 

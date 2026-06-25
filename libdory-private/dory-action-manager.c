@@ -129,7 +129,7 @@ process_directory_actions (DoryActionManager *action_manager,
         const char *name;
 
         while ((name = g_dir_read_name (dir))) {
-            if (g_str_has_suffix (name, ".dory_action")) {
+            if (g_str_has_suffix (name, ".dory_action") || g_str_has_suffix (name, ".nemo_action")) {
                 if (g_strv_contains ((const gchar* const*) disabled_actions, name)) {
                     DEBUG ("Skipping disabled action: '%s'", name);
                     continue;
@@ -163,27 +163,38 @@ set_up_actions_directories (DoryActionManager *action_manager)
 
     for (i = 0; i < g_strv_length (data_dirs); i++) {
         path = dory_action_manager_get_system_directory_path (data_dirs[i]);
-
         if (path != NULL) {
             DEBUG ("Adding system location '%s'", path);
             add_directory_to_actions_directory_list (action_manager, path);
+            g_free (path);
         }
 
-        g_clear_pointer (&path, g_free);
+        // Add nemo system action path for backward compatibility
+        path = g_build_filename (data_dirs[i], "nemo", "actions", NULL);
+        if (path != NULL) {
+            DEBUG ("Adding system location '%s' (nemo compatibility)", path);
+            add_directory_to_actions_directory_list (action_manager, path);
+            g_free (path);
+        }
     }
 
     path = dory_action_manager_get_user_directory_path ();
-
     if (!g_file_test (path, G_FILE_TEST_EXISTS)) {
         g_mkdir_with_parents (path, DEFAULT_DORY_DIRECTORY_MODE);
     }
-
     if (path != NULL) {
         DEBUG ("Adding user location '%s'", path);
         add_directory_to_actions_directory_list (action_manager, path);
+        g_free (path);
     }
 
-    g_free (path);
+    // Add nemo user action path for backward compatibility
+    path = g_build_filename (g_get_user_data_dir (), "nemo", "actions", NULL);
+    if (path != NULL) {
+        DEBUG ("Adding user location '%s' (nemo compatibility)", path);
+        add_directory_to_actions_directory_list (action_manager, path);
+        g_free (path);
+    }
 }
 
 static char *

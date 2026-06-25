@@ -138,12 +138,18 @@ dory_ui_get_menu_icon (const char *icon_name,
 gchar *
 dory_make_action_uuid_for_path (const gchar *path)
 {
-    g_autofree gchar *copy = g_path_get_basename (path);
+    gchar *copy = g_path_get_basename (path);
     g_strdelimit (copy, " ", '_');
 
-    if (!g_str_has_suffix (copy, ".dory_action")) {
-        return copy;
+    if (g_str_has_suffix (copy, ".dory_action")) {
+        gchar *res = g_strndup (copy, strlen (copy) - strlen (".dory_action"));
+        g_free (copy);
+        return res;
+    } else if (g_str_has_suffix (copy, ".nemo_action")) {
+        gchar *res = g_strndup (copy, strlen (copy) - strlen (".nemo_action"));
+        g_free (copy);
+        return res;
     }
 
-    return g_strndup (copy, strlen (copy) - strlen (".dory_action"));
+    return copy;
 }
