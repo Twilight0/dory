@@ -16,16 +16,16 @@ import os
 
 import leconfig
 
-locale.bindtextdomain("nemo", leconfig.LOCALE_DIR)
-gettext.bindtextdomain("nemo", leconfig.LOCALE_DIR)
-gettext.textdomain("nemo")
+locale.bindtextdomain("dory", leconfig.LOCALE_DIR)
+gettext.bindtextdomain("dory", leconfig.LOCALE_DIR)
+gettext.textdomain("dory")
 _ = gettext.gettext
 
-gresources = Gio.Resource.load(os.path.join(leconfig.PKG_DATADIR, "nemo-action-layout-editor-resources.gresource"))
+gresources = Gio.Resource.load(os.path.join(leconfig.PKG_DATADIR, "dory-action-layout-editor-resources.gresource"))
 gresources._register()
 
-JSON_FILE = Path(GLib.get_user_config_dir()).joinpath("nemo/actions-tree.json")
-USER_ACTIONS_DIR = Path(GLib.get_user_data_dir()).joinpath("nemo/actions")
+JSON_FILE = Path(GLib.get_user_config_dir()).joinpath("dory/actions-tree.json")
+USER_ACTIONS_DIR = Path(GLib.get_user_data_dir()).joinpath("dory/actions")
 
 NON_SPICE_UUID_SUFFIX = "@untracked"
 
@@ -161,7 +161,7 @@ class NemoActionsOrganizer(Gtk.Box):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
 
         if builder is None:
-            self.builder = Gtk.Builder.new_from_resource("/org/dory/action-layout-editor/nemo-action-layout-editor.glade")
+            self.builder = Gtk.Builder.new_from_resource("/org/dory/action-layout-editor/dory-action-layout-editor.glade")
         else:
             self.builder = builder
 
@@ -329,7 +329,7 @@ class NemoActionsOrganizer(Gtk.Box):
     def load_nemo_shortcuts(self):
         source = Xmlb.BuilderSource()
         try:
-            xml = Gio.resources_lookup_data("/org/dory/action-layout-editor/nemo-shortcuts.ui", Gio.ResourceLookupFlags.NONE)
+            xml = Gio.resources_lookup_data("/org/dory/action-layout-editor/dory-shortcuts.ui", Gio.ResourceLookupFlags.NONE)
             ret = source.load_bytes(xml, Xmlb.BuilderSourceFlags.NONE)
             builder = Xmlb.Builder()
             builder.import_source(source)
@@ -491,12 +491,13 @@ class NemoActionsOrganizer(Gtk.Box):
         data_dirs = GLib.get_system_data_dirs() + [GLib.get_user_data_dir()]
 
         for data_dir in data_dirs:
-            actions_dir = Path(data_dir).joinpath("nemo/actions")
-            if actions_dir.is_dir():
-                for path in actions_dir.iterdir():
-                    file = Path(path)
-                    if file.suffix == ".nemo_action":
-                        uuid = file.name
+            for subdir in ["dory/actions", "nemo/actions"]:
+                actions_dir = Path(data_dir).joinpath(subdir)
+                if actions_dir.is_dir():
+                    for path in actions_dir.iterdir():
+                        file = Path(path)
+                        if file.suffix in [".dory_action", ".nemo_action"]:
+                            uuid = file.name
 
                         try:
                             kf = GLib.KeyFile()
@@ -1527,7 +1528,7 @@ class NemoActionsOrganizer(Gtk.Box):
 
 class EditorWindow():
     def __init__(self):
-        self.builder = Gtk.Builder.new_from_resource("/org/dory/action-layout-editor/nemo-action-layout-editor.glade")
+        self.builder = Gtk.Builder.new_from_resource("/org/dory/action-layout-editor/dory-action-layout-editor.glade")
         self.main_window = self.builder.get_object("main_window")
         self.hamburger_button = self.builder.get_object("hamburger_button")
         self.editor = NemoActionsOrganizer(self.main_window, self.builder)
