@@ -1,5 +1,5 @@
 dbusBuiltSources = gnome.gdbus_codegen(
-  'nemo-freedesktop-generated',
+  'dory-freedesktop-generated',
   join_paths(meson.project_source_root(), 'data', 'freedesktop-dbus-interfaces.xml'),
   interface_prefix: 'org.freedesktop.',
   namespace: 'DoryFreedesktop',
@@ -7,14 +7,14 @@ dbusBuiltSources = gnome.gdbus_codegen(
 )
 
 doryBuiltSources = gnome.gdbus_codegen(
-  'nemo-cinnamon-dbus',
+  'dory-cinnamon-dbus',
   join_paths(meson.project_source_root(), 'data', 'org.Cinnamon.xml'),
   interface_prefix: 'org.',
-  namespace: 'Nemo',
+  namespace: 'Dory',
   object_manager: true
 )
 
-nemoFileChooserBuiltSources = gnome.gdbus_codegen(
+doryFileChooserBuiltSources = gnome.gdbus_codegen(
   'dory-file-chooser-generated',
   join_paths(meson.project_source_root(), 'data', 'org.Dory.FileChooser.xml'),
   interface_prefix: 'org.Dory.',
@@ -25,93 +25,93 @@ nemoFileChooserBuiltSources = gnome.gdbus_codegen(
 doryCommon_sources = [
   dbusBuiltSources,
   doryBuiltSources,
-  nemoFileChooserBuiltSources,
-  'nemo-action-config-widget.c',
-  'nemo-application.c',
-  'nemo-blank-desktop-window.c',
-  'nemo-bookmark-list.c',
-  'nemo-bookmarks-window.c',
-  'nemo-config-base-widget.c',
-  'nemo-connect-server-dialog-nonmain.c',
-  'nemo-connect-server-dialog.c',
-  'nemo-connect-server-operation.c',
-  'nemo-desktop-icon-grid-view.c',
-  'nemo-desktop-item-properties.c',
-  'nemo-desktop-manager.c',
-  'nemo-desktop-overlay.c',
-  'nemo-desktop-window.c',
-  'nemo-error-reporting.c',
-  'nemo-extension-config-widget.c',
-  'nemo-file-management-properties.c',
-  'nemo-filter-bar.c',
-  'nemo-floating-bar.c',
-  'nemo-file-chooser-dbus.c',
-  'nemo-file-chooser-dialog.c',
-  'nemo-freedesktop-dbus.c',
-  'nemo-icon-view-container.c',
-  'nemo-icon-view-grid-container.c',
-  'nemo-icon-view.c',
-  'nemo-image-properties-page.c',
-  'nemo-interesting-folder-bar.c',
-  'nemo-list-model.c',
-  'nemo-list-view.c',
-  'nemo-location-bar.c',
-  'nemo-location-entry.c',
-  'nemo-mime-actions.c',
-  'nemo-navigation-action.c',
-  'nemo-navigation-state.c',
-  'nemo-notebook.c',
-  'nemo-pathbar.c',
-  'nemo-places-sidebar.c',
-  'nemo-plugin-manager.c',
-  'nemo-previewer.c',
-  'nemo-progress-info-widget.c',
-  'nemo-progress-ui-handler.c',
-  'nemo-properties-window.c',
-  'nemo-query-editor.c',
-  'nemo-template-config-widget.c',
-  'nemo-self-check-functions.c',
-  'nemo-statusbar.c',
-  'nemo-thumbnail-problem-bar.c',
-  'nemo-toolbar.c',
-  'nemo-trash-bar.c',
-  'nemo-tree-sidebar-model.c',
-  'nemo-tree-sidebar.c',
-  'nemo-view-dnd.c',
-  'nemo-view-factory.c',
-  'nemo-view.c',
-  'nemo-window-bookmarks.c',
-  'nemo-window-manage-views.c',
-  'nemo-window-menus.c',
-  'nemo-window-pane.c',
-  'nemo-window-slot-dnd.c',
-  'nemo-window-slot.c',
-  'nemo-window.c',
-  'nemo-x-content-bar.c',
+  doryFileChooserBuiltSources,
+  'dory-action-config-widget.c',
+  'dory-application.c',
+  'dory-blank-desktop-window.c',
+  'dory-bookmark-list.c',
+  'dory-bookmarks-window.c',
+  'dory-config-base-widget.c',
+  'dory-connect-server-dialog-nonmain.c',
+  'dory-connect-server-dialog.c',
+  'dory-connect-server-operation.c',
+  'dory-desktop-icon-grid-view.c',
+  'dory-desktop-item-properties.c',
+  'dory-desktop-manager.c',
+  'dory-desktop-overlay.c',
+  'dory-desktop-window.c',
+  'dory-error-reporting.c',
+  'dory-extension-config-widget.c',
+  'dory-file-management-properties.c',
+  'dory-filter-bar.c',
+  'dory-floating-bar.c',
+  'dory-file-chooser-dbus.c',
+  'dory-file-chooser-dialog.c',
+  'dory-freedesktop-dbus.c',
+  'dory-icon-view-container.c',
+  'dory-icon-view-grid-container.c',
+  'dory-icon-view.c',
+  'dory-image-properties-page.c',
+  'dory-interesting-folder-bar.c',
+  'dory-list-model.c',
+  'dory-list-view.c',
+  'dory-location-bar.c',
+  'dory-location-entry.c',
+  'dory-mime-actions.c',
+  'dory-navigation-action.c',
+  'dory-navigation-state.c',
+  'dory-notebook.c',
+  'dory-pathbar.c',
+  'dory-places-sidebar.c',
+  'dory-plugin-manager.c',
+  'dory-previewer.c',
+  'dory-progress-info-widget.c',
+  'dory-progress-ui-handler.c',
+  'dory-properties-window.c',
+  'dory-query-editor.c',
+  'dory-template-config-widget.c',
+  'dory-self-check-functions.c',
+  'dory-statusbar.c',
+  'dory-thumbnail-problem-bar.c',
+  'dory-toolbar.c',
+  'dory-trash-bar.c',
+  'dory-tree-sidebar-model.c',
+  'dory-tree-sidebar.c',
+  'dory-view-dnd.c',
+  'dory-view-factory.c',
+  'dory-view.c',
+  'dory-window-bookmarks.c',
+  'dory-window-manage-views.c',
+  'dory-window-menus.c',
+  'dory-window-pane.c',
+  'dory-window-slot-dnd.c',
+  'dory-window-slot.c',
+  'dory-window.c',
+  'dory-x-content-bar.c',
 ]
 
 doryWindow_sources = [
-  'nemo-main-application.c',
-  'nemo-main.c',
+  'dory-main-application.c',
+  'dory-main.c',
 ]
 doryWindow_headers = [
-  'nemo-main-application.h',
+  'dory-main-application.h',
 ]
 
-nemoDesktop_sources = [
-  'nemo-desktop-application.c',
-  'nemo-desktop-icon-view.c',
-  'nemo-desktop-main.c',
+doryDesktop_sources = [
+  'dory-desktop-application.c',
+  'dory-desktop-icon-view.c',
+  'dory-desktop-main.c',
 ]
-nemoDesktop_headers = [
-  'nemo-desktop-application.h',
-  'nemo-desktop-overlay.h',
-  'nemo-desktop-icon-view.h',
+doryDesktop_headers = [
+  'dory-desktop-application.h',
+  'dory-desktop-overlay.h',
+  'dory-desktop-icon-view.h',
 ]
 
 
 if enableEmptyView
-  doryCommon_sources += 'nemo-empty-view.c'
+  doryCommon_sources += 'dory-empty-view.c'
 endif
 
 dory_deps = [ cinnamon, gail, glib, gtk, math,
@@ -130,7 +130,7 @@ if gtk_layer_shell_enabled
   dory_deps += wayland_client
 endif
 
-nemo = executable('dory',
+dory = executable('dory',
   doryCommon_sources + doryWindow_sources,
   include_directories: [ rootInclude ],
   c_args: dory_definitions,
@@ -138,28 +138,28 @@ nemo = executable('dory',
   install: true
 )
 
-# nemoDesktop = executable('nemo-desktop',
-#   doryCommon_sources + nemoDesktop_sources,
+# doryDesktop = executable('dory-desktop',
+#   doryCommon_sources + doryDesktop_sources,
 #   include_directories: [ rootInclude],
 #   c_args: dory_definitions,
 #   dependencies: dory_deps,
 #   install: true
 # )
 # 
-# nemo_autorun_software = executable('nemo-autorun-software',
-#   [ 'nemo-autorun-software.c' ],
+# dory_autorun_software = executable('dory-autorun-software',
+#   [ 'dory-autorun-software.c' ],
 #   include_directories: [ rootInclude, ],
 #   c_args: dory_definitions,
 #   dependencies: dory_deps,
 #   install: true
 # )
 # 
-# nemo_connect_server = executable('nemo-connect-server',
+# dory_connect_server = executable('dory-connect-server',
 #   [
-#     'nemo-bookmark-list.c',
-#     'nemo-connect-server-dialog.c',
-#     'nemo-connect-server-dialog-main.c',
-#     'nemo-connect-server-operation.c'
+#     'dory-bookmark-list.c',
+#     'dory-connect-server-dialog.c',
+#     'dory-connect-server-dialog-main.c',
+#     'dory-connect-server-operation.c'
 #   ],
 #   include_directories: [ rootInclude, ],
 #   c_args: dory_definitions,
@@ -167,8 +167,8 @@ nemo = executable('dory',
 #   install: true
 # )
 # 
-# nemo_open_with = executable('nemo-open-with',
-#   [ 'nemo-open-with-main.c' ],
+# dory_open_with = executable('dory-open-with',
+#   [ 'dory-open-with-main.c' ],
 #   include_directories: [ rootInclude, ],
 #   c_args: dory_definitions,
 #   dependencies: dory_deps,

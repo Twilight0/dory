@@ -1,5 +1,5 @@
 /*
- *  nemo-info-provider.h - Type definitions for Nemo extensions
+ *  dory-info-provider.h - Type definitions for Dory extensions
  * 
  *  Copyright (C) 2003 Novell, Inc.
  *
@@ -21,9 +21,9 @@
  * 
  */
 
-/* This interface is implemented by Nemo extensions that want to 
- * provide information about files.  Extensions are called when Nemo 
- * needs information about a file.  They are passed a NemoFileInfo 
+/* This interface is implemented by Dory extensions that want to 
+ * provide information about files.  Extensions are called when Dory 
+ * needs information about a file.  They are passed a DoryFileInfo 
  * object which should be filled with relevant information */
 
 #ifndef DORY_EXTENSION_TYPES_H
@@ -40,39 +40,39 @@ G_BEGIN_DECLS
  **/
 
 /**
- * NemoOperationHandle:
+ * DoryOperationHandle:
  *
  * Handle for asynchronous interfaces.  These are opaque handles that must
  * be unique within an extension object.  These are returned by operations
- * that return NEMO_OPERATION_IN_PROGRESS.
+ * that return DORY_OPERATION_IN_PROGRESS.
  *
- * For python extensions, the handle is a dummy struct created by the nemo
+ * For python extensions, the handle is a dummy struct created by the dory
  * python bindings on the extension's behalf.  It can be used as a unique
  * key for a dict, for instance, for keeping track of multiple operations
  * at once.
  */
-typedef struct _NemoOperationHandle NemoOperationHandle;
+typedef struct _DoryOperationHandle DoryOperationHandle;
 
 /**
- * NemoOperationResult:
- * @NEMO_OPERATION_COMPLETE: Returned if the call succeeded, and the extension is done
+ * DoryOperationResult:
+ * @DORY_OPERATION_COMPLETE: Returned if the call succeeded, and the extension is done
  *  with the request.
- * @NEMO_OPERATION_FAILED: Returned if the call failed.
- * @NEMO_OPERATION_IN_PROGRESS: Returned if the extension has begun an async operation.
+ * @DORY_OPERATION_FAILED: Returned if the call failed.
+ * @DORY_OPERATION_IN_PROGRESS: Returned if the extension has begun an async operation.
  *  For C extensions, if this is returned, the extension must set the handle parameter.
  *  For python extensions, handle is already filled, and unique, and can be used for
  *  identifying purposes within the extension.  In either case, the extension must call
  *  the callback closure when the operation is complete (complete_invoke.)
  */
 typedef enum {
-    NEMO_OPERATION_COMPLETE,
-    NEMO_OPERATION_FAILED,
-    NEMO_OPERATION_IN_PROGRESS
-} NemoOperationResult;
+    DORY_OPERATION_COMPLETE,
+    DORY_OPERATION_FAILED,
+    DORY_OPERATION_IN_PROGRESS
+} DoryOperationResult;
 
-void nemo_module_initialize (GTypeModule  *module);
-void nemo_module_shutdown   (void);
-void nemo_module_list_types (const GType **types,
+void dory_module_initialize (GTypeModule  *module);
+void dory_module_shutdown   (void);
+void dory_module_list_types (const GType **types,
 				 int          *num_types);
 
 G_END_DECLS

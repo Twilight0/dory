@@ -1,7 +1,7 @@
 # Meson build file
 
-# https://github.com/linuxmint/nemo
-project('nemo', 'c', version : '6.7.3', meson_version : '>=0.64.0')
+# https://github.com/linuxmint/dory
+project('dory', 'c', version : '6.7.3', meson_version : '>=0.64.0')
 
 # 1. If the library code has changed at all since last release, then increment revision.
 # 2. If any interfaces have been added, then increment current and set revision to 0.
@@ -174,7 +174,7 @@ libExecPath       = join_paths(get_option('prefix'), get_option('libexecdir'))
 doryExtensionPath = join_paths(get_option('prefix'), get_option('libdir'), 'dory', 'extensions-3.0')
 
 dory_definitions =  [
-  '-DNEMO_DATADIR="@0@"'.format(doryDataPath),
+  '-DDORY_DATADIR="@0@"'.format(doryDataPath),
   '-DDORY_EXTENSIONDIR="@0@"'.format(doryExtensionPath),
   '-DLIBEXECDIR="@0@"'.format(libExecPath),
   '-DG_LOG_DOMAIN="Dory"'

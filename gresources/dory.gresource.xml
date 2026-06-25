@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/dory">
+    <file>dory-bookmarks-window.glade</file>
+    <file>dory-desktop-overlay.glade</file>
+    <file>dory-desktop-preferences.glade</file>
+    <file>dory-file-management-properties.glade</file>
+    <file>dory-search-bar.glade</file>
+    <file>dory-file-chooser-dialog.glade</file>
+
+    <file>dory-shortcuts.ui</file>
+
+    <file>dory-blank-desktop-window-ui.xml</file>
+    <file>dory-desktop-icon-grid-view-ui.xml</file>
+    <file>dory-desktop-icon-view-ui.xml</file>
+    <file>dory-directory-view-ui.xml</file>
+    <file>dory-icon-view-ui.xml</file>
+    <file>dory-list-view-ui.xml</file>
+    <file>dory-places-sidebar-ui.xml</file>
+    <file>dory-shell-ui.xml</file>
+    <file>dory-statusbar-ui.xml</file>
+    <file>dory-tree-sidebar-ui.xml</file>
+
+    <file alias="icons/knob.png">knob.png</file>
+    <file alias="icons/thumbnail_frame.png">thumbnail_frame.png</file>
+
+    <file>dory-style-fallback.css</file>
+    <file>dory-style-fallback-mandatory.css</file>
+    <file>dory-style-application.css</file>
+  </gresource>
+</gresources>

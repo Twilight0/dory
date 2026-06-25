@@ -1,13 +1,13 @@
 gresources = gnome.compile_resources(
-  'nemo-resources', 'nemo.gresource.xml',
+  'dory-resources', 'dory.gresource.xml',
   source_dir: '.',
-  c_name: 'nemo',
+  c_name: 'dory',
   install_header: false,
   install: false
 )
 
 layout_editor_gresources = gnome.compile_resources(
-  'nemo-action-layout-editor-resources', 'nemo-action-layout-editor.gresource.xml',
+  'dory-action-layout-editor-resources', 'dory-action-layout-editor.gresource.xml',
   source_dir: '.',
   gresource_bundle: true,
   install: true,

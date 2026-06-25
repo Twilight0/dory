@@ -1,15 +1,15 @@
-# Nemo Actions
-_This documentation is available online at https://github.com/linuxmint/nemo/wiki/Nemo-Actions_
+# Dory Actions
+_This documentation is available online at https://github.com/linuxmint/dory/wiki/Dory-Actions_
 
 ### About
-Nemo actions allow the user to add custom menu actions to apply to selected files. These can be one-shot commands or call their own scripts, and can be restricted to specific files by defining various conditions for the action.
+Dory actions allow the user to add custom menu actions to apply to selected files. These can be one-shot commands or call their own scripts, and can be restricted to specific files by defining various conditions for the action.
 
-Action files are just text files that end in `.nemo_action` and are stored in system and user data locations - `/usr/share/nemo/actions`, `~/.local/share/nemo/actions` (all of your environment's `XDG_DATA_DIRS` are scanned, though typically only the aforementioned are used).
+Action files are just text files that end in `.dory_action` and are stored in system and user data locations - `/usr/share/dory/actions`, `~/.local/share/dory/actions` (all of your environment's `XDG_DATA_DIRS` are scanned, though typically only the aforementioned are used).
 
 These files are structured as follows (this is a standard keyfile syntax also used in application .desktop and config files):
 
 ```
-[Nemo Action]
+[Dory Action]
 
 Name=Test action on file %f
 Comment=If you click this menu entry, %F will be acted upon!
@@ -20,26 +20,26 @@ Terminal=true
 Icon-Name=face-smile
 ```
 
-If you add this to a newly created file `~/.local/share/nemo/actions/my-test-action.nemo_action`, and right-click on a single file in Nemo, this will appear in the menu. You should get the system notification immediately after you activate it.
+If you add this to a newly created file `~/.local/share/dory/actions/my-test-action.dory_action`, and right-click on a single file in Dory, this will appear in the menu. You should get the system notification immediately after you activate it.
 
 ---
 
 ### Troubleshooting
-For debugging actions, you can run Nemo as follows:
+For debugging actions, you can run Dory as follows:
 ```bash
 # First, kill any existing instances
-nemo --quit
+dory --quit
 # Then relaunch with debugging enabled
-NEMO_DEBUG=Actions nemo --debug
+DORY_DEBUG=Actions dory --debug
 ```
 > **Tip**: When debugging actions, it's usually a good idea to temporarily disable all but the action you're working with, to reduce the amount of logging output generated
 
 With debugging enabled, you should get output that looks something like this when testing your action:
 ```bash
-Nemo-DEBUG: nemo_action_update_display_state: ../libdory-private/nemo-action.c:2011: Action 'new-sample' determined VISIBLE
-Nemo-DEBUG: get_final_label: ../libdory-private/nemo-action.c:1538: Action Label: Test action on file Documents
-Nemo-DEBUG: get_final_tt: ../libdory-private/nemo-action.c:1563: Action Tooltip: If you click this menu entry, /home/mtwebster/Documents will be acted upon!
-Nemo-DEBUG: nemo_action_activate: ../libdory-private/nemo-action.c:1462: Action Spawning: notify-send "Hey there" "This is the result of an action you ran on the file '/home/mtwebster/Documents' - well done"
+Dory-DEBUG: dory_action_update_display_state: ../libdory-private/dory-action.c:2011: Action 'new-sample' determined VISIBLE
+Dory-DEBUG: get_final_label: ../libdory-private/dory-action.c:1538: Action Label: Test action on file Documents
+Dory-DEBUG: get_final_tt: ../libdory-private/dory-action.c:1563: Action Tooltip: If you click this menu entry, /home/mtwebster/Documents will be acted upon!
+Dory-DEBUG: dory_action_activate: ../libdory-private/dory-action.c:1462: Action Spawning: notify-send "Hey there" "This is the result of an action you ran on the file '/home/mtwebster/Documents' - well done"
 ```
 
 ---
@@ -59,7 +59,7 @@ Name=Test action on file %f
 Exec=notify-send "Hey there" "This is the result of an action you ran on the file '%F' - well done"
 `
 
-If you have a custom script to run, you can enclose it in `<...>` to have it executed from the action's directory. This is handy because it removes the need for the script to either be in the user's PATH or require an absolute path. Instead, the file or relative path within the brackets will be appended to the action's path. So, if your action is in `~/.local/share/actions/nemo/my-action.nemo_action` and you put `<my-action/my-action-script.sh>` as the Exec line, Nemo will assume that script is at `~/.local/share/actions/nemo/my-action/my-action-script.sh`.
+If you have a custom script to run, you can enclose it in `<...>` to have it executed from the action's directory. This is handy because it removes the need for the script to either be in the user's PATH or require an absolute path. Instead, the file or relative path within the brackets will be appended to the action's path. So, if your action is in `~/.local/share/actions/dory/my-action.dory_action` and you put `<my-action/my-action-script.sh>` as the Exec line, Dory will assume that script is at `~/.local/share/actions/dory/my-action/my-action-script.sh`.
 
 **Selection** (mandatory): Provides a condition based on how many files are selected.
 
@@ -100,19 +100,19 @@ Mimetypes=text/plain;
 
 Displays the action if all selected files have a mimetype included in this semicolon-separated list.
 
-**Comment** (optional): The tooltip to display in Nemo's bottom status bar. This can include selection tokens and can be localized (see below).
+**Comment** (optional): The tooltip to display in Dory's bottom status bar. This can include selection tokens and can be localized (see below).
 
 `
 Comment=If you click this menu entry, %F will be acted upon!
 `
 
-**Icon-Name** (optional): The name of the icon to display in Nemo's context menu next to the action entry. This must be an icon that is part of the GtkIconTheme, or an absolute path.  Symbolic icons are supported.
+**Icon-Name** (optional): The name of the icon to display in Dory's context menu next to the action entry. This must be an icon that is part of the GtkIconTheme, or an absolute path.  Symbolic icons are supported.
 
 `
 Icon-Name=folder
 `
 
-If you have a custom icon, you can enclose the filename in `<...>` to have it loaded from the action's directory. For instance, with `<my-action-icon.png>` nemo will look for an icon by that name in the same directory as the action file. If your action is a Spice and has its own subfolder, that can be included as a relative path (`my-action@me/my-action-icon.png`).
+If you have a custom icon, you can enclose the filename in `<...>` to have it loaded from the action's directory. For instance, with `<my-action-icon.png>` dory will look for an icon by that name in the same directory as the action file. If your action is a Spice and has its own subfolder, that can be included as a relative path (`my-action@me/my-action-icon.png`).
 
 **Separator** (optional): Character(s) to separate multiple filenames if more than a single file is selected. By default a space is used.
 
@@ -154,7 +154,7 @@ Conditions=desktop;dbus org.Cinnamon;
 `
 
 Can be one or more of:
-- `desktop`: The selection must be the desktop (not the 'Desktop' folder in Nemo's bookmarks, but *the* desktop).
+- `desktop`: The selection must be the desktop (not the 'Desktop' folder in Dory's bookmarks, but *the* desktop).
 - `removable`: The selection must be some sort of removable device.
 - `dbus <name>`: <name> must be a well-known DBus name, and be owned.
 - `gsettings <schema> <boolean key>`: The boolean key in the given schema must be true.
@@ -201,7 +201,7 @@ Locations=.*;!.config;
 Stock-Id=gtk-ok
 `
 
-**Active** (optional): Whether or not the action is visible to Nemo. This really is never necessary, as actions can be enabled/disabled in preferences.
+**Active** (optional): Whether or not the action is visible to Dory. This really is never necessary, as actions can be enabled/disabled in preferences.
 
 `
 Active=true
@@ -218,13 +218,13 @@ Active=true
 - `%D`: insert device path of file (i.e. /dev/sdb1).
 - `%e`: insert display name of first selected file with the extension stripped.
 - `%%`: insert a literal percent sign, don't treat the next character as a token.
-- `%X`: insert the XID for the NemoWindow this action is being activated in.
+- `%X`: insert the XID for the DoryWindow this action is being activated in.
 - `%N`: (deprecated) - same as `%f`.
 ---
 #### Cheat Sheet
 
 ```markdown
-[Nemo Action]
+[Dory Action]
 # Mandatory fields
 Name=Menu item label
 Exec=program_to_run or <custom-script.sh>

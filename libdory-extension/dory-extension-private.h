@@ -1,5 +1,5 @@
 /*
- *  dory-extension-private.h - Type definitions for Nemo extensions
+ *  dory-extension-private.h - Type definitions for Dory extensions
  * 
  *  Copyright (C) 2009 Red Hat, Inc.
  *
@@ -24,11 +24,11 @@
 #ifndef DORY_EXTENSION_PRIVATE_H
 #define DORY_EXTENSION_PRIVATE_H
 
-#include <libdory-extension/nemo-file-info.h>
+#include <libdory-extension/dory-file-info.h>
 
 G_BEGIN_DECLS
 
-extern NemoFileInfo *(*nemo_file_info_getter) (GFile *location, gboolean create);
+extern DoryFileInfo *(*dory_file_info_getter) (GFile *location, gboolean create);
 
 G_END_DECLS
 

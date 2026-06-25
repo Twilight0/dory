@@ -251,8 +251,8 @@ eel_gtk_window_set_initial_geometry_from_string (GtkWindow *window,
 	eel_gtk_window_set_initial_geometry (window, geometry_flags, left, top, width, height);
 }
 
-/* nemo-desktop only runs on Wayland when gtk-layer-shell is available
- * (checked in nemo-desktop-main.c before gtk_init), so a TRUE return
+/* dory-desktop only runs on Wayland when gtk-layer-shell is available
+ * (checked in dory-desktop-main.c before gtk_init), so a TRUE return
  * here also implies layer-shell support. */
 gboolean
 eel_check_is_wayland (void)
@@ -309,7 +309,7 @@ eel_pop_up_context_menu (GtkMenu        *menu,
 
     // Using gtk_menu_popup_at_rect exclusively in wayland seems to avoid the problem
     // of being unable to dismiss the menu when clicking to the left of it. See:
-    // https://github.com/linuxmint/nemo/issues/3218
+    // https://github.com/linuxmint/dory/issues/3218
 
 #ifdef GDK_WINDOWING_X11
     if (!eel_check_is_wayland () && event && event->type == GDK_BUTTON_PRESS) {
