@@ -208,6 +208,7 @@ struct DoryIconContainerDetails {
 
 	/* zoom level */
 	int zoom_level;
+	guint zoom_preview_timeout_id;
 	
 	/* font sizes used to draw labels */
 	int font_size_table[DORY_ZOOM_LEVEL_LARGEST + 1];

@@ -2732,6 +2732,11 @@ destroy (GtkWidget *object)
 		container->details->selection_changed_id = 0;
 	}
 
+	if (container->details->zoom_preview_timeout_id != 0) {
+		g_source_remove (container->details->zoom_preview_timeout_id);
+		container->details->zoom_preview_timeout_id = 0;
+	}
+
         if (container->details->size_allocation_count_id != 0) {
 		g_source_remove (container->details->size_allocation_count_id);
 		container->details->size_allocation_count_id = 0;
@@ -5955,14 +5960,26 @@ dory_icon_container_get_zoom_level (DoryIconContainer *container)
     return container->details->zoom_level;
 }
 
+static gboolean
+zoom_preview_timeout_cb (gpointer data)
+{
+    DoryIconContainer *container = DORY_ICON_CONTAINER (data);
+    container->details->zoom_preview_timeout_id = 0;
+    dory_icon_container_invalidate_labels (container);
+    dory_icon_container_request_update_all (container);
+    return G_SOURCE_REMOVE;
+}
+
 void
 dory_icon_container_set_zoom_level (DoryIconContainer *container,
                                     gint               new_level)
 {
     DORY_ICON_CONTAINER_GET_CLASS (container)->set_zoom_level (container, new_level);
 
-    dory_icon_container_invalidate_labels (container);
-    dory_icon_container_request_update_all (container);
+    if (container->details->zoom_preview_timeout_id != 0) {
+        g_source_remove (container->details->zoom_preview_timeout_id);
+    }
+    container->details->zoom_preview_timeout_id = g_timeout_add (150, zoom_preview_timeout_cb, container);
 }
 
 /**

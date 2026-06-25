@@ -97,6 +97,7 @@ struct DoryListViewDetails {
 
     gint ok_to_load_deferred_attrs;
     guint update_visible_icons_id;
+    guint autosize_columns_timeout_id;
 
     gboolean rename_on_release;
 	gboolean drag_started;
@@ -3819,6 +3820,24 @@ dory_list_view_scale_font_size (DoryListView *view,
 	}
 }
 
+static gboolean
+autosize_columns_timeout_cb (gpointer data)
+{
+    DoryListView *view = DORY_LIST_VIEW (data);
+    view->details->autosize_columns_timeout_id = 0;
+    gtk_tree_view_columns_autosize (view->details->tree_view);
+    return G_SOURCE_REMOVE;
+}
+
+static void
+queue_autosize_columns (DoryListView *view)
+{
+    if (view->details->autosize_columns_timeout_id > 0) {
+        g_source_remove (view->details->autosize_columns_timeout_id);
+    }
+    view->details->autosize_columns_timeout_id = g_timeout_add (150, autosize_columns_timeout_cb, view);
+}
+
 static void
 dory_list_view_set_zoom_level (DoryListView *view,
 				   DoryZoomLevel new_level,
@@ -3879,7 +3898,7 @@ dory_list_view_set_zoom_level (DoryListView *view,
 	dory_view_update_menus (DORY_VIEW (view));
 
 	/* FIXME: https://bugzilla.gnome.org/show_bug.cgi?id=641518 */
-	gtk_tree_view_columns_autosize (view->details->tree_view);
+	queue_autosize_columns (view);
 }
 
 static void
@@ -4190,6 +4209,11 @@ dory_list_view_dispose (GObject *object)
     if (list_view->details->update_visible_icons_id > 0) {
         g_source_remove (list_view->details->update_visible_icons_id);
         list_view->details->update_visible_icons_id = 0;
+    }
+
+    if (list_view->details->autosize_columns_timeout_id > 0) {
+        g_source_remove (list_view->details->autosize_columns_timeout_id);
+        list_view->details->autosize_columns_timeout_id = 0;
     }
 
 	if (list_view->details->clipboard_handler_id != 0) {
