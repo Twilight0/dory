@@ -652,20 +652,27 @@ dory_action_constructed (GObject *object)
 
     g_key_file_load_from_file (key_file, action->key_file_path, G_KEY_FILE_NONE, NULL);
 
+    const gchar *group = "Dory Action";
+    if (g_key_file_has_group (key_file, "Dory Action")) {
+        group = "Dory Action";
+    } else if (g_key_file_has_group (key_file, "Nemo Action")) {
+        group = "Nemo Action";
+    }
+
     gchar *orig_label = g_key_file_get_locale_string (key_file,
-                                                      ACTION_FILE_GROUP,
+                                                      group,
                                                       KEY_NAME,
                                                       NULL,
                                                       NULL);
 
     gchar *orig_tt = g_key_file_get_locale_string (key_file,
-                                                   ACTION_FILE_GROUP,
+                                                   group,
                                                    KEY_COMMENT,
                                                    NULL,
                                                    NULL);
 
     gchar *icon_name = g_key_file_get_string (key_file,
-                                              ACTION_FILE_GROUP,
+                                              group,
                                               KEY_ICON_NAME,
                                               NULL);
 
@@ -704,18 +711,18 @@ dory_action_constructed (GObject *object)
     g_free (icon_name);
 
     gchar *stock_id = g_key_file_get_string (key_file,
-                                             ACTION_FILE_GROUP,
+                                             group,
                                              KEY_STOCK_ID,
                                              NULL);
 
 
     gchar *exec_raw = g_key_file_get_string (key_file,
-                                             ACTION_FILE_GROUP,
+                                             group,
                                              KEY_EXEC,
                                              NULL);
 
     gchar *selection_string_raw = g_key_file_get_string (key_file,
-                                                         ACTION_FILE_GROUP,
+                                                         group,
                                                          KEY_SELECTION,
                                                          NULL);
 
@@ -724,17 +731,17 @@ dory_action_constructed (GObject *object)
     g_free (selection_string_raw);
 
     gchar *separator = g_key_file_get_string (key_file,
-                                              ACTION_FILE_GROUP,
+                                              group,
                                               KEY_SEPARATOR,
                                               NULL);
 
     gchar *uri_scheme = g_key_file_get_string (key_file,
-                                               ACTION_FILE_GROUP,
+                                               group,
                                                KEY_URI_SCHEME,
                                                NULL);
 
     gchar *quote_type_string = g_key_file_get_string (key_file,
-                                                      ACTION_FILE_GROUP,
+                                                      group,
                                                       KEY_QUOTE_TYPE,
                                                       NULL);
 
@@ -771,7 +778,7 @@ dory_action_constructed (GObject *object)
     gsize count;
 
     gchar **ext = g_key_file_get_string_list (key_file,
-                                              ACTION_FILE_GROUP,
+                                              group,
                                               KEY_EXTENSIONS,
                                               &count,
                                               NULL);
@@ -779,7 +786,7 @@ dory_action_constructed (GObject *object)
     gsize mime_count;
 
     gchar **mimes = g_key_file_get_string_list (key_file,
-                                                ACTION_FILE_GROUP,
+                                                group,
                                                 KEY_MIME_TYPES,
                                                 &mime_count,
                                                 NULL);
@@ -787,7 +794,7 @@ dory_action_constructed (GObject *object)
     gsize condition_count;
 
     gchar **conditions = g_key_file_get_string_list (key_file,
-                                                     ACTION_FILE_GROUP,
+                                                     group,
                                                      KEY_CONDITIONS,
                                                      &condition_count,
                                                      NULL);
@@ -795,19 +802,19 @@ dory_action_constructed (GObject *object)
     gboolean escape_space;
 
     escape_space = g_key_file_get_boolean (key_file,
-                                           ACTION_FILE_GROUP,
+                                           group,
                                            KEY_WHITESPACE,
                                            NULL);
 
     gboolean run_in_terminal;
 
     run_in_terminal = g_key_file_get_boolean (key_file,
-                                              ACTION_FILE_GROUP,
+                                              group,
                                               KEY_TERMINAL,
                                               NULL);
 
     gchar **locations = g_key_file_get_string_list (key_file,
-                                                    ACTION_FILE_GROUP,
+                                                    group,
                                                     KEY_LOCATIONS,
                                                     NULL,
                                                     NULL);
@@ -820,7 +827,7 @@ dory_action_constructed (GObject *object)
     g_strfreev (locations);
 
     gchar **files = g_key_file_get_string_list (key_file,
-                                                ACTION_FILE_GROUP,
+                                                group,
                                                 KEY_FILES,
                                                 NULL,
                                                 NULL);
@@ -948,14 +955,21 @@ dory_action_new (const gchar *name,
 
     g_key_file_load_from_file (key_file, path, G_KEY_FILE_NONE, NULL);
 
-    if (!g_key_file_has_group (key_file, ACTION_FILE_GROUP)) {
-        DEBUG ("Action file '%s' is missing [Dory Action] group, skipping.", path);
+    const gchar *group = NULL;
+    if (g_key_file_has_group (key_file, "Dory Action")) {
+        group = "Dory Action";
+    } else if (g_key_file_has_group (key_file, "Nemo Action")) {
+        group = "Nemo Action";
+    }
+
+    if (group == NULL) {
+        DEBUG ("Action file '%s' is missing [Dory Action] or [Nemo Action] group, skipping.", path);
         g_key_file_free (key_file);
         return NULL;
     }
 
-    if (g_key_file_has_key (key_file, ACTION_FILE_GROUP, KEY_ACTIVE, NULL)) {
-        if (!g_key_file_get_boolean (key_file, ACTION_FILE_GROUP, KEY_ACTIVE, NULL)) {
+    if (g_key_file_has_key (key_file, group, KEY_ACTIVE, NULL)) {
+        if (!g_key_file_get_boolean (key_file, group, KEY_ACTIVE, NULL)) {
             DEBUG ("Action file '%s' is marked inactive, skipping.", path);
             g_key_file_free (key_file);
             return NULL;
@@ -963,36 +977,36 @@ dory_action_new (const gchar *name,
     }
 
     gchar *orig_label = g_key_file_get_locale_string (key_file,
-                                                      ACTION_FILE_GROUP,
+                                                      group,
                                                       KEY_NAME,
                                                       NULL,
                                                       NULL);
 
     gchar *exec_raw = g_key_file_get_string (key_file,
-                                             ACTION_FILE_GROUP,
+                                             group,
                                              KEY_EXEC,
                                              NULL);
 
     gchar **ext = g_key_file_get_string_list (key_file,
-                                              ACTION_FILE_GROUP,
+                                              group,
                                               KEY_EXTENSIONS,
                                               NULL,
                                               NULL);
 
     gchar **mimes = g_key_file_get_string_list (key_file,
-                                                ACTION_FILE_GROUP,
+                                                group,
                                                 KEY_MIME_TYPES,
                                                 NULL,
                                                 NULL);
 
     gchar **deps  = g_key_file_get_string_list (key_file,
-                                                ACTION_FILE_GROUP,
+                                                group,
                                                 KEY_DEPENDENCIES,
                                                 NULL,
                                                 NULL);
 
     gchar *selection_string = g_key_file_get_string (key_file,
-                                                     ACTION_FILE_GROUP,
+                                                     group,
                                                      KEY_SELECTION,
                                                      NULL);
 

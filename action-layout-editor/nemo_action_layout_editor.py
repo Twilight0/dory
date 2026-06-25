@@ -92,7 +92,12 @@ class Row():
         if icon_string is None:
             if self.keyfile is not None:
                 try:
-                    icon_string = self.keyfile.get_string('Nemo Action', 'Icon-Name')
+                    group = 'Dory Action'
+                    if self.keyfile.has_group('Dory Action'):
+                        group = 'Dory Action'
+                    elif self.keyfile.has_group('Nemo Action'):
+                        group = 'Nemo Action'
+                    icon_string = self.keyfile.get_string(group, 'Icon-Name')
                 except GLib.Error:
                     pass
 
@@ -133,7 +138,12 @@ class Row():
         if label is None:
             if self.keyfile is not None:
                 try:
-                    label = self.keyfile.get_locale_string('Nemo Action', 'Name', None).replace("_", "")
+                    group = 'Dory Action'
+                    if self.keyfile.has_group('Dory Action'):
+                        group = 'Dory Action'
+                    elif self.keyfile.has_group('Nemo Action'):
+                        group = 'Nemo Action'
+                    label = self.keyfile.get_locale_string(group, 'Name', None).replace("_", "")
                 except GLib.Error as e:
                     print(e)
                     pass

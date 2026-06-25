@@ -107,8 +107,18 @@ make_action_proxy (const gchar *filename, const gchar *fullpath)
 
     g_key_file_load_from_file (key_file, fullpath, G_KEY_FILE_NONE, NULL);
 
-    if (g_key_file_has_key (key_file, ACTION_FILE_GROUP, KEY_ACTIVE, NULL)) {
-        if (!g_key_file_get_boolean (key_file, ACTION_FILE_GROUP, KEY_ACTIVE, NULL)) {
+    const gchar *group = "Dory Action";
+    if (g_key_file_has_group (key_file, "Dory Action")) {
+        group = "Dory Action";
+    } else if (g_key_file_has_group (key_file, "Nemo Action")) {
+        group = "Nemo Action";
+    } else {
+        g_key_file_free (key_file);
+        return NULL;
+    }
+
+    if (g_key_file_has_key (key_file, group, KEY_ACTIVE, NULL)) {
+        if (!g_key_file_get_boolean (key_file, group, KEY_ACTIVE, NULL)) {
             g_key_file_free (key_file);
             return NULL;
         }
@@ -117,7 +127,7 @@ make_action_proxy (const gchar *filename, const gchar *fullpath)
     ActionProxy *proxy = g_new0 (ActionProxy, 1);
 
     gchar *name = g_key_file_get_locale_string (key_file,
-                                                ACTION_FILE_GROUP,
+                                                group,
                                                 KEY_NAME,
                                                 NULL,
                                                 NULL);
@@ -125,7 +135,7 @@ make_action_proxy (const gchar *filename, const gchar *fullpath)
         proxy->name = g_strdup (name);
 
     gchar *comment = g_key_file_get_locale_string (key_file,
-                                            ACTION_FILE_GROUP,
+                                            group,
                                             KEY_COMMENT,
                                             NULL,
                                             NULL);
@@ -134,14 +144,14 @@ make_action_proxy (const gchar *filename, const gchar *fullpath)
 
 
     gchar *icon_name = g_key_file_get_string (key_file,
-                                              ACTION_FILE_GROUP,
+                                              group,
                                               KEY_ICON_NAME,
                                               NULL);
     if (icon_name != NULL)
         proxy->icon_name = g_strdup (icon_name);
 
     gchar *stock_id = g_key_file_get_string (key_file,
-                                             ACTION_FILE_GROUP,
+                                             group,
                                              KEY_STOCK_ID,
                                              NULL);
 
@@ -426,9 +436,19 @@ static void setup_dir_monitors (DoryActionConfigWidget *widget)
         gchar *path = dory_action_manager_get_system_directory_path (data_dirs[i]);
         try_monitor_path (widget, path);
         g_free (path);
+
+        // Monitor Nemo system actions path
+        path = g_build_filename (data_dirs[i], "nemo", "actions", NULL);
+        try_monitor_path (widget, path);
+        g_free (path);
     }
 
     gchar *path = dory_action_manager_get_user_directory_path ();
+    try_monitor_path (widget, path);
+    g_free (path);
+
+    // Monitor Nemo user actions path
+    path = g_build_filename (g_get_user_data_dir (), "nemo", "actions", NULL);
     try_monitor_path (widget, path);
     g_free (path);
 }
