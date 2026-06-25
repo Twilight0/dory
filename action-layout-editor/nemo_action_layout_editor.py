@@ -21,7 +21,19 @@ gettext.bindtextdomain("dory", leconfig.LOCALE_DIR)
 gettext.textdomain("dory")
 _ = gettext.gettext
 
-gresources = Gio.Resource.load(os.path.join(leconfig.PKG_DATADIR, "dory-action-layout-editor-resources.gresource"))
+gresource_path = os.path.join(leconfig.PKG_DATADIR, "dory-action-layout-editor-resources.gresource")
+if not os.path.exists(gresource_path):
+    local_paths = [
+        os.path.join(os.path.dirname(__file__), "../build/gresources/dory-action-layout-editor-resources.gresource"),
+        os.path.join(os.path.dirname(__file__), "../gresources/dory-action-layout-editor-resources.gresource"),
+        "/usr/share/dory/dory-action-layout-editor-resources.gresource"
+    ]
+    for lp in local_paths:
+        if os.path.exists(lp):
+            gresource_path = lp
+            break
+
+gresources = Gio.Resource.load(gresource_path)
 gresources._register()
 
 JSON_FILE = Path(GLib.get_user_config_dir()).joinpath("dory/actions-tree.json")
@@ -192,7 +204,7 @@ class NemoActionsOrganizer(Gtk.Box):
         self.down_button = self.builder.get_object("down_button")
         self.down_button.connect("clicked", self.down_button_clicked)
 
-        self.nemo_plugin_settings = Gio.Settings(schema_id="org.dory.plugins")
+        self.nemo_plugin_settings = Gio.Settings(schema_id="org.nemo.plugins")
         # Disabled/Enabled may be toggled in nemo preferences directly, keep us in sync.
         self.nemo_plugin_settings.connect("changed", self.on_disabled_settings_list_changed)
 

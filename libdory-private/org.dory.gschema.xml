@@ -754,6 +754,24 @@
     </key>
   </schema>
 
+  <schema id="org.nemo.plugins" path="/org/nemo/plugins/" gettext-domain="dory">
+    <key name="disabled-extensions" type="as">
+      <default>[]</default>
+      <summary>List of extensions -not- to load.</summary>
+      <description>List of extension names you do -not- want to load.  This maintains the behavior of an installed extension being enabled by default.</description>
+    </key>
+    <key name="disabled-actions" type="as">
+      <default>[]</default>
+      <summary>List of NemoActions -not- to load.</summary>
+      <description>List of action files you do -not- want loaded.  This maintains the behavior of an installed action being enabled by default.</description>
+    </key>
+    <key name="disabled-scripts" type="as">
+      <default>[]</default>
+      <summary>List of scripts -not- to load.</summary>
+      <description>List of script files you do -not- want loaded.  This maintains the behavior of an installed script being enabled by default.</description>
+    </key>
+  </schema>
+
   <schema id="org.dory.preferences.menu-config" path="/org/dory/preferences/menu-config/" gettext-domain="dory">
     <!-- Selection -->
     <key name="selection-menu-open" type="b">

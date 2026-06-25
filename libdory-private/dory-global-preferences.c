@@ -470,7 +470,7 @@ dory_global_preferences_init (void)
     gtk_filechooser_preferences = g_settings_new_with_path ("org.gtk.Settings.FileChooser",
                                                             "/org/gtk/settings/file-chooser/");
 	dory_tree_sidebar_preferences = g_settings_new("org.dory.sidebar-panels.tree");
-    dory_plugin_preferences = g_settings_new("org.dory.plugins");
+    dory_plugin_preferences = g_settings_new("org.nemo.plugins");
     dory_menu_config_preferences = g_settings_new("org.dory.preferences.menu-config");
     dory_search_preferences = g_settings_new("org.dory.search");
 	gnome_lockdown_preferences = g_settings_new("org.cinnamon.desktop.lockdown");
