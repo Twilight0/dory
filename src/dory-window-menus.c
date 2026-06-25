@@ -335,10 +335,12 @@ action_about_dory_callback (GtkAction *action,
 			       "comments", _("Dory lets you organize "
 					     "files and folders, both on "
 					     "your computer and online."),
+			       "website", "https://github.com/Twilight0/dory",
+			       "website-label", _("GitHub Repository"),
 			       "license", license_trans,
 			       "wrap-license", TRUE,
-			      "logo-icon-name", "folder",
-			      NULL);
+			       "logo-icon-name", "dory",
+			       NULL);
 
 	g_free (license_trans);
 	g_date_time_unref (date);
