@@ -65,16 +65,16 @@ typelibdir = go_intr.get_variable(pkgconfig: 'typelibdir',
   pkgconfig_define: ['libdir', join_paths(get_option('prefix'), get_option('libdir'))]
 )
 
-# gnome.generate_gir(dory_extension_lib,
-#   sources: dory_extension_sources + dory_extension_headers,
-#   nsversion: '3.0',
-#   namespace: 'Dory',
-#   export_packages: 'libdory-extension',
-#   includes: [ 'Gtk-3.0', 'Gio-2.0', 'GLib-2.0', ],
-#   include_directories: [ rootInclude, ],
-#   install_dir_typelib: typelibdir,
-#   install: true,
-# )
+gnome.generate_gir(dory_extension_lib,
+  sources: dory_extension_sources + dory_extension_headers,
+  nsversion: '3.0',
+  namespace: 'Dory',
+  export_packages: 'libdory-extension',
+  includes: [ 'Gtk-3.0', 'Gio-2.0', 'GLib-2.0', ],
+  include_directories: [ rootInclude, ],
+  install_dir_typelib: typelibdir,
+  install: true,
+)
 
 pkgconfig.generate(filebase: 'libdory-extension',
   name: 'libdory-extension',
