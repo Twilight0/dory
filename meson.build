@@ -193,7 +193,7 @@ subdir('libdory-private')
 subdir('src')
 # subdir('search-helpers')
 # subdir('test')
-# subdir('docs')
+subdir('docs')
 # subdir('action-layout-editor')
 
 # Post-installation actions. Skipped automatically when DESTDIR is set

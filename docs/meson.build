@@ -1,8 +1,8 @@
 
 install_man(
-  'nemo.1',
-  'nemo-desktop.1',
-  'nemo-connect-server.1',
+  'dory.1',
+  'dory-desktop.1',
+  'dory-connect-server.1',
 )
 
 if gtkdoc_enabled
