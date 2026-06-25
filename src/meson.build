@@ -138,49 +138,49 @@ dory = executable('dory',
   install: true
 )
 
-# doryDesktop = executable('dory-desktop',
-#   doryCommon_sources + doryDesktop_sources,
-#   include_directories: [ rootInclude],
-#   c_args: dory_definitions,
-#   dependencies: dory_deps,
-#   install: true
-# )
-# 
-# dory_autorun_software = executable('dory-autorun-software',
-#   [ 'dory-autorun-software.c' ],
-#   include_directories: [ rootInclude, ],
-#   c_args: dory_definitions,
-#   dependencies: dory_deps,
-#   install: true
-# )
-# 
-# dory_connect_server = executable('dory-connect-server',
-#   [
-#     'dory-bookmark-list.c',
-#     'dory-connect-server-dialog.c',
-#     'dory-connect-server-dialog-main.c',
-#     'dory-connect-server-operation.c'
-#   ],
-#   include_directories: [ rootInclude, ],
-#   c_args: dory_definitions,
-#   dependencies: dory_deps,
-#   install: true
-# )
-# 
-# dory_open_with = executable('dory-open-with',
-#   [ 'dory-open-with-main.c' ],
-#   include_directories: [ rootInclude, ],
-#   c_args: dory_definitions,
-#   dependencies: dory_deps,
-#   install: true
-# )
-# 
-# # LibExecs
-# dory_extensions_list = executable('dory-extensions-list',
-#   [ 'dory-extensions-list.c' ],
-#   include_directories: [ rootInclude, ],
-#   c_args: dory_definitions,
-#   dependencies: [ dory_deps ],
-#   install: true,
-#   install_dir: libExecPath,
-# )
+doryDesktop = executable('dory-desktop',
+  doryCommon_sources + doryDesktop_sources,
+  include_directories: [ rootInclude],
+  c_args: dory_definitions,
+  dependencies: dory_deps,
+  install: true
+)
+
+dory_autorun_software = executable('dory-autorun-software',
+  [ 'dory-autorun-software.c' ],
+  include_directories: [ rootInclude, ],
+  c_args: dory_definitions,
+  dependencies: dory_deps,
+  install: true
+)
+
+dory_connect_server = executable('dory-connect-server',
+  [
+    'dory-bookmark-list.c',
+    'dory-connect-server-dialog.c',
+    'dory-connect-server-dialog-main.c',
+    'dory-connect-server-operation.c'
+  ],
+  include_directories: [ rootInclude, ],
+  c_args: dory_definitions,
+  dependencies: dory_deps,
+  install: true
+)
+
+dory_open_with = executable('dory-open-with',
+  [ 'dory-open-with-main.c' ],
+  include_directories: [ rootInclude, ],
+  c_args: dory_definitions,
+  dependencies: dory_deps,
+  install: true
+)
+
+# LibExecs
+dory_extensions_list = executable('dory-extensions-list',
+  [ 'dory-extensions-list.c' ],
+  include_directories: [ rootInclude, ],
+  c_args: dory_definitions,
+  dependencies: [ dory_deps ],
+  install: true,
+  install_dir: libExecPath,
+)
