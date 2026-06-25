@@ -37,7 +37,21 @@ gresources = Gio.Resource.load(gresource_path)
 gresources._register()
 
 JSON_FILE = Path(GLib.get_user_config_dir()).joinpath("dory/actions-tree.json")
+if not JSON_FILE.exists():
+    nemo_json_file = Path(GLib.get_user_config_dir()).joinpath("nemo/actions-tree.json")
+    if nemo_json_file.exists():
+        import shutil
+        try:
+            JSON_FILE.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy(str(nemo_json_file), str(JSON_FILE))
+        except Exception:
+            pass
+
 USER_ACTIONS_DIR = Path(GLib.get_user_data_dir()).joinpath("dory/actions")
+if not USER_ACTIONS_DIR.exists():
+    nemo_actions_dir = Path(GLib.get_user_data_dir()).joinpath("nemo/actions")
+    if nemo_actions_dir.exists():
+        USER_ACTIONS_DIR = nemo_actions_dir
 
 NON_SPICE_UUID_SUFFIX = "@untracked"
 
@@ -400,19 +414,21 @@ class NemoActionsOrganizer(Gtk.Box):
         data_dirs = GLib.get_system_data_dirs() + [GLib.get_user_data_dir()]
 
         for d in data_dirs:
-            full = os.path.join(d, "nemo", "actions")
-            file = Gio.File.new_for_path(full)
-            try:
-                if not file.query_exists(None):
-                    continue
-                monitor = file.monitor_directory(Gio.FileMonitorFlags.WATCH_MOVES | Gio.FileMonitorFlags.SEND_MOVED, None)
-                monitor.connect("changed", self.actions_folder_changed)
-                self.monitors.append(monitor)
-            except GLib.Error as e:
-                print("Error monitoring action directory '%s'" % full)
+            for subdir in ["dory/actions", "nemo/actions"]:
+                full = os.path.join(d, subdir)
+                file = Gio.File.new_for_path(full)
+                try:
+                    if not file.query_exists(None):
+                        continue
+                    monitor = file.monitor_directory(Gio.FileMonitorFlags.WATCH_MOVES | Gio.FileMonitorFlags.SEND_MOVED, None)
+                    monitor.connect("changed", self.actions_folder_changed)
+                    self.monitors.append(monitor)
+                except GLib.Error as e:
+                    print("Error monitoring action directory '%s'" % full)
 
     def actions_folder_changed(self, monitor, file, other, event_type, data=None):
-        if not file.get_basename().endswith(".nemo_action"):
+        basename = file.get_basename()
+        if not (basename.endswith(".nemo_action") or basename.endswith(".dory_action")):
             return
 
         self.reload_model()
@@ -511,14 +527,14 @@ class NemoActionsOrganizer(Gtk.Box):
                         if file.suffix in [".dory_action", ".nemo_action"]:
                             uuid = file.name
 
-                        try:
-                            kf = GLib.KeyFile()
-                            kf.load_from_file(str(file), GLib.KeyFileFlags.NONE)
+                            try:
+                                kf = GLib.KeyFile()
+                                kf.load_from_file(str(file), GLib.KeyFileFlags.NONE)
 
-                            action_list.append((uuid, file, kf))
-                        except GLib.Error as e:
-                            print("Error loading action file '%s': %s" % (str(file), e.message))
-                            continue
+                                action_list.append((uuid, file, kf))
+                            except GLib.Error as e:
+                                print("Error loading action file '%s': %s" % (str(file), e.message))
+                                continue
 
 
         actions = OrderedDict(sorted((t[0], t[1:]) for t in action_list))

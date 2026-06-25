@@ -323,6 +323,15 @@ reload_actions_layout (DoryActionManager *action_manager)
 
     JsonParser *parser = json_parser_new ();
     path = g_build_filename (g_get_user_config_dir (), "dory", LAYOUT_FILENAME, NULL);
+    if (!g_file_test (path, G_FILE_TEST_EXISTS)) {
+        gchar *nemo_path = g_build_filename (g_get_user_config_dir (), "nemo", LAYOUT_FILENAME, NULL);
+        if (g_file_test (nemo_path, G_FILE_TEST_EXISTS)) {
+            g_free (path);
+            path = nemo_path;
+        } else {
+            g_free (nemo_path);
+        }
+    }
 
     if (!json_parser_load_from_file (parser, path, &error)) {
         if (error != NULL) {
