@@ -1368,14 +1368,25 @@ dory_file_chooser_dialog_get_selected_uri (GtkDialog *dialog)
     DialogData *data = g_object_get_data (G_OBJECT (dialog), "dialog-data");
     if (!data)
         return NULL;
-        
+
+    if (data->action == GTK_FILE_CHOOSER_ACTION_SAVE) {
+        const gchar *filename = gtk_entry_get_text (GTK_ENTRY (data->filename_entry));
+        if (filename && *filename && data->current_folder) {
+            g_autoptr(GError) error = NULL;
+            g_autoptr(GFile) child = g_file_get_child_for_display_name (data->current_folder, filename, &error);
+            if (child) {
+                return g_file_get_uri (child);
+            }
+        }
+    }
+
     if (data->selected_uri) {
         return g_strdup (data->selected_uri);
     }
-    
+
     if (data->action == GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER && data->current_folder) {
         return g_file_get_uri (data->current_folder);
     }
-    
+
     return NULL;
 }
