@@ -109,6 +109,8 @@ struct DoryPropertiesWindowDetails {
 	GtkLabel *directory_contents_title_field;
 	GtkLabel *directory_contents_value_field;
 	GtkLabel *size_value_field;
+	GtkWidget *stop_scanning_button;
+	GList *deep_count_signal_handler_ids;
 	guint update_directory_contents_timeout_id;
 	guint update_files_timeout_id;
 
@@ -2184,6 +2186,9 @@ directory_contents_value_field_update (DoryPropertiesWindow *window)
 
 	if (status == DORY_REQUEST_DONE) {
 		window->details->deep_count_finished = TRUE;
+		if (window->details->stop_scanning_button != NULL) {
+			gtk_widget_hide (window->details->stop_scanning_button);
+		}
 	}
 }
 
@@ -2213,6 +2218,37 @@ schedule_directory_contents_update (DoryPropertiesWindow *window)
 	}
 }
 
+static void
+on_stop_scanning_clicked (GtkButton *button,
+                          gpointer   user_data)
+{
+	DoryPropertiesWindow *window = DORY_PROPERTIES_WINDOW (user_data);
+	GList *l;
+
+	/* Remove the periodic update timeout */
+	if (window->details->update_directory_contents_timeout_id != 0) {
+		g_source_remove (window->details->update_directory_contents_timeout_id);
+		window->details->update_directory_contents_timeout_id = 0;
+	}
+
+	/* Disconnect signal handlers from target files */
+	for (l = window->details->deep_count_signal_handler_ids; l != NULL; l = l->next) {
+		gulong handler_id = GPOINTER_TO_SIZE (l->data);
+		g_signal_handler_disconnect (window, handler_id);
+	}
+	g_list_free (window->details->deep_count_signal_handler_ids);
+	window->details->deep_count_signal_handler_ids = NULL;
+
+	/* Mark scanning as finished */
+	window->details->deep_count_finished = TRUE;
+
+	/* Do a final update to show current values */
+	directory_contents_value_field_update (window);
+
+	/* Hide the stop button */
+	gtk_widget_hide (GTK_WIDGET (button));
+}
+
 static GtkLabel *
 attach_directory_contents_value_field (DoryPropertiesWindow *window,
 				       GtkGrid *grid,
@@ -2233,11 +2269,23 @@ attach_directory_contents_value_field (DoryPropertiesWindow *window,
 		file = DORY_FILE (l->data);
 		dory_file_recompute_deep_counts (file);
 
-		g_signal_connect_object (file,
+		gulong handler_id = g_signal_connect_object (file,
 					 "updated_deep_count_in_progress",
 					 G_CALLBACK (schedule_directory_contents_update),
 					 window, G_CONNECT_SWAPPED);
+		window->details->deep_count_signal_handler_ids =
+			g_list_append (window->details->deep_count_signal_handler_ids,
+				       GSIZE_TO_POINTER (handler_id));
 	}
+
+	/* Add stop scanning button next to the value field */
+	window->details->stop_scanning_button = gtk_button_new_with_label (_("Stop"));
+	gtk_widget_set_margin_start (window->details->stop_scanning_button, 6);
+	gtk_widget_show (window->details->stop_scanning_button);
+	gtk_grid_attach_next_to (grid, window->details->stop_scanning_button,
+				 GTK_WIDGET (value_field), GTK_POS_RIGHT, 1, 1);
+	g_signal_connect (window->details->stop_scanning_button, "clicked",
+			  G_CALLBACK (on_stop_scanning_clicked), window);
 
 	return value_field;
 }
