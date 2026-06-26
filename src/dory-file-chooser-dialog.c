@@ -347,8 +347,10 @@ on_selection_changed (DialogData *data, GtkTreeModel *model, GtkTreePath *path, 
                             -1);
                             
         if (selected) {
-            gtk_entry_set_text (GTK_ENTRY (data->filename_entry), name);
-            
+            if (data->action != GTK_FILE_CHOOSER_ACTION_SAVE || !is_dir) {
+                gtk_entry_set_text (GTK_ENTRY (data->filename_entry), name);
+            }
+
             g_slist_free_full (data->selected_uris, g_free);
             data->selected_uris = NULL;
             data->selected_uris = g_slist_append (data->selected_uris, g_strdup (uri));

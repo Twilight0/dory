@@ -112,7 +112,7 @@ on_save_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data
                 gtk_window_set_title (GTK_WINDOW (msg_dialog), _("Replace File"));
                 gint res = gtk_dialog_run (GTK_DIALOG (msg_dialog));
                 gtk_widget_destroy (msg_dialog);
-                
+
                 if (res != GTK_RESPONSE_YES) {
                     g_free (result);
                     return;
@@ -122,8 +122,68 @@ on_save_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data
     }
 
     dory_file_chooser_complete_save_file (data->skeleton, data->invocation, result ? result : "");
-    
+
     g_free (result);
+    gtk_widget_destroy (GTK_WIDGET (dialog));
+    g_application_release (g_application_get_default ());
+    g_free (data);
+}
+
+typedef struct {
+    GDBusMethodInvocation *invocation;
+    GtkWidget *dialog;
+    DoryFileChooser *skeleton;
+    gchar **suggested_names;
+} SaveFilesResponseData;
+
+static void
+on_save_files_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+    SaveFilesResponseData *data = user_data;
+    GPtrArray *results = g_ptr_array_new_with_free_func (g_free);
+
+    if (response_id == GTK_RESPONSE_ACCEPT || response_id == GTK_RESPONSE_OK) {
+        gchar *folder_uri = dory_file_chooser_dialog_get_selected_uri (dialog);
+        if (folder_uri && *folder_uri) {
+            g_autoptr(GFile) folder = g_file_new_for_uri (folder_uri);
+
+            for (int i = 0; data->suggested_names[i] != NULL; i++) {
+                g_autoptr(GFile) child = g_file_get_child (folder, data->suggested_names[i]);
+                gchar *child_uri = g_file_get_uri (child);
+
+                if (g_file_query_exists (child, NULL)) {
+                    g_autofree gchar *basename = g_file_get_basename (child);
+                    GtkWidget *msg_dialog = gtk_message_dialog_new (GTK_WINDOW (dialog),
+                                                                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                                    GTK_MESSAGE_QUESTION,
+                                                                    GTK_BUTTONS_YES_NO,
+                                                                    _("A file named \"%s\" already exists. Do you want to replace it?"),
+                                                                    basename);
+                    gtk_window_set_title (GTK_WINDOW (msg_dialog), _("Replace File"));
+                    gint res = gtk_dialog_run (GTK_DIALOG (msg_dialog));
+                    gtk_widget_destroy (msg_dialog);
+
+                    if (res != GTK_RESPONSE_YES) {
+                        g_free (child_uri);
+                        g_free (folder_uri);
+                        g_ptr_array_unref (results);
+                        return;
+                    }
+                }
+
+                g_ptr_array_add (results, child_uri);
+            }
+            g_free (folder_uri);
+        }
+    }
+
+    g_ptr_array_add (results, NULL);
+
+    dory_file_chooser_complete_save_files (data->skeleton, data->invocation,
+                                          (const gchar *const *)results->pdata);
+
+    g_ptr_array_unref (results);
+    g_strfreev (data->suggested_names);
     gtk_widget_destroy (GTK_WIDGET (dialog));
     g_application_release (g_application_get_default ());
     g_free (data);
@@ -157,6 +217,40 @@ handle_save_file_cb (DoryFileChooser *object,
     return TRUE;
 }
 
+static gboolean
+handle_save_files_cb (DoryFileChooser *object,
+                      GDBusMethodInvocation *invocation,
+                      const gchar *title,
+                      const gchar *initial_folder,
+                      const gchar *const *suggested_names,
+                      gpointer user_data)
+{
+    GtkWidget *dialog;
+    const gchar *first_name = NULL;
+
+    if (suggested_names && suggested_names[0]) {
+        first_name = suggested_names[0];
+    }
+
+    dialog = dory_file_chooser_dialog_new (title,
+                                           GTK_FILE_CHOOSER_ACTION_SAVE,
+                                           FALSE,
+                                           initial_folder,
+                                           first_name);
+
+    SaveFilesResponseData *data = g_new0 (SaveFilesResponseData, 1);
+    data->invocation = invocation;
+    data->dialog = dialog;
+    data->skeleton = object;
+    data->suggested_names = g_strdupv ((gchar **)suggested_names);
+
+    g_signal_connect (dialog, "response", G_CALLBACK (on_save_files_dialog_response), data);
+    gtk_widget_show_all (dialog);
+    g_application_hold (g_application_get_default ());
+
+    return TRUE;
+}
+
 static void
 bus_acquired_cb (GDBusConnection *conn,
                  const gchar     *name,
@@ -170,6 +264,8 @@ bus_acquired_cb (GDBusConnection *conn,
                       G_CALLBACK (handle_open_file_cb), self);
     g_signal_connect (self->skeleton, "handle-save-file",
                       G_CALLBACK (handle_save_file_cb), self);
+    g_signal_connect (self->skeleton, "handle-save-files",
+                      G_CALLBACK (handle_save_files_cb), self);
 
     g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (self->skeleton), conn, "/org/Dory/FileChooser", NULL);
 }
