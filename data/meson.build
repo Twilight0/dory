@@ -11,6 +11,12 @@ desktopFiles = [
   ),
 
   configure_file(
+    input : 'dory-autostart.desktop.in',
+    output: 'dory-autostart.desktop',
+    configuration: dataConf,
+  ),
+
+  configure_file(
     input : 'dory.desktop.in',
     output: 'dory.desktop',
     configuration: dataConf,
@@ -19,16 +25,6 @@ desktopFiles = [
 
 install_data(desktopFiles,
   install_dir: join_paths(get_option('datadir'), 'applications')
-)
-
-autostartFile = configure_file(
-  input : 'dory-autostart.desktop.in',
-  output: 'dory-autostart.desktop',
-  configuration: dataConf,
-)
-
-install_data(autostartFile,
-  install_dir: join_paths(get_option('sysconfdir'), 'xdg', 'autostart')
 )
 
 # ################################################################################
