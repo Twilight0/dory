@@ -734,6 +734,11 @@
       <summary>Index of the active tab in the right pane</summary>
       <description>Internal setting used to restore which tab was active in the right pane.</description>
     </key>
+    <key name="last-chooser-folder" type="s">
+      <default>''</default>
+      <summary>Last used folder in file chooser dialog</summary>
+      <description>URI of the last folder visited in the file chooser dialog. Used to restore the previous location when the dialog is reopened without an initial folder.</description>
+    </key>
   </schema>
 
   <schema id="org.dory.plugins" path="/org/dory/plugins/" gettext-domain="dory">
