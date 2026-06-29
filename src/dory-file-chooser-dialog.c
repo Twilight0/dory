@@ -1063,7 +1063,7 @@ on_location_toggle_button_toggled (GtkToggleButton *toggle_button, gpointer user
         gtk_widget_grab_focus (data->path_entry);
         gtk_editable_select_region (GTK_EDITABLE (data->path_entry), 0, -1);
     } else {
-        gtk_stack_set_visible_child_name (GTK_STACK (data->path_stack), "label");
+        gtk_stack_set_visible_child (GTK_STACK (data->path_stack), data->path_breadcrumb_box);
     }
 }
 
