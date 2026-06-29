@@ -11,8 +11,6 @@
 
 #include "dory-file-chooser-dialog.h"
 
-#define CHOOSER_LAST_FOLDER_KEY "last-chooser-folder"
-
 typedef struct {
     GtkBuilder *builder;
     GtkWidget *dialog;
@@ -48,7 +46,6 @@ typedef struct {
     GtkWidget *path_stack;
     GtkWidget *path_entry;
     GtkWidget *path_breadcrumb_box;
-    GSettings *settings;
 } DialogData;
 
 enum {
@@ -68,6 +65,7 @@ enum {
 };
 
 static void load_directory (DialogData *data, GFile *folder);
+static void navigate_to (DialogData *data, GFile *folder, gboolean save_history);
 
 static void
 add_to_recent_locations (DialogData *data, const gchar *uri)
@@ -75,7 +73,7 @@ add_to_recent_locations (DialogData *data, const gchar *uri)
     if (!uri)
         return;
 
-    // Skip special locations
+    /* Skip special locations */
     if (g_str_has_prefix (uri, "trash://") ||
         g_str_has_prefix (uri, "search://") ||
         g_str_has_prefix (uri, "recent://") ||
@@ -98,22 +96,16 @@ add_to_recent_locations (DialogData *data, const gchar *uri)
 }
 
 static void
-save_last_folder (DialogData *data, GFile *folder)
+on_breadcrumb_clicked (GtkButton *btn, gpointer user_data)
 {
-    if (!data->settings || !folder)
-        return;
-
-    g_autofree gchar *uri = g_file_get_uri (folder);
-    g_settings_set_string (data->settings, CHOOSER_LAST_FOLDER_KEY, uri);
-}
-
-static gchar *
-get_last_folder (DialogData *data)
-{
-    if (!data->settings)
-        return NULL;
-
-    return g_settings_get_string (data->settings, CHOOSER_LAST_FOLDER_KEY);
+    DialogData *data = user_data;
+    gchar *path = g_object_get_data (G_OBJECT (btn), "breadcrumb-path");
+    
+    if (path && *path) {
+        GFile *folder = g_file_new_for_path (path);
+        navigate_to (data, folder, TRUE);
+        g_object_unref (folder);
+    }
 }
 
 static void
@@ -122,7 +114,7 @@ update_breadcrumb_bar (DialogData *data)
     if (!data->path_breadcrumb_box || !data->current_folder)
         return;
 
-    // Clear existing breadcrumbs
+    /* Clear existing breadcrumbs */
     gtk_container_foreach (GTK_CONTAINER (data->path_breadcrumb_box),
                            (GtkCallback) gtk_widget_destroy, NULL);
 
@@ -141,7 +133,7 @@ update_breadcrumb_bar (DialogData *data)
             continue;
         }
 
-        // Add separator
+        /* Add separator */
         if (accumulated->len > 0 && accumulated->str[accumulated->len - 1] != '/') {
             GtkWidget *sep = gtk_label_new (NULL);
             gtk_label_set_markup (GTK_LABEL (sep), "<span foreground='#888888'> / </span>");
@@ -158,17 +150,13 @@ update_breadcrumb_bar (DialogData *data)
         gtk_widget_set_name (btn, "breadcrumb-button");
         gtk_widget_set_halign (btn, GTK_ALIGN_START);
 
-        // Store the path up to this segment
+        /* Store the full path up to this segment */
         gchar *full_path = g_strdup (accumulated->str);
         g_object_set_data_full (G_OBJECT (btn), "breadcrumb-path", full_path, g_free);
 
-        // Connect click signal
-        g_signal_connect_swapped (btn, "clicked",
-                                 G_CALLBACK (gtk_toggle_button_set_active),
-                                 gtk_builder_get_object (data->builder, "location_toggle_button"));
+        /* Connect click signal to navigate, NOT to toggle edit mode */
+        g_signal_connect (btn, "clicked", G_CALLBACK (on_breadcrumb_clicked), data);
 
-        // Store path in the toggle button for use when toggling
-        gtk_widget_set_halign (btn, GTK_ALIGN_START);
         gtk_container_add (GTK_CONTAINER (data->path_breadcrumb_box), btn);
     }
 
@@ -246,8 +234,6 @@ free_dialog_data (gpointer user_data)
     g_slist_free_full (data->selected_uris, g_free);
     g_free (data->selected_uri);
     
-    g_clear_object (&data->settings);
-    
     g_free (data);
 }
 
@@ -289,12 +275,12 @@ navigate_to (DialogData *data, GFile *folder, gboolean save_history)
     g_clear_object (&data->current_folder);
     data->current_folder = g_object_ref (folder);
     
-    // Update path label
+    /* Update path label */
     gchar *parse_name = g_file_get_parse_name (folder);
     gtk_label_set_text (GTK_LABEL (data->path_bar_label), parse_name);
     g_free (parse_name);
     
-    // Update path entry
+    /* Update path entry */
     if (data->path_entry) {
         gchar *path = g_file_get_path (folder);
         if (path) {
@@ -307,13 +293,10 @@ navigate_to (DialogData *data, GFile *folder, gboolean save_history)
         }
     }
     
-    // Update breadcrumb bar
+    /* Update breadcrumb bar */
     update_breadcrumb_bar (data);
     
-    // Save last folder for restore on next open
-    save_last_folder (data, folder);
-    
-    // Set places sidebar focus
+    /* Set places sidebar focus */
     gtk_places_sidebar_set_location (GTK_PLACES_SIDEBAR (data->places_sidebar), folder);
     
     load_directory (data, folder);
@@ -694,7 +677,7 @@ on_view_scroll_event (GtkWidget *widget, GdkEventScroll *event, gpointer user_da
                 }
                 update_store_icons (data, data->small_icon_size, data->large_icon_size);
             }
-            return TRUE; // Consume event
+            return TRUE;
         }
     }
     
@@ -714,7 +697,6 @@ directory_enumerated_cb (GObject *source_object, GAsyncResult *res, gpointer use
         return;
     }
     
-    // Save active sort columns to temporarily disable sorting during batch inserts
     gint sort_id;
     GtkSortType sort_type;
     gboolean has_sort = gtk_tree_sortable_get_sort_column_id (GTK_TREE_SORTABLE (data->list_store), &sort_id, &sort_type);
@@ -728,7 +710,6 @@ directory_enumerated_cb (GObject *source_object, GAsyncResult *res, gpointer use
         files = g_list_prepend (files, info);
     }
     
-    // Sort files (folders first, then alphabetically)
     files = g_list_reverse (files);
     
     GList *l;
@@ -749,7 +730,6 @@ directory_enumerated_cb (GObject *source_object, GAsyncResult *res, gpointer use
             continue;
         }
         
-        // 1. File Type (Description)
         const gchar *content_type = g_file_info_get_content_type (file_info);
         gchar *type_desc = NULL;
         if (is_dir) {
@@ -760,7 +740,6 @@ directory_enumerated_cb (GObject *source_object, GAsyncResult *res, gpointer use
             type_desc = g_strdup (_("Unknown"));
         }
         
-        // 2. Last Modified Date/Time
         GDateTime *mod_time = g_file_info_get_modification_date_time (file_info);
         gint64 mod_timestamp = 0;
         gchar *mod_str = NULL;
@@ -822,7 +801,6 @@ directory_enumerated_cb (GObject *source_object, GAsyncResult *res, gpointer use
     
     g_list_free (files);
     
-    // Restore sort settings on the list model
     if (has_sort) {
         gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (data->list_store), sort_id, sort_type);
     } else {
@@ -1015,7 +993,7 @@ do_create_folder (DialogData *data)
                                                      _("_Cancel"), GTK_RESPONSE_CANCEL,
                                                      _("_Create"), GTK_RESPONSE_ACCEPT,
                                                      NULL);
-                                                     
+                                                 
     gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
     
     GtkWidget *content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
@@ -1101,7 +1079,7 @@ on_path_entry_activate (GtkEntry *entry, gpointer user_data)
             navigate_to (data, new_folder, TRUE);
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gtk_builder_get_object (data->builder, "location_toggle_button")), FALSE);
         } else {
-            // Keep focus, do nothing
+            gtk_widget_grab_focus (GTK_WIDGET (entry));
         }
         g_object_unref (new_folder);
     }
@@ -1123,44 +1101,35 @@ show_files_context_menu (GtkWidget *widget, GdkEventButton *event, DialogData *d
 {
     GtkWidget *menu = gtk_menu_new ();
     
-    // 1. Create Folder
     GtkWidget *create_item = gtk_menu_item_new_with_label (_("Create Folder..."));
     g_signal_connect (create_item, "activate", G_CALLBACK (on_create_folder_clicked), data);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), create_item);
     
-    // 2. Show in File Manager
     GtkWidget *fm_item = gtk_menu_item_new_with_label (_("Show in File Manager"));
     g_signal_connect (fm_item, "activate", G_CALLBACK (on_show_in_file_manager_clicked), data);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), fm_item);
     
-    // 3. Copy Path
     GtkWidget *copy_item = gtk_menu_item_new_with_label (_("Copy Location"));
     g_signal_connect (copy_item, "activate", G_CALLBACK (on_copy_path_clicked), data);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), copy_item);
     
-    // 4. Refresh
     GtkWidget *refresh_item = gtk_menu_item_new_with_label (_("Refresh"));
     g_signal_connect (refresh_item, "activate", G_CALLBACK (on_refresh_clicked), data);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), refresh_item);
     
-    // 5. Properties
     GtkWidget *prop_item = gtk_menu_item_new_with_label (_("Properties"));
     g_signal_connect (prop_item, "activate", G_CALLBACK (on_properties_clicked), data);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), prop_item);
     
-    // Separator
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
     
-    // 6. Show Hidden Files Item
     GtkWidget *hidden_item = gtk_check_menu_item_new_with_label (_("Show Hidden Files"));
     gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (hidden_item), data->show_hidden);
     g_signal_connect (hidden_item, "toggled", G_CALLBACK (on_show_hidden_toggled), data);
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), hidden_item);
     
-    // Separator
     gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
     
-    // 7. Sort By Submenu
     GtkWidget *sort_submenu_item = gtk_menu_item_new_with_label (_("Sort By"));
     GtkWidget *sort_submenu = gtk_menu_new ();
     
@@ -1207,10 +1176,10 @@ on_tree_view_button_press (GtkWidget *widget, GdkEventButton *event, gpointer us
         GdkWindow *bin_window = gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget));
         if (event->window != bin_window) {
             show_header_context_menu (widget, event, data);
-            return TRUE; // Consume event
+            return TRUE;
         } else {
             show_files_context_menu (widget, event, data);
-            return TRUE; // Consume event
+            return TRUE;
         }
     }
     return FALSE;
@@ -1223,7 +1192,7 @@ on_icon_view_button_press (GtkWidget *widget, GdkEventButton *event, gpointer us
     
     if (event->type == GDK_BUTTON_PRESS && event->button == GDK_BUTTON_SECONDARY) {
         show_files_context_menu (widget, event, data);
-        return TRUE; // Consume event
+        return TRUE;
     }
     return FALSE;
 }
@@ -1236,16 +1205,29 @@ on_dialog_key_press (GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     if ((event->state & GDK_CONTROL_MASK) && (event->keyval == GDK_KEY_h || event->keyval == GDK_KEY_H)) {
         data->show_hidden = !data->show_hidden;
         load_directory (data, data->current_folder);
-        return TRUE; // Consume event
+        return TRUE;
     }
     
     if ((event->state & GDK_CONTROL_MASK) && (event->keyval == GDK_KEY_l || event->keyval == GDK_KEY_L)) {
         GtkToggleButton *toggle = GTK_TOGGLE_BUTTON (gtk_builder_get_object (data->builder, "location_toggle_button"));
         gtk_toggle_button_set_active (toggle, !gtk_toggle_button_get_active (toggle));
-        return TRUE; // Consume event
+        return TRUE;
     }
     
     return FALSE;
+}
+
+static gboolean
+focus_filename_entry_idle (gpointer user_data)
+{
+    GtkWidget *dialog = user_data;
+    DialogData *data = g_object_get_data (G_OBJECT (dialog), "dialog-data");
+    
+    if (data && data->filename_entry) {
+        gtk_window_set_focus (GTK_WINDOW (dialog), data->filename_entry);
+    }
+    
+    return G_SOURCE_REMOVE;
 }
 
 GtkWidget *
@@ -1276,7 +1258,6 @@ dory_file_chooser_dialog_new (const gchar *title,
     data->action = action;
     data->select_multiple = select_multiple;
     data->show_hidden = FALSE;
-    data->settings = g_settings_new ("org.dory.window-state");
     
     GtkWidget *ok_btn = GTK_WIDGET (gtk_builder_get_object (builder, "ok_button"));
     if (ok_btn) {
@@ -1291,23 +1272,22 @@ dory_file_chooser_dialog_new (const gchar *title,
     
     g_signal_connect (dialog, "key-press-event", G_CALLBACK (on_dialog_key_press), data);
     
-    // Bind UI elements
+    /* Bind UI elements */
     data->path_bar_label = GTK_WIDGET (gtk_builder_get_object (builder, "path_label"));
     data->path_stack = GTK_WIDGET (gtk_builder_get_object (builder, "path_stack"));
     data->path_entry = GTK_WIDGET (gtk_builder_get_object (builder, "path_entry"));
     
-    // Create breadcrumb path bar container
+    /* Create breadcrumb path bar container */
     data->path_breadcrumb_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_halign (data->path_breadcrumb_box, GTK_ALIGN_START);
     gtk_widget_set_hexpand (data->path_breadcrumb_box, TRUE);
     gtk_widget_show (data->path_breadcrumb_box);
     
-    // Replace the path_label with breadcrumb box in the path_stack
+    /* Replace the path_label with breadcrumb box in the path_stack */
     GtkWidget *path_stack = data->path_stack;
     GtkWidget *label_child = GTK_WIDGET (gtk_builder_get_object (builder, "path_label"));
     if (label_child && GTK_IS_LABEL (label_child)) {
         gtk_widget_hide (label_child);
-        // Remove the label from the stack and add breadcrumb box
         g_object_ref (label_child);
         gtk_container_remove (GTK_CONTAINER (path_stack), label_child);
         gtk_container_add (GTK_CONTAINER (path_stack), data->path_breadcrumb_box);
@@ -1321,7 +1301,7 @@ dory_file_chooser_dialog_new (const gchar *title,
     data->preview_name_label = GTK_WIDGET (gtk_builder_get_object (builder, "preview_name_label"));
     data->preview_size_val = GTK_WIDGET (gtk_builder_get_object (builder, "preview_size_val"));
     
-    // Places Sidebar Setup
+    /* Places Sidebar Setup */
     data->places_sidebar = gtk_places_sidebar_new ();
     gtk_places_sidebar_set_show_desktop (GTK_PLACES_SIDEBAR (data->places_sidebar), TRUE);
     gtk_places_sidebar_set_show_recent (GTK_PLACES_SIDEBAR (data->places_sidebar), TRUE);
@@ -1335,26 +1315,25 @@ dory_file_chooser_dialog_new (const gchar *title,
     g_signal_connect (gtk_builder_get_object (builder, "location_toggle_button"), "toggled", G_CALLBACK (on_location_toggle_button_toggled), data);
     g_signal_connect (gtk_builder_get_object (builder, "create_folder_button"), "clicked", G_CALLBACK (on_create_folder_clicked), data);
     
-    // Set default icon sizes
+    /* Set default icon sizes */
     data->small_icon_size = 24;
     data->large_icon_size = 96;
     
-    // List Store & Views Setup
+    /* List Store & Views Setup */
     data->list_store = gtk_list_store_new (COL_NUM_COLUMNS,
-                                           G_TYPE_STRING,   // NAME
-                                           GDK_TYPE_PIXBUF, // ICON (small)
-                                           GDK_TYPE_PIXBUF, // GRID_ICON (large)
-                                           G_TYPE_INT64,    // SIZE
-                                           G_TYPE_STRING,   // SIZE STR
-                                           G_TYPE_STRING,   // TYPE
-                                           G_TYPE_INT64,    // MODIFIED TIME
-                                           G_TYPE_STRING,   // MODIFIED STR
-                                           G_TYPE_BOOLEAN,  // IS DIR
-                                           G_TYPE_STRING,   // URI
-                                           G_TYPE_ICON,     // GICON
-                                           G_TYPE_STRING);  // THUMBNAIL_PATH
+                                           G_TYPE_STRING,
+                                           GDK_TYPE_PIXBUF,
+                                           GDK_TYPE_PIXBUF,
+                                           G_TYPE_INT64,
+                                           G_TYPE_STRING,
+                                           G_TYPE_STRING,
+                                           G_TYPE_INT64,
+                                           G_TYPE_STRING,
+                                           G_TYPE_BOOLEAN,
+                                           G_TYPE_STRING,
+                                           G_TYPE_ICON,
+                                           G_TYPE_STRING);
                                            
-    // Setup Custom Folders-First Sorting Rules on List Store
     GtkTreeSortable *sortable = GTK_TREE_SORTABLE (data->list_store);
     gtk_tree_sortable_set_sort_func (sortable, COL_NAME, compare_rows_folders_first, GINT_TO_POINTER (COL_NAME), NULL);
     gtk_tree_sortable_set_sort_func (sortable, COL_SIZE, compare_rows_folders_first, GINT_TO_POINTER (COL_SIZE), NULL);
@@ -1362,7 +1341,7 @@ dory_file_chooser_dialog_new (const gchar *title,
     gtk_tree_sortable_set_sort_func (sortable, COL_MODIFIED_TIME, compare_rows_folders_first, GINT_TO_POINTER (COL_MODIFIED_TIME), NULL);
     gtk_tree_sortable_set_sort_column_id (sortable, COL_NAME, GTK_SORT_ASCENDING);
     
-    // 1. Setup Tree View (List Mode)
+    /* 1. Setup Tree View (List Mode) */
     data->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (data->list_store));
     GtkCellRenderer *renderer_icon = gtk_cell_renderer_pixbuf_new ();
     GtkCellRenderer *renderer_text = gtk_cell_renderer_text_new ();
@@ -1400,15 +1379,13 @@ dory_file_chooser_dialog_new (const gchar *title,
     g_signal_connect (selection, "changed", G_CALLBACK (on_tree_selection_changed), data);
     g_signal_connect (data->tree_view, "row-activated", G_CALLBACK (on_tree_view_row_activated), data);
     
-    // Connect Scroll event for Zooming in List View
     gtk_widget_add_events (data->tree_view, GDK_SCROLL_MASK);
     g_signal_connect (data->tree_view, "scroll-event", G_CALLBACK (on_view_scroll_event), data);
     
-    // Connect Button Press event for Right Click Header Menu
     gtk_widget_add_events (data->tree_view, GDK_BUTTON_PRESS_MASK);
     g_signal_connect (data->tree_view, "button-press-event", G_CALLBACK (on_tree_view_button_press), data);
     
-    // 2. Setup Icon View (Grid Mode)
+    /* 2. Setup Icon View (Grid Mode) */
     data->icon_view = gtk_icon_view_new_with_model (GTK_TREE_MODEL (data->list_store));
     gtk_icon_view_set_text_column (GTK_ICON_VIEW (data->icon_view), COL_NAME);
     gtk_icon_view_set_pixbuf_column (GTK_ICON_VIEW (data->icon_view), COL_GRID_ICON);
@@ -1421,15 +1398,13 @@ dory_file_chooser_dialog_new (const gchar *title,
     g_signal_connect (data->icon_view, "selection-changed", G_CALLBACK (on_icon_view_selection_changed), data);
     g_signal_connect (data->icon_view, "item-activated", G_CALLBACK (on_icon_view_item_activated), data);
     
-    // Connect Scroll event for Zooming in Icon View
     gtk_widget_add_events (data->icon_view, GDK_SCROLL_MASK);
     g_signal_connect (data->icon_view, "scroll-event", G_CALLBACK (on_view_scroll_event), data);
     
-    // Connect Button Press event for Right Click Context Menu in Icon View
     gtk_widget_add_events (data->icon_view, GDK_BUTTON_PRESS_MASK);
     g_signal_connect (data->icon_view, "button-press-event", G_CALLBACK (on_icon_view_button_press), data);
     
-    // 3. Setup Compact View (Compact Mode)
+    /* 3. Setup Compact View (Compact Mode) */
     data->compact_view = gtk_icon_view_new_with_model (GTK_TREE_MODEL (data->list_store));
     gtk_icon_view_set_text_column (GTK_ICON_VIEW (data->compact_view), COL_NAME);
     gtk_icon_view_set_pixbuf_column (GTK_ICON_VIEW (data->compact_view), COL_ICON);
@@ -1443,15 +1418,13 @@ dory_file_chooser_dialog_new (const gchar *title,
     g_signal_connect (data->compact_view, "selection-changed", G_CALLBACK (on_icon_view_selection_changed), data);
     g_signal_connect (data->compact_view, "item-activated", G_CALLBACK (on_icon_view_item_activated), data);
     
-    // Connect Scroll event for Zooming in Compact View
     gtk_widget_add_events (data->compact_view, GDK_SCROLL_MASK);
     g_signal_connect (data->compact_view, "scroll-event", G_CALLBACK (on_view_scroll_event), data);
     
-    // Connect Button Press event for Right Click Context Menu in Compact View
     gtk_widget_add_events (data->compact_view, GDK_BUTTON_PRESS_MASK);
     g_signal_connect (data->compact_view, "button-press-event", G_CALLBACK (on_icon_view_button_press), data);
     
-    // Connect header buttons
+    /* Connect header buttons */
     g_signal_connect (gtk_builder_get_object (builder, "back_button"), "clicked", G_CALLBACK (on_back_clicked), data);
     g_signal_connect (gtk_builder_get_object (builder, "forward_button"), "clicked", G_CALLBACK (on_forward_clicked), data);
     g_signal_connect (gtk_builder_get_object (builder, "up_button"), "clicked", G_CALLBACK (on_up_clicked), data);
@@ -1459,26 +1432,16 @@ dory_file_chooser_dialog_new (const gchar *title,
     g_signal_connect (gtk_builder_get_object (builder, "grid_view_toggle"), "toggled", G_CALLBACK (on_view_toggle_changed), data);
     g_signal_connect (gtk_builder_get_object (builder, "compact_view_toggle"), "toggled", G_CALLBACK (on_view_toggle_changed), data);
     
-    // Initialize view states (Grid View active by default)
+    /* Initialize view states (Grid View active by default) */
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gtk_builder_get_object (builder, "grid_view_toggle")), TRUE);
     gtk_stack_set_visible_child_name (GTK_STACK (gtk_builder_get_object (builder, "browser_stack")), "grid");
     
-    // Set initial directory
+    /* Set initial directory */
     GFile *initial_dir = NULL;
     if (initial_folder_uri && *initial_folder_uri) {
         initial_dir = g_file_new_for_uri (initial_folder_uri);
     } else {
-        // Try to restore last used folder
-        g_autofree gchar *last_folder = get_last_folder (data);
-        if (last_folder && *last_folder) {
-            initial_dir = g_file_new_for_uri (last_folder);
-            if (!g_file_query_exists (initial_dir, NULL)) {
-                g_object_unref (initial_dir);
-                initial_dir = g_file_new_for_path (g_get_home_dir ());
-            }
-        } else {
-            initial_dir = g_file_new_for_path (g_get_home_dir ());
-        }
+        initial_dir = g_file_new_for_path (g_get_home_dir ());
     }
     navigate_to (data, initial_dir, TRUE);
     g_object_unref (initial_dir);
@@ -1487,14 +1450,13 @@ dory_file_chooser_dialog_new (const gchar *title,
         gtk_entry_set_text (GTK_ENTRY (data->filename_entry), suggested_name);
     }
     
-    // Setup filter text
+    /* Setup filter text */
     gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (data->filter_combo), _("All Files"));
     gtk_combo_box_set_active (GTK_COMBO_BOX (data->filter_combo), 0);
     
-    // For save mode, focus stealing: present window and grab focus on filename entry
+    /* For save mode: use idle callback to set focus after dialog is fully mapped */
     if (action == GTK_FILE_CHOOSER_ACTION_SAVE) {
-        gtk_window_set_focus (GTK_WINDOW (dialog), data->filename_entry);
-        gtk_window_present (GTK_WINDOW (dialog));
+        g_idle_add (focus_filename_entry_idle, dialog);
     }
     
     return dialog;
