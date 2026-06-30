@@ -739,6 +739,26 @@
       <summary>Last used folder in file chooser dialog</summary>
       <description>URI of the last folder visited in the file chooser dialog. Used to restore the previous location when the dialog is reopened without an initial folder.</description>
     </key>
+    <key name="chooser-view-mode" type="s">
+      <default>'grid'</default>
+      <summary>Default view mode for file chooser dialog</summary>
+      <description>The view mode (grid, list, compact) for the file chooser dialog.</description>
+    </key>
+    <key name="chooser-sort-column" type="s">
+      <default>'name'</default>
+      <summary>Sort column for file chooser dialog</summary>
+      <description>The column to sort by in the file chooser dialog (name, size, type, modified).</description>
+    </key>
+    <key name="chooser-sort-ascending" type="b">
+      <default>true</default>
+      <summary>Sort ascending in file chooser dialog</summary>
+      <description>Whether to sort ascending in the file chooser dialog.</description>
+    </key>
+    <key name="chooser-show-hidden" type="b">
+      <default>false</default>
+      <summary>Show hidden files in file chooser dialog</summary>
+      <description>Whether to show hidden files in the file chooser dialog.</description>
+    </key>
   </schema>
 
   <schema id="org.dory.plugins" path="/org/dory/plugins/" gettext-domain="dory">

@@ -46,6 +46,7 @@ typedef struct {
     GtkWidget *path_stack;
     GtkWidget *path_entry;
     GtkWidget *path_breadcrumb_box;
+    GSettings *settings;
 } DialogData;
 
 enum {
@@ -93,6 +94,72 @@ add_to_recent_locations (DialogData *data, const gchar *uri)
 
     g_free (recent_data.app_name);
     g_free (recent_data.app_exec);
+}
+
+static void
+save_chooser_settings (DialogData *data)
+{
+    if (!data->settings)
+        return;
+
+    /* Save last folder */
+    if (data->current_folder) {
+        g_autofree gchar *uri = g_file_get_uri (data->current_folder);
+        g_settings_set_string (data->settings, "last-chooser-folder", uri);
+    }
+
+    /* Save view mode */
+    GtkWidget *stack = GTK_WIDGET (gtk_builder_get_object (data->builder, "browser_stack"));
+    const gchar *view = gtk_stack_get_visible_child_name (GTK_STACK (stack));
+    g_settings_set_string (data->settings, "chooser-view-mode", view ? view : "grid");
+
+    /* Save sort column and direction */
+    GtkTreeSortable *sortable = GTK_TREE_SORTABLE (data->list_store);
+    gint sort_id;
+    GtkSortType sort_type;
+    if (gtk_tree_sortable_get_sort_column_id (sortable, &sort_id, &sort_type)) {
+        const gchar *col_name = "name";
+        switch (sort_id) {
+            case COL_NAME: col_name = "name"; break;
+            case COL_SIZE: col_name = "size"; break;
+            case COL_TYPE: col_name = "type"; break;
+            case COL_MODIFIED_TIME: col_name = "modified"; break;
+        }
+        g_settings_set_string (data->settings, "chooser-sort-column", col_name);
+        g_settings_set_boolean (data->settings, "chooser-sort-ascending", sort_type == GTK_SORT_ASCENDING);
+    }
+
+    /* Save hidden files state */
+    g_settings_set_boolean (data->settings, "chooser-show-hidden", data->show_hidden);
+}
+
+static void
+restore_chooser_settings (DialogData *data)
+{
+    if (!data->settings)
+        return;
+
+    /* Restore hidden files state */
+    data->show_hidden = g_settings_get_boolean (data->settings, "chooser-show-hidden");
+
+    /* Restore sort column */
+    g_autofree gchar *sort_col = g_settings_get_string (data->settings, "chooser-sort-column");
+    gint sort_id = COL_NAME;
+    if (g_strcmp0 (sort_col, "size") == 0) sort_id = COL_SIZE;
+    else if (g_strcmp0 (sort_col, "type") == 0) sort_id = COL_TYPE;
+    else if (g_strcmp0 (sort_col, "modified") == 0) sort_id = COL_MODIFIED_TIME;
+
+    gboolean ascending = g_settings_get_boolean (data->settings, "chooser-sort-ascending");
+    gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (data->list_store), sort_id,
+                                         ascending ? GTK_SORT_ASCENDING : GTK_SORT_DESCENDING);
+}
+
+static gchar *
+get_last_folder (DialogData *data)
+{
+    if (!data->settings)
+        return NULL;
+    return g_settings_get_string (data->settings, "last-chooser-folder");
 }
 
 static void
@@ -225,6 +292,10 @@ static void
 free_dialog_data (gpointer user_data)
 {
     DialogData *data = user_data;
+    
+    /* Save settings before destroying */
+    save_chooser_settings (data);
+    
     g_clear_object (&data->builder);
     g_clear_object (&data->current_folder);
     
@@ -233,6 +304,8 @@ free_dialog_data (gpointer user_data)
     
     g_slist_free_full (data->selected_uris, g_free);
     g_free (data->selected_uri);
+    
+    g_clear_object (&data->settings);
     
     g_free (data);
 }
@@ -295,6 +368,9 @@ navigate_to (DialogData *data, GFile *folder, gboolean save_history)
     
     /* Update breadcrumb bar */
     update_breadcrumb_bar (data);
+    
+    /* Save settings */
+    save_chooser_settings (data);
     
     /* Set places sidebar focus */
     gtk_places_sidebar_set_location (GTK_PLACES_SIDEBAR (data->places_sidebar), folder);
@@ -1230,6 +1306,13 @@ focus_filename_entry_idle (gpointer user_data)
     return G_SOURCE_REMOVE;
 }
 
+static void
+on_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+    DialogData *data = user_data;
+    save_chooser_settings (data);
+}
+
 GtkWidget *
 dory_file_chooser_dialog_new (const gchar *title,
                               GtkFileChooserAction action,
@@ -1258,6 +1341,7 @@ dory_file_chooser_dialog_new (const gchar *title,
     data->action = action;
     data->select_multiple = select_multiple;
     data->show_hidden = FALSE;
+    data->settings = g_settings_new ("org.dory.window-state");
     
     GtkWidget *ok_btn = GTK_WIDGET (gtk_builder_get_object (builder, "ok_button"));
     if (ok_btn) {
@@ -1271,6 +1355,7 @@ dory_file_chooser_dialog_new (const gchar *title,
     g_object_set_data_full (G_OBJECT (dialog), "dialog-data", data, free_dialog_data);
     
     g_signal_connect (dialog, "key-press-event", G_CALLBACK (on_dialog_key_press), data);
+    g_signal_connect (dialog, "response", G_CALLBACK (on_dialog_response), data);
     
     /* Bind UI elements */
     data->path_bar_label = GTK_WIDGET (gtk_builder_get_object (builder, "path_label"));
@@ -1436,12 +1521,25 @@ dory_file_chooser_dialog_new (const gchar *title,
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gtk_builder_get_object (builder, "grid_view_toggle")), TRUE);
     gtk_stack_set_visible_child_name (GTK_STACK (gtk_builder_get_object (builder, "browser_stack")), "grid");
     
+    /* Restore saved settings */
+    restore_chooser_settings (data);
+    
     /* Set initial directory */
     GFile *initial_dir = NULL;
     if (initial_folder_uri && *initial_folder_uri) {
         initial_dir = g_file_new_for_uri (initial_folder_uri);
     } else {
-        initial_dir = g_file_new_for_path (g_get_home_dir ());
+        /* Try to restore last used folder */
+        g_autofree gchar *last_folder = get_last_folder (data);
+        if (last_folder && *last_folder) {
+            initial_dir = g_file_new_for_uri (last_folder);
+            if (!g_file_query_exists (initial_dir, NULL)) {
+                g_object_unref (initial_dir);
+                initial_dir = g_file_new_for_path (g_get_home_dir ());
+            }
+        } else {
+            initial_dir = g_file_new_for_path (g_get_home_dir ());
+        }
     }
     navigate_to (data, initial_dir, TRUE);
     g_object_unref (initial_dir);
