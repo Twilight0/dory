@@ -1534,14 +1534,10 @@ dory_file_chooser_dialog_new (const gchar *title,
     if (initial_folder_uri && *initial_folder_uri) {
         initial_dir = g_file_new_for_uri (initial_folder_uri);
     } else {
-        /* Try to restore last used folder */
+        /* Try to restore last used folder, fall back to home on any issue */
         g_autofree gchar *last_folder = get_last_folder (data);
-        if (last_folder && *last_folder) {
+        if (last_folder && *last_folder && g_str_has_prefix (last_folder, "file://")) {
             initial_dir = g_file_new_for_uri (last_folder);
-            if (!g_file_query_exists (initial_dir, NULL)) {
-                g_object_unref (initial_dir);
-                initial_dir = g_file_new_for_path (g_get_home_dir ());
-            }
         } else {
             initial_dir = g_file_new_for_path (g_get_home_dir ());
         }
