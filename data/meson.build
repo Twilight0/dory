@@ -37,6 +37,16 @@ dbusFiles = [
     output: 'org.Dory.FileChooser.service',
     configuration: dataConf,
   ),
+  configure_file(
+    input : 'dory.service.in',
+    output: 'dory.service',
+    configuration: dataConf,
+  ),
+  configure_file(
+    input : 'dory.FileManager1.service.in',
+    output: 'dory.FileManager1.service',
+    configuration: dataConf,
+  ),
 ]
 
 install_data(dbusFiles,
