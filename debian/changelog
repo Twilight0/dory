@@ -1,3 +1,10 @@
+nemo (6.7.4) alfa; urgency=medium
+
+  [ Michael Webster ]
+  * nemo-places.sidebar.c: Restrict eject button clicks to primary only.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 02 Jul 2026 13:21:26 +0200
+
 nemo (6.7.3) alfa; urgency=medium
 
   [ Michael Webster ]
