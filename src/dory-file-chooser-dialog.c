@@ -533,17 +533,9 @@ on_selection_changed (DialogData *data, GtkTreeModel *model, GtkTreePath *path, 
                 gtk_entry_set_text (GTK_ENTRY (data->filename_entry), name);
             }
 
-            if (data->select_multiple) {
-                /* Append to selection list */
-                if (!g_slist_find_custom (data->selected_uris, uri, (GCompareFunc) g_strcmp0)) {
-                    data->selected_uris = g_slist_append (data->selected_uris, g_strdup (uri));
-                }
-            } else {
-                /* Replace selection */
-                g_slist_free_full (data->selected_uris, g_free);
-                data->selected_uris = NULL;
-                data->selected_uris = g_slist_append (data->selected_uris, g_strdup (uri));
-            }
+            g_slist_free_full (data->selected_uris, g_free);
+            data->selected_uris = NULL;
+            data->selected_uris = g_slist_append (data->selected_uris, g_strdup (uri));
             
             g_free (data->selected_uri);
             data->selected_uri = g_strdup (uri);
@@ -1301,13 +1293,17 @@ on_dialog_key_press (GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     return FALSE;
 }
 
-static void
-on_dialog_map (GtkWidget *widget, gpointer user_data)
+static gboolean
+focus_filename_entry_idle (gpointer user_data)
 {
-    DialogData *data = user_data;
-    if (data && data->filename_entry && data->action == GTK_FILE_CHOOSER_ACTION_SAVE) {
-        gtk_widget_grab_focus (data->filename_entry);
+    GtkWidget *dialog = user_data;
+    DialogData *data = g_object_get_data (G_OBJECT (dialog), "dialog-data");
+    
+    if (data && data->filename_entry) {
+        gtk_window_set_focus (GTK_WINDOW (dialog), data->filename_entry);
     }
+    
+    return G_SOURCE_REMOVE;
 }
 
 static void
@@ -1360,7 +1356,6 @@ dory_file_chooser_dialog_new (const gchar *title,
     
     g_signal_connect (dialog, "key-press-event", G_CALLBACK (on_dialog_key_press), data);
     g_signal_connect (dialog, "response", G_CALLBACK (on_dialog_response), data);
-    g_signal_connect (dialog, "map", G_CALLBACK (on_dialog_map), data);
     
     /* Bind UI elements */
     data->path_bar_label = GTK_WIDGET (gtk_builder_get_object (builder, "path_label"));
@@ -1552,6 +1547,11 @@ dory_file_chooser_dialog_new (const gchar *title,
     /* Setup filter text */
     gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (data->filter_combo), _("All Files"));
     gtk_combo_box_set_active (GTK_COMBO_BOX (data->filter_combo), 0);
+    
+    /* For save mode: use idle callback to set focus after dialog is fully mapped */
+    if (action == GTK_FILE_CHOOSER_ACTION_SAVE) {
+        g_idle_add (focus_filename_entry_idle, dialog);
+    }
     
     return dialog;
 }
