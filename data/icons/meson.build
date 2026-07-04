@@ -4,6 +4,7 @@ publicIcons = [
   'hicolor/apps/24x24/dory.png',
   'hicolor/apps/32x32/dory.png',
   'hicolor/apps/scalable/dory.png',
+  'hicolor/apps/scalable/dory-about.png',
   'hicolor/actions/16x16/dory-eject.png',
   'hicolor/actions/16x16/menu-bullet.png',
   'hicolor/actions/16x16/menu-sort-up.png',

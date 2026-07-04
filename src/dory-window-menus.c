@@ -331,6 +331,7 @@ action_about_dory_callback (GtkAction *action,
 
 	gtk_show_about_dialog (GTK_WINDOW (user_data),
 			       "program-name", _("Dory"),
+			       "logo-icon-name", "dory-about",
 			       "version", VERSION,
 			       "comments", _("Dory lets you organize "
 					     "files and folders, both on "
