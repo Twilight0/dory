@@ -16,7 +16,7 @@ bin_conf = configuration_data()
 bin_conf.set('PKG_DATADIR', doryDataPath)
 
 bin_dory = configure_file(
-  input: 'nemo-action-layout-editor.in',
+  input: 'dory-action-layout-editor.in',
   output: 'dory-action-layout-editor',
   configuration: bin_conf,
   install: true,
@@ -24,17 +24,8 @@ bin_dory = configure_file(
   install_mode: 'rwxr-xr-x'
 )
 
-bin_nemo = configure_file(
-  input: 'nemo-action-layout-editor.in',
-  output: 'nemo-action-layout-editor',
-  configuration: bin_conf,
-  install: true,
-  install_dir: get_option('bindir'),
-  install_mode: 'rwxr-xr-x'
-)
-
 install_data(
-    'nemo_action_layout_editor.py',
+    'dory_action_layout_editor.py',
     install_dir: doryDataPath / 'layout-editor',
     install_mode: 'rwxr-xr-x'
 )

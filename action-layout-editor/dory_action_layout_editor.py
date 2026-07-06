@@ -192,7 +192,7 @@ class Row():
             return self.row_meta.get('user-icon')
         return None
 
-class NemoActionsOrganizer(Gtk.Box):
+class DoryActionsOrganizer(Gtk.Box):
     def __init__(self, window, builder=None):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
 
@@ -1569,7 +1569,7 @@ class EditorWindow():
         self.builder = Gtk.Builder.new_from_resource("/org/dory/action-layout-editor/dory-action-layout-editor.glade")
         self.main_window = self.builder.get_object("main_window")
         self.hamburger_button = self.builder.get_object("hamburger_button")
-        self.editor = NemoActionsOrganizer(self.main_window, self.builder)
+        self.editor = DoryActionsOrganizer(self.main_window, self.builder)
         self.main_window.add(self.editor)
 
         # Hamburger menu
