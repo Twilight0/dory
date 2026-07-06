@@ -512,53 +512,60 @@ update_preview (DialogData *data, const gchar *uri, const gchar *name, gboolean 
 }
 
 static void
-on_selection_changed (DialogData *data, GtkTreeModel *model, GtkTreePath *path, gboolean selected)
-{
-    GtkTreeIter iter;
-    if (gtk_tree_model_get_iter (model, &iter, path)) {
-        gchar *name;
-        gchar *uri;
-        gboolean is_dir;
-        goffset size;
-        
-        gtk_tree_model_get (model, &iter,
-                            COL_NAME, &name,
-                            COL_URI, &uri,
-                            COL_IS_DIR, &is_dir,
-                            COL_SIZE, &size,
-                            -1);
-                            
-        if (selected) {
-            if (data->action != GTK_FILE_CHOOSER_ACTION_SAVE || !is_dir) {
-                gtk_entry_set_text (GTK_ENTRY (data->filename_entry), name);
-            }
-
-            g_slist_free_full (data->selected_uris, g_free);
-            data->selected_uris = NULL;
-            data->selected_uris = g_slist_append (data->selected_uris, g_strdup (uri));
-            
-            g_free (data->selected_uri);
-            data->selected_uri = g_strdup (uri);
-
-            update_preview (data, uri, name, is_dir, size);
-        }
-        
-        g_free (name);
-        g_free (uri);
-    }
-}
-
-static void
 on_tree_selection_changed (GtkTreeSelection *selection, gpointer user_data)
 {
     DialogData *data = user_data;
     GtkTreeModel *model;
     GList *paths = gtk_tree_selection_get_selected_rows (selection, &model);
     
-    if (paths) {
-        on_selection_changed (data, model, (GtkTreePath *)paths->data, TRUE);
-        g_list_free_full (paths, (GDestroyNotify)gtk_tree_path_free);
+    g_slist_free_full (data->selected_uris, g_free);
+    data->selected_uris = NULL;
+
+    gchar *last_name = NULL;
+    gchar *last_uri = NULL;
+    gboolean last_is_dir = FALSE;
+    goffset last_size = 0;
+
+    for (GList *l = paths; l != NULL; l = l->next) {
+        GtkTreeIter iter;
+        if (gtk_tree_model_get_iter (model, &iter, l->data)) {
+            gchar *name = NULL;
+            gchar *uri = NULL;
+            gboolean is_dir = FALSE;
+            goffset size = 0;
+
+            gtk_tree_model_get (model, &iter,
+                                COL_NAME, &name,
+                                COL_URI, &uri,
+                                COL_IS_DIR, &is_dir,
+                                COL_SIZE, &size,
+                                -1);
+
+            data->selected_uris = g_slist_append (data->selected_uris, g_strdup (uri));
+
+            g_free (last_name);
+            g_free (last_uri);
+            last_name = name;
+            last_uri = uri;
+            last_is_dir = is_dir;
+            last_size = size;
+        }
     }
+
+    if (last_uri) {
+        g_free (data->selected_uri);
+        data->selected_uri = g_strdup (last_uri);
+
+        if (data->action != GTK_FILE_CHOOSER_ACTION_SAVE || !last_is_dir) {
+            gtk_entry_set_text (GTK_ENTRY (data->filename_entry), last_name);
+        }
+
+        update_preview (data, last_uri, last_name, last_is_dir, last_size);
+    }
+
+    g_free (last_name);
+    g_free (last_uri);
+    g_list_free_full (paths, (GDestroyNotify)gtk_tree_path_free);
 }
 
 static void
@@ -592,11 +599,56 @@ on_icon_view_selection_changed (GtkIconView *icon_view, gpointer user_data)
 {
     DialogData *data = user_data;
     GList *paths = gtk_icon_view_get_selected_items (icon_view);
-    
-    if (paths) {
-        on_selection_changed (data, gtk_icon_view_get_model (icon_view), (GtkTreePath *)paths->data, TRUE);
-        g_list_free_full (paths, (GDestroyNotify)gtk_tree_path_free);
+    GtkTreeModel *model = gtk_icon_view_get_model (icon_view);
+
+    g_slist_free_full (data->selected_uris, g_free);
+    data->selected_uris = NULL;
+
+    gchar *last_name = NULL;
+    gchar *last_uri = NULL;
+    gboolean last_is_dir = FALSE;
+    goffset last_size = 0;
+
+    for (GList *l = paths; l != NULL; l = l->next) {
+        GtkTreeIter iter;
+        if (gtk_tree_model_get_iter (model, &iter, l->data)) {
+            gchar *name = NULL;
+            gchar *uri = NULL;
+            gboolean is_dir = FALSE;
+            goffset size = 0;
+
+            gtk_tree_model_get (model, &iter,
+                                COL_NAME, &name,
+                                COL_URI, &uri,
+                                COL_IS_DIR, &is_dir,
+                                COL_SIZE, &size,
+                                -1);
+
+            data->selected_uris = g_slist_append (data->selected_uris, g_strdup (uri));
+
+            g_free (last_name);
+            g_free (last_uri);
+            last_name = name;
+            last_uri = uri;
+            last_is_dir = is_dir;
+            last_size = size;
+        }
     }
+
+    if (last_uri) {
+        g_free (data->selected_uri);
+        data->selected_uri = g_strdup (last_uri);
+
+        if (data->action != GTK_FILE_CHOOSER_ACTION_SAVE || !last_is_dir) {
+            gtk_entry_set_text (GTK_ENTRY (data->filename_entry), last_name);
+        }
+
+        update_preview (data, last_uri, last_name, last_is_dir, last_size);
+    }
+
+    g_free (last_name);
+    g_free (last_uri);
+    g_list_free_full (paths, (GDestroyNotify)gtk_tree_path_free);
 }
 
 static void
