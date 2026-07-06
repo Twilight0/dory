@@ -86,7 +86,8 @@ handle_open_file_cb (DoryFileChooser *object,
 
     g_signal_connect (dialog, "response", G_CALLBACK (on_open_dialog_response), data);
     gtk_widget_show_all (dialog);
-    gtk_window_present (GTK_WINDOW (dialog));
+    gdk_window_raise (gtk_widget_get_window (dialog));
+    gdk_window_focus (gtk_widget_get_window (dialog), GDK_CURRENT_TIME);
     g_application_hold (g_application_get_default ());
 
     return TRUE;
@@ -213,7 +214,8 @@ handle_save_file_cb (DoryFileChooser *object,
 
     g_signal_connect (dialog, "response", G_CALLBACK (on_save_dialog_response), data);
     gtk_widget_show_all (dialog);
-    gtk_window_present (GTK_WINDOW (dialog));
+    gdk_window_raise (gtk_widget_get_window (dialog));
+    gdk_window_focus (gtk_widget_get_window (dialog), GDK_CURRENT_TIME);
     g_application_hold (g_application_get_default ());
 
     return TRUE;
@@ -248,7 +250,8 @@ handle_save_files_cb (DoryFileChooser *object,
 
     g_signal_connect (dialog, "response", G_CALLBACK (on_save_files_dialog_response), data);
     gtk_widget_show_all (dialog);
-    gtk_window_present (GTK_WINDOW (dialog));
+    gdk_window_raise (gtk_widget_get_window (dialog));
+    gdk_window_focus (gtk_widget_get_window (dialog), GDK_CURRENT_TIME);
     g_application_hold (g_application_get_default ());
 
     return TRUE;
