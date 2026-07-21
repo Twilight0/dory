@@ -96,6 +96,39 @@ add_to_recent_locations (DialogData *data, const gchar *uri)
     g_free (recent_data.app_exec);
 }
 
+static GFile *
+resolve_valid_directory (const gchar *uri_or_path)
+{
+    if (!uri_or_path || !*uri_or_path)
+        return NULL;
+
+    GFile *file = g_file_new_for_commandline_arg (uri_or_path);
+    if (!file)
+        return NULL;
+
+    if (!g_file_query_exists (file, NULL)) {
+        g_object_unref (file);
+        return NULL;
+    }
+
+    GFileType type = g_file_query_file_type (file, G_FILE_QUERY_INFO_NONE, NULL);
+    if (type == G_FILE_TYPE_DIRECTORY) {
+        return file;
+    } else if (type == G_FILE_TYPE_REGULAR || type == G_FILE_TYPE_SYMBOLIC_LINK) {
+        GFile *parent = g_file_get_parent (file);
+        g_object_unref (file);
+        if (parent && g_file_query_exists (parent, NULL) &&
+            g_file_query_file_type (parent, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY) {
+            return parent;
+        }
+        g_clear_object (&parent);
+    } else {
+        g_object_unref (file);
+    }
+
+    return NULL;
+}
+
 static void
 save_chooser_settings (DialogData *data)
 {
@@ -103,9 +136,12 @@ save_chooser_settings (DialogData *data)
         return;
 
     /* Save last folder */
-    if (data->current_folder) {
-        g_autofree gchar *uri = g_file_get_uri (data->current_folder);
-        g_settings_set_string (data->settings, "last-chooser-folder", uri);
+    if (data->current_folder && g_file_query_exists (data->current_folder, NULL)) {
+        GFileType type = g_file_query_file_type (data->current_folder, G_FILE_QUERY_INFO_NONE, NULL);
+        if (type == G_FILE_TYPE_DIRECTORY) {
+            g_autofree gchar *uri = g_file_get_uri (data->current_folder);
+            g_settings_set_string (data->settings, "last-chooser-folder", uri);
+        }
     }
 
     /* Save view mode */
@@ -1579,16 +1615,22 @@ dory_file_chooser_dialog_new (const gchar *title,
     /* Set initial directory */
     GFile *initial_dir = NULL;
     if (initial_folder_uri && *initial_folder_uri) {
-        initial_dir = g_file_new_for_uri (initial_folder_uri);
-    } else {
-        /* Try to restore last used folder, fall back to home on any issue */
+        initial_dir = resolve_valid_directory (initial_folder_uri);
+    }
+
+    if (!initial_dir) {
+        /* Try to restore last used folder */
         g_autofree gchar *last_folder = get_last_folder (data);
-        if (last_folder && *last_folder && g_str_has_prefix (last_folder, "file://")) {
-            initial_dir = g_file_new_for_uri (last_folder);
-        } else {
-            initial_dir = g_file_new_for_path (g_get_home_dir ());
+        if (last_folder && *last_folder) {
+            initial_dir = resolve_valid_directory (last_folder);
         }
     }
+
+    if (!initial_dir) {
+        /* Fall back to home directory */
+        initial_dir = g_file_new_for_path (g_get_home_dir ());
+    }
+
     navigate_to (data, initial_dir, TRUE);
     g_object_unref (initial_dir);
     
